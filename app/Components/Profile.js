@@ -11,7 +11,6 @@ import {Button, Switch,Form, Input,Header,Right,Icon, ListItem,Picker, Left,Thum
 import {Col, Row, Grid} from 'react-native-easy-grid';
 import {Actions} from 'react-native-router-flux';
 import NavBarBelow from './Footer'
-import DatePicker from 'react-native-datepicker'
 import {connect} from 'react-redux'
 import {gChange, sChange, setPhoto} from '../actions/profilePage'
 

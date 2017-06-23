@@ -1,13 +1,16 @@
-import { AppRegistry, Alert } from 'react-native'
-import {Provider} from 'react-redux'
-import React, { Component } from 'react'
+import {Provider} from 'react-redux';
+import React, { Component } from 'react';
 import store from './app/store';
 
-//Import App Container
-import App from './app'
+import AppWithScene from './app/index.js';
 
-export default const AppWithStore = () => (
-  <Provider store={store}>
-    <App />
-  </Provider>
-)
+export default class App extends Component{
+    render() {
+      console.log("BUG");
+      return(
+        <Provider store={store}>
+          <AppWithScene />
+        </Provider>
+      );
+    }
+}
