@@ -3,8 +3,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Image} from 'react-native';
 
-import SwipeCards from 'react-native-swipe-cards';
-
 import NavBarBelow from './Footer'
 import { Content, Container, Icon, DeckSwiper, Card, CardItem, Left, Body, Thumbnail, Text, Header, Footer, FooterTab, Button } from 'native-base';
 

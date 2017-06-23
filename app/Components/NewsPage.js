@@ -44,6 +44,7 @@ class NewsP extends Component {
 
   setCurrentReadOffset = (event) => {
     // Log the current scroll position in the list in pixels
+    console.log("Fired Set Offset");
     let yCoord = (event.nativeEvent.contentOffset.y);
     this.setState({
       offset: yCoord
@@ -54,11 +55,12 @@ class NewsP extends Component {
     const { dispatch } = this.props;
     const { listLength } = this.state;
 
-    console.log("FETCH PAGE", this.props.newsList.length / 10);
-    dispatch(
-      fetchNews(current_page_index = this.props.newsList.length / 10)
-    );
-
+    //Do not load every time!!
+    if (listLength === 0){
+      dispatch(
+        fetchNews(current_page_index = this.props.newsList.length / 10)
+      );
+    }
   }
 
   componentWillUnmount() {
@@ -80,7 +82,10 @@ class NewsP extends Component {
     return (
           <Container>
             <Header/>
-              <Content onScroll={this.setCurrentReadOffset} contentOffset={{x:0,y:this.state.offset}} removeClippedSubviews={true}>
+              <Content
+                onMomentumScrollEnd={this.setCurrentReadOffset}
+                contentOffset={{x:0,y:this.state.offset}}
+                removeClippedSubviews={true}>
               {newsList.map((news, i) => (
                 <NewsCard key={i} newsObj={news} />
               ))}

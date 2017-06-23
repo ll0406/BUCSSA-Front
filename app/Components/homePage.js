@@ -99,7 +99,7 @@ export default class homePage extends Component {
                     <Body>
                       <TouchableOpacity>
                         <Thumbnail style={{width: 80, height: 80, borderRadius: 40}}
-                        source={require('../img/games.png')} />
+                        source={require('../img/list.png')} />
                       </TouchableOpacity>
                     </Body>
                   </Col>
