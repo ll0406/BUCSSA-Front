@@ -48,7 +48,7 @@ export default class homePage extends Component {
                   <Image style={styles.newsPoster} source={image} />
               </TouchableOpacity>
               <TouchableOpacity onPress={()=> Actions.webPage({this_url:demoUri})}>
-                <Image style={styles.newsPoster} source={require('./img/demo1.jpg')}/>
+                <Image style={styles.newsPoster} source={require('./img/demo1.png')}/>
               </TouchableOpacity>
 
           </Swiper>
@@ -63,7 +63,7 @@ export default class homePage extends Component {
                   <Body>
                     <TouchableOpacity onPress={() => Actions.roommate()}>
                       <Thumbnail style={{width: 80, height: 80, borderRadius: 40}}
-                      source={require('../img/roommate.png')} />
+                      source={{uri: 'https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAAdnAAAAJDliNGJiNDc1LWVhODktNGM4Yi1iM2E4LTU2OWRiZWM2ODgxOQ.png'}} />
                     </TouchableOpacity>
                   </Body>
                 </Col>
@@ -71,7 +71,7 @@ export default class homePage extends Component {
                   <Body>
                     <TouchableOpacity onPress={() => Actions.potentialList()}>
                       <Thumbnail style={{width: 80, height: 80, borderRadius: 40}}
-                      source={require('../img/list.png')} />
+                      source={{uri: 'https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAAdnAAAAJDliNGJiNDc1LWVhODktNGM4Yi1iM2E4LTU2OWRiZWM2ODgxOQ.png'}} />
                     </TouchableOpacity>
                   </Body>
                 </Col>
@@ -79,7 +79,7 @@ export default class homePage extends Component {
                   <Body>
                     <TouchableOpacity onPress={() => Actions.webPage({this_url:'My.pdf'})}>
                       <Thumbnail style={{width: 80, height: 80, borderRadius: 40}}
-                      source={require('../img/book.png')} />
+                      source={{uri: 'https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAAdnAAAAJDliNGJiNDc1LWVhODktNGM4Yi1iM2E4LTU2OWRiZWM2ODgxOQ.png'}} />
                     </TouchableOpacity>
                   </Body>
                 </Col>
@@ -90,7 +90,7 @@ export default class homePage extends Component {
                     <Body>
                       <TouchableOpacity>
                         <Thumbnail style={{width: 80, height: 80, borderRadius: 40}}
-                        source={require('../img/pages.png')} />
+                        source={{uri: 'https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAAdnAAAAJDliNGJiNDc1LWVhODktNGM4Yi1iM2E4LTU2OWRiZWM2ODgxOQ.png'}} />
                       </TouchableOpacity>
                     </Body>
                   </Col>
@@ -99,7 +99,7 @@ export default class homePage extends Component {
                     <Body>
                       <TouchableOpacity>
                         <Thumbnail style={{width: 80, height: 80, borderRadius: 40}}
-                        source={require('../img/list.png')} />
+                        source={{uri: 'https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAAdnAAAAJDliNGJiNDc1LWVhODktNGM4Yi1iM2E4LTU2OWRiZWM2ODgxOQ.png'}} />
                       </TouchableOpacity>
                     </Body>
                   </Col>
@@ -108,7 +108,7 @@ export default class homePage extends Component {
                     <Body>
                       <TouchableOpacity>
                         <Thumbnail style={{width: 80, height: 80, borderRadius: 40}}
-                        source={require('../img/hangout.png')} />
+                        source={{uri: 'https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAAdnAAAAJDliNGJiNDc1LWVhODktNGM4Yi1iM2E4LTU2OWRiZWM2ODgxOQ.png'}} />
                       </TouchableOpacity>
                     </Body>
                   </Col>

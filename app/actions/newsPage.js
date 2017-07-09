@@ -8,7 +8,6 @@ export const setNewsOffset = (offset) => ({
 });
 
 export const receiveNews = json => {
-  console.log('json', json)
   return {
       payload: json.Variables.forum_threadlist.map(thread => {
           return {

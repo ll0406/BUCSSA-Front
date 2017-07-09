@@ -14,7 +14,6 @@ export default class MailPage extends Component {
   }
 
   componentWillMount(){
-    console.log("MAIL PAGE WILL MOUNT");
   }
 
   onSubmit(){

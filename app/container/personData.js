@@ -25,12 +25,6 @@ const defaultList = [
     },
     {
         text: 'Card One',
-        name: 'E 子',
-        image: require('./img/swiper-5.png'),
-        interests: ['Party','Photography','Piano'],
-    },
-    {
-        text: 'Card One',
         name: 'F 子',
         image: require('./img/swiper-6.png'),
         interests: ['Party','Photography','Piano'],

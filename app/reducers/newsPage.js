@@ -27,12 +27,10 @@ function newsPageReducer(state = initialState, action){
     }
     case RECEIVE_NEWS: {
       newState.isFetching = false;
-      //console.log('Lists', newState.newslists)
       newState.newsList = newState.newsList.concat(payload);
       break;
     }
   }
-  console.log(newState)
   return newState
 };
 

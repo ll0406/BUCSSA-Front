@@ -8,7 +8,6 @@ export default class NewsWebScene extends Component {
             this.state = {
               loading:true
             };
-            console.log(this.props.this_url);
   }
 
   render() {

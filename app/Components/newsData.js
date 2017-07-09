@@ -3,7 +3,7 @@ const defaultNews = [
        this_url: "http://demo.bucssa.net/forum.php?mod=viewthread&tid=1603&extra=page%3D1&mobile=2",
        title: "【慈善长跑】我们真幸运",
        time: "Apr. 12, 2017",
-       image: require('./img/demo1_.jpg'),
+       image: require('./img/demo1.png'),
        summary: "4月22日下午1:30-5:00，BUCSSA与BUCCF 将在美丽的查尔斯河畔举办5公里慈善长跑。",
     },
     {

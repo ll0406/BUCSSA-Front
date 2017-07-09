@@ -134,7 +134,6 @@ class RoommateDeck extends Component {
       if (this.index == this.list.length) {
         this.index = 0;
       }
-      console.log(this.index);
     }
 
     swipeLeft(){
@@ -142,7 +141,6 @@ class RoommateDeck extends Component {
       if (this.index == this.list.length) {
         this.index = 0;
       }
-      console.log(this.index);
     }
 
     pushSwipeLeft() {
@@ -201,7 +199,7 @@ class RoommateDeck extends Component {
                         <Col>
                           <Body>
                             <TouchableOpacity onPress={()=> {this.deckSwiper._root.swipeRight(); this.swipeRight();}}>
-                              <Thumbnail source={require('./img/heart.png')} />
+                              <Thumbnail source={{uri:'http://pre12.deviantart.net/3682/th/pre/f/2015/040/2/6/pixel_heart_by_zetype-d8hctv1.png'}} />
                             </TouchableOpacity>
                           </Body>
                         </Col>

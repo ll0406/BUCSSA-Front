@@ -82,7 +82,7 @@ function reducer(state = initialState, action){
 
 
   }
-  console.log(newState)
+  console.log("General new State ===> ", newState)
   return newState
 };
 

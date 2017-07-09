@@ -68,7 +68,6 @@ class ProfilePage extends Component {
 
 
   componentWillMount() {
-    console.log("Profile Will Mount")
   }
 
 

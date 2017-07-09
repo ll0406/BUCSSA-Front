@@ -30,7 +30,6 @@ export default class homePage extends Component {
   }
 
   componentWillMount() {
-    console.log(Dimensions.get('window'))
   }
 
   render() {

@@ -11,7 +11,6 @@ export default class MessagePage extends Component {
   }
 
   componentWillMount(){
-    console.log("Message PAGE WILL MOUNT");
   }
 
   // If you type something in the text box that is a color, the background will change to that

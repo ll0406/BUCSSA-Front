@@ -33,7 +33,6 @@ class PotentialList extends Component {
     }
     for (i = 0;i < this.pref.major.length;i++) {
       if(_.includes(person.major, this.pref.major[i])){
-        console.log("+1");
         arrayCount++;
       }
     }

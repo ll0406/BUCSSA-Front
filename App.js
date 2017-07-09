@@ -6,7 +6,6 @@ import AppWithScene from './app/index.js';
 
 export default class App extends Component{
     render() {
-      console.log("BUG");
       return(
         <Provider store={store}>
           <AppWithScene />

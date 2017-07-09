@@ -35,7 +35,6 @@ const mapStateToProps = (state) => ({
 class NewsP extends Component {
   constructor(props) {
     super(props);
-    console.log('Constructor', this.props);
     this.state = {
       offset: this.props.initialOffset,
       listLength: this.props.newsList.length, //Will change later
@@ -43,8 +42,6 @@ class NewsP extends Component {
   }
 
   setCurrentReadOffset = (event) => {
-    // Log the current scroll position in the list in pixels
-    console.log("Fired Set Offset");
     let yCoord = (event.nativeEvent.contentOffset.y);
     this.setState({
       offset: yCoord
@@ -71,7 +68,6 @@ class NewsP extends Component {
 
   fetchButtonOnClick() {
     const {dispatch} = this.props;
-    console.log("FETCH PAGE", this.props.newsList.length / 10);
     dispatch(fetchNews(current_page_index = this.props.newsList.length / 10));
   }
 
