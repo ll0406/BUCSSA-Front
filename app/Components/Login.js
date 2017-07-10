@@ -1,12 +1,20 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import { Container, Content, Form, Item, Input, Button, Text, Icon } from 'native-base';
+import { Container, Content, Form, Item, Input, Button, Text, Icon, Spinner } from 'native-base';
 import {Actions} from 'react-native-router-flux';
 import { Col, Row, Grid } from "react-native-easy-grid";
+import { connect } from 'react-redux';
 
 import * as ENDPOINTS from "../endpoints";
+import { fetchLogin } from "../actions/loginActions";
 
-export default class Login extends Component {
+const mapStateToProps = (state) => {
+  console.log(state);
+  const {loginReducer} = state;
+  return {loginReducer};
+}
+
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,32 +24,15 @@ export default class Login extends Component {
   }
 
   handleLogin = () => {
-    const {user, pass} = this.state;
-    console.log(user, pass);
-    console.log("Endpoint ==> ", `${ENDPOINTS.BASE}${ENDPOINTS.LOGIN}`);
-
-    const data = JSON.stringify({
-      useracc: user,
-      userpw: pass,
-    });
-
-    fetch(`${ENDPOINTS.BASE}${ENDPOINTS.LOGIN}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: data
-        })
-        .then(res => {
-          console.log(res);
-          res.json()})
-        .then(
-          json => {console.log(json);},
-          err => {console.error(err);}
-        )
+    const { user, pass } = this.state;
+    const { dispatch } = this.props;
+    dispatch(fetchLogin(user, pass));
   }
 
   render() {
+    console.log("PRops", this.props);
+    const {errors, isFetching} = this.props.loginReducer;
+
     return (
       <Container>
         <View style={{flex: 10}}>
@@ -68,9 +59,18 @@ export default class Login extends Component {
               </Item>
             </Form>
 
-            <Button block onPress={this.handleLogin}>
+            <Button block onPress={this.handleLogin} style={{marginBottom: 20}}>
               <Text> 登录 </Text>
             </Button>
+
+            {errors !== [] &&
+              errors.map(error => (
+                <Text> {error} </Text>
+              ))}
+
+            {
+              isFetching && <Spinner />
+            }
 
           </View>
         </View>
@@ -78,3 +78,5 @@ export default class Login extends Component {
     );
   }
 }
+
+export default connect(mapStateToProps)(Login)

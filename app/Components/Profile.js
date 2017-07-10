@@ -18,9 +18,10 @@ import {gChange, sChange, setPhoto} from '../actions/profilePage'
 //The props is passed to this level of profilePage
 const mapStateToProps = (state) => ({
   profileKeys: state.reducer.profileKeys,
-  name: state.reducer.name,
+  defaultName: state.reducer.name,
   birthday: state.reducer.bd,
-  photoUri: state.reducer.photoUri
+  photoUri: state.reducer.photoUri,
+  user: state.loginReducer.userData,
 })
 
 class ProfilePage extends Component {
@@ -115,7 +116,7 @@ class ProfilePage extends Component {
                 <Text>用户名</Text>
               </Body>
               <Right>
-                  <Text>{this.props.name}</Text>
+                  <Text>{this.props.user.realname}</Text>
                   <Button transparent
                     >
                     <Icon name="arrow-forward" style={{ color: '#0A69FE' }} />

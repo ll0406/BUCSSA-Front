@@ -17,3 +17,9 @@ export const SET_PHOTO = "SET_PHOTO"; //Pick the photo
 
 //Roomate Adding to List
 export const ADD_TO_POTENTIAL = "ADD_TO_POTENTIAL"; //When card is swiped to the left
+
+//Lgoin
+export const RECEIVE_LOGIN = "RECEIVE_LOGIN";
+export const LOGIN_ERROR = "LOGIN_ERROR";
+export const FETCH_LOGIN = "FETCH_LOGIN";
+export const SERVER_ERROR = "SERVER_ERROR";
