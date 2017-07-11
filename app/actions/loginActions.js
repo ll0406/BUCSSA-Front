@@ -54,3 +54,32 @@ export const fetchLogin = (user, pass) => dispatch => {
         }
     );
 };
+
+export const userAuth = (uid, token) => dispatch => {
+
+  dispatch(requestLogin());
+
+  fetch(`${ENDPOINTS.BASE}${ENDPOINTS.USER_AUTH}?uid=${uid}&token=${token}`)
+    .then(res => res.text())
+    .then(
+      text => {
+        const json = JSON.parse(text);
+        if (json.success){
+          dispatch(receiveLogin(json.datas))
+          Actions.newsPage();
+        } else {
+          dispatch({
+            type: LOGIN_ERROR,
+            error: json.error,
+          })
+        }
+      },
+      err => {
+        dispatch({
+          type: SERVER_ERROR,
+        })
+        console.error(err);
+      }
+    )
+
+}

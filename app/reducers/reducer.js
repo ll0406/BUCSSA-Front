@@ -1,12 +1,12 @@
 import {GCHANGE, SCHANGE, SET_NAME, SET_BIRTHDAY, SET_NEWSOFFSET, SET_PHOTO, ADD_TO_POTENTIAL} from '../constants';
+import { REHYDRATE } from 'redux-persist/constants';
 import _ from 'lodash';
 
 const initialState = {
-  profileKeys: ['key0', 'key3'], //First gender, second status
-  name: 'Sibo',
+  profileKeys: ['key3', 'key3'], //First gender, second status
+  name: '咸鱼',
   bd: new Date(),
-  //newsOffset: 0,
-  photoUri: null,
+  photoUri: undefined,
   personList: [],
   potentialList: [],
   selfData:
@@ -78,11 +78,12 @@ function reducer(state = initialState, action){
       break;
     }
 
-    // Roommate preference Selection.
-
+    case REHYDRATE: {
+      const savedData = action.payload.reducer || initialState;
+      newState = {...savedData};
+    }
 
   }
-  console.log("General new State ===> ", newState)
   return newState
 };
 

@@ -7,21 +7,25 @@ import {
 import {Actions} from 'react-native-router-flux';
 import {Content, Container, Header, Button, Text} from 'native-base';
 import {connect} from 'react-redux'
+import moment from 'moment';
+
 import {setBD} from '../actions/profilePage'
 
 const mapStateToProps = (state) => ({
-  birthday: state.reducer.bd
+  birthday: state.reducer.bd,
+  user: state.loginReducer.userData
 })
 
 class DatePick extends Component {
 
-  static defaultProps = {
-    date: new Date(),
-  };
+  constructor(props) {
+      super(props);
+      const { user, birthday } = this.props;
+      this.state = {
+        date:  user ? moment(user.dateOfBirth)._d : birthday,
+      };
+  }
 
-  state = {
-    date: this.props.birthday,
-  };
 
   onDateChange = (date) => {
     this.setState({date: date});
@@ -34,6 +38,8 @@ class DatePick extends Component {
   }
 
   render() {
+
+
     return(
     <Container>
       <Header/>

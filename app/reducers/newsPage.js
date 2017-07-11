@@ -4,6 +4,7 @@ import {
   SET_NEWSOFFSET,
   REQUEST_NEWS,
 } from '../constants';
+import { REHYDRATE } from 'redux-persist/constants';
 
 const initialState = {
     isFetching: false,
@@ -29,6 +30,10 @@ function newsPageReducer(state = initialState, action){
       newState.isFetching = false;
       newState.newsList = newState.newsList.concat(payload);
       break;
+    }
+    case REHYDRATE: {
+      const savedData = action.payload.newsPage || initialState;
+      newState = {...savedData};
     }
   }
   return newState

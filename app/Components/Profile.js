@@ -10,16 +10,19 @@ import {
 import {Button, Switch,Form, Input,Header,Right,Icon, ListItem,Picker, Left,Thumbnail,Container, Card,CardItem,Body,Text,Content, Center, Item} from 'native-base';
 import {Col, Row, Grid} from 'react-native-easy-grid';
 import {Actions} from 'react-native-router-flux';
-import NavBarBelow from './Footer'
 import {connect} from 'react-redux'
+import moment from 'moment';
+
+import NavBarBelow from './Footer'
 import {gChange, sChange, setPhoto} from '../actions/profilePage'
+
 
 
 //The props is passed to this level of profilePage
 const mapStateToProps = (state) => ({
   profileKeys: state.reducer.profileKeys,
   defaultName: state.reducer.name,
-  birthday: state.reducer.bd,
+  defaultBirthday: state.reducer.bd,
   photoUri: state.reducer.photoUri,
   user: state.loginReducer.userData,
 })
@@ -28,6 +31,7 @@ class ProfilePage extends Component {
   //Probably not necessary
   constructor(props) {
       super(props);
+
   }
 
 
@@ -38,7 +42,6 @@ class ProfilePage extends Component {
       "August", "September", "October",
       "November", "December"
     ];
-
     var day = date.getDate();
     var monthIndex = date.getMonth();
     var year = date.getFullYear();
@@ -74,12 +77,13 @@ class ProfilePage extends Component {
 
 
   render() {
-    const {profileKeys, name, birthday, photoUri} = this.props
-    let actualUri = 'http://s3.amazonaws.com/37assets/svn/765-default-avatar.png'
+    const {profileKeys, defaultBirthday, defaultName, photoUri, user} = this.props
+    const displayName = user ? user.realname : defaultName;
+    const displayBD = user ? moment(user.dateOfBirth)._d : defaultBirthday;
+    const genderIndex = user ? `key${user.gender}` : profileKeys[0];
 
-    if(photoUri != null) {
-        actualUri = photoUri
-    }
+    const defaultPhoto = 'https://image.ibb.co/m8tG7v/123.jpg'
+    const picUri = user ? user.avatar['0'] : defaultPhoto
 
     return (
       <Container>
@@ -98,7 +102,7 @@ class ProfilePage extends Component {
               <Right>
                 <TouchableOpacity onPress={()=>this.pickImage()}>
                   <Thumbnail style={{width: 100, height: 100, borderRadius: 50}}
-                  source={{uri: actualUri }}
+                  source={{uri: picUri }}
                   />
                 </TouchableOpacity>
 
@@ -116,7 +120,7 @@ class ProfilePage extends Component {
                 <Text>用户名</Text>
               </Body>
               <Right>
-                  <Text>{this.props.user.realname}</Text>
+                  <Text>{displayName}</Text>
                   <Button transparent
                     >
                     <Icon name="arrow-forward" style={{ color: '#0A69FE' }} />
@@ -135,10 +139,10 @@ class ProfilePage extends Component {
                 <Picker
                   iosHeader="性别"
                   mode="dropdown"
-                  selectedValue={profileKeys[0]}
+                  selectedValue={genderIndex}
                   onValueChange={this.onGenderChange.bind(this)}>
-                  <Item label="男性" value="key0" />
-                  <Item label="女性" value="key1" />
+                  <Item label="男性" value="key1" />
+                  <Item label="女性" value="key2" />
                   <Item label="未知" value="key3" />
                 </Picker>
                 <Button transparent
@@ -157,7 +161,7 @@ class ProfilePage extends Component {
                  <Text>生日</Text>
                </Body>
                <Right>
-                 <Text>{this.formatDate(birthday)}</Text>
+                 <Text>{this.formatDate(displayBD)}</Text>
                  <Button transparent
                   onPress={() => Actions.datePick()}
                    >
