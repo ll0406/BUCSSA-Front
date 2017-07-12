@@ -1,4 +1,4 @@
-import {FETCH_LOGIN, RECEIVE_LOGIN, LOGIN_ERROR, SERVER_ERROR} from '../constants';
+import {FETCH_LOGIN, RECEIVE_LOGIN, LOGIN_ERROR, SERVER_ERROR, INVALIDATE_USER} from '../constants';
 import * as ENDPOINTS from "../endpoints";
 import { Actions } from 'react-native-router-flux';
 
@@ -68,6 +68,7 @@ export const userAuth = (uid, token) => dispatch => {
           dispatch(receiveLogin(json.datas))
           Actions.newsPage();
         } else {
+          dispatch(invalidateUser);
           dispatch({
             type: LOGIN_ERROR,
             error: json.error,
@@ -75,11 +76,17 @@ export const userAuth = (uid, token) => dispatch => {
         }
       },
       err => {
+        dispatch(invalidateUser);
         dispatch({
           type: SERVER_ERROR,
         })
         console.error(err);
       }
     )
+}
 
+export const invalidateUser = () => {
+  return {
+    type: INVALIDATE_USER,
+  }
 }

@@ -19,17 +19,19 @@ class Login extends Component {
     this.state = {
       user:"",
       pass:"",
+      cookieLogin: false,
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("WIll Receive Props => ", nextProps);
     const { userData, isFetching, errors } = nextProps.loginReducer;
     const { dispatch } = nextProps;
     //If user defined, then try log in with token
     if (userData && !isFetching && errors.length === 0) {
-      dispatch(userAuth(userData.uid, userData.token))
+      dispatch(userAuth(userData.uid, userData.token));
+      this.setState({cookieLogin: true});
     }
+
   }
 
   componentDidMount() {
@@ -50,7 +52,7 @@ class Login extends Component {
 
   render() {
     const {errors, isFetching} = this.props.loginReducer;
-
+    const {cookieLogin} = this.state;
     return (
       <Container>
         <View style={{flex: 10}}>
@@ -88,12 +90,16 @@ class Login extends Component {
           <View style={{flex: 2, flexDirection: 'column', alignItems: 'center'}}>
 
             {errors !== [] &&
-              errors.map(error => (
-                <Text> {error} </Text>
+              errors.map((error, i) => (
+                <Text key={i}> {error} </Text>
               ))}
 
             {
               isFetching && <Spinner color='black' />
+            }
+            {
+              (isFetching && cookieLogin) &&
+              <Text> Token Login </Text>
             }
           </View>
         </View>
