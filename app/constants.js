@@ -24,3 +24,4 @@ export const LOGIN_ERROR = "LOGIN_ERROR";
 export const FETCH_LOGIN = "FETCH_LOGIN";
 export const SERVER_ERROR = "SERVER_ERROR";
 export const INVALIDATE_USER = "INVALIDATE_USER";
+export const CLEAR_LOGIN_ERROR = "CLEAR_LOGIN_ERROR";

@@ -7,14 +7,17 @@ import {
   ImagePickerIOS,
 } from 'react-native';
 
-import {Button, Switch,Form, Input,Header,Right,Icon, ListItem,Picker, Left,Thumbnail,Container, Card,CardItem,Body,Text,Content, Center, Item} from 'native-base';
+import {Button, Switch,Form, Input,Header,Right,Icon,
+        ListItem,Picker, Left,Thumbnail,Container, Card,CardItem,
+        Body,Text,Content, Center, Item, Radio} from 'native-base';
 import {Col, Row, Grid} from 'react-native-easy-grid';
 import {Actions} from 'react-native-router-flux';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
 import moment from 'moment';
 
-import NavBarBelow from './Footer'
-import {gChange, sChange, setPhoto} from '../actions/profilePage'
+import NavBarBelow from './Footer';
+import {gChange, sChange, setPhoto, setBD} from '../actions/profilePage';
+import {INVALIDATE_USER} from '../constants';
 
 
 
@@ -25,6 +28,7 @@ const mapStateToProps = (state) => ({
   defaultBirthday: state.reducer.bd,
   photoUri: state.reducer.photoUri,
   user: state.loginReducer.userData,
+  changeDetected: state.loginReducer.changeDetected,
 })
 
 class ProfilePage extends Component {
@@ -55,7 +59,7 @@ class ProfilePage extends Component {
     this.forceUpdate();
   }
   onStatusChange (value: string) {
-    const {dispatch} = this.props
+    const {dispatch} = this.props;
     dispatch(sChange(value))
     this.forceUpdate();
   }
@@ -69,18 +73,27 @@ class ProfilePage extends Component {
     }, error => {});
   }
 
+  handleLogout = () => {
+    const {dispatch} = this.props;
+    dispatch({
+      type: INVALIDATE_USER,
+    });
+    Actions.login();
 
+  }
 
-  componentWillMount() {
+  componentWillReceiveProps(nextProps) {
+    console.log("NEXT PROPS at PROFILE", nextProps)
   }
 
 
 
   render() {
-    const {profileKeys, defaultBirthday, defaultName, photoUri, user} = this.props
+    console.log("RENDER PROFILE")
+    const {profileKeys, defaultBirthday, defaultName, photoUri, user, changeDetected} = this.props
     const displayName = user ? user.realname : defaultName;
-    const displayBD = user ? moment(user.dateOfBirth)._d : defaultBirthday;
-    const genderIndex = user ? `key${user.gender}` : profileKeys[0];
+    const displayBD = user ? moment(user.dateOfBirth)._d : moment(defaultBirthday)._d;
+    const genderIndex = user ? `${user.gender}` : profileKeys[0];
 
     const defaultPhoto = 'https://image.ibb.co/m8tG7v/123.jpg'
     const picUri = user ? user.avatar['0'] : defaultPhoto
@@ -112,6 +125,7 @@ class ProfilePage extends Component {
 
             </CardItem>
            </Card>
+
            <ListItem icon>
               <Left>
                 <Icon name="person"/>
@@ -128,104 +142,155 @@ class ProfilePage extends Component {
               </Right>
             </ListItem>
 
-            <ListItem icon>
-               <Left>
-                <Icon name="male"/>
-               </Left>
-               <Body>
-                 <Text>性别</Text>
-               </Body>
-               <Right>
-                <Picker
-                  iosHeader="性别"
-                  mode="dropdown"
-                  selectedValue={genderIndex}
-                  onValueChange={this.onGenderChange.bind(this)}>
-                  <Item label="男性" value="key1" />
-                  <Item label="女性" value="key2" />
-                  <Item label="未知" value="key3" />
-                </Picker>
-                <Button transparent
-                  >
-                  <Icon name="arrow-forward" style={{ color: '#0A69FE' }} />
-                </Button>
-               </Right>
-            </ListItem>
+          { user &&
+              <ListItem icon>
+              <Left>
+              <Icon name="male"/>
+              </Left>
+              <Body>
+              <Text>性别</Text>
+              </Body>
+              <Right>
+              <Picker
+              iosHeader="性别"
+              mode="dropdown"
+              selectedValue={genderIndex}
+              onValueChange={this.onGenderChange.bind(this)}>
+              <Item label="男性" value="1" />
+              <Item label="女性" value="2" />
+              <Item label="未知" value="3" />
+              </Picker>
+              <Button transparent
+              >
+              <Icon name="arrow-forward" style={{ color: '#0A69FE' }} />
+              </Button>
+              </Right>
+              </ListItem>
+            }
 
+            { user &&
+              <ListItem icon>
+              <Left>
+              <Icon name="calendar"/>
+              </Left>
+              <Body>
+              <Text>生日</Text>
+              </Body>
+              <Right>
+              <Text>{this.formatDate(displayBD)}</Text>
+              <Button transparent
+              onPress={() => Actions.datePick({bd: displayBD,
+                                            dispatch: this.props.dispatch,
+                                            submitAction: setBD})}
+              >
+              <Icon name="arrow-forward" style={{ color: '#0A69FE' }} />
+              </Button>
+              </Right>
+              </ListItem>
+            }
 
-            <ListItem icon>
-               <Left>
-                 <Icon name="calendar"/>
-               </Left>
-               <Body>
-                 <Text>生日</Text>
-               </Body>
-               <Right>
-                 <Text>{this.formatDate(displayBD)}</Text>
-                 <Button transparent
-                  onPress={() => Actions.datePick()}
-                   >
-                   <Icon name="arrow-forward" style={{ color: '#0A69FE' }} />
-                 </Button>
-               </Right>
-             </ListItem>
+            {
+              user &&
+              <ListItem icon>
+              <Left>
+              <Icon name="heart"/>
+              </Left>
+              <Body>
+              <Text>感情状况</Text>
+              </Body>
+              <Right>
+              <Picker
+              iosHeader="感情状况"
+              mode="dropdown"
+              selectedValue={profileKeys[1]}
+              onValueChange={this.onStatusChange.bind(this)}>
+              <Item label="未知" value="key3" />
+              <Item label="单身" value="key0" />
+              <Item label="交往中" value="key1" />
+              <Item label="已订婚" value="key2" />
+              <Item label="已婚" value="key4" />
+              <Item label="分居" value="key5" />
+              <Item label="离婚" value="key6" />
+              <Item label="鳏寡" value="key7" />
+              </Picker>
+              <Button transparent
+              >
+              <Icon name="arrow-forward" style={{ color: '#0A69FE' }} />
+              </Button>
+              </Right>
+              </ListItem>
+            }
 
-             <ListItem icon>
+            {
+              user &&
+              <ListItem icon>
+              <Left>
+              <Icon name="bulb"/>
+              </Left>
+              <Body>
+              <Text>个人简介</Text>
+              </Body>
+              <Right>
+              <Text>Nice Guy</Text>
+              <Button transparent
+              >
+              <Icon name="arrow-forward" style={{ color: '#0A69FE' }} />
+              </Button>
+              </Right>
+              </ListItem>
+            }
+
+              <ListItem itemDivider>
+                <Text></Text>
+              </ListItem>
+
+            {
+                (user && changeDetected) &&
+                <ListItem icon>
                 <Left>
-                 <Icon name="heart"/>
+                <Icon name="cloud-upload" style={{ color: 'blue' }}/>
                 </Left>
                 <Body>
-                  <Text>感情状况</Text>
+                <Text style={{color: 'blue'}}> 保存信息 </Text>
                 </Body>
                 <Right>
-                 <Picker
-                   iosHeader="感情状况"
-                   mode="dropdown"
-                   selectedValue={profileKeys[1]}
-                   onValueChange={this.onStatusChange.bind(this)}>
-                   <Item label="未知" value="key3" />
-                   <Item label="单身" value="key0" />
-                   <Item label="交往中" value="key1" />
-                   <Item label="已订婚" value="key2" />
-                   <Item label="已婚" value="key4" />
-                   <Item label="分居" value="key5" />
-                   <Item label="离婚" value="key6" />
-                   <Item label="鳏寡" value="key7" />
-                 </Picker>
-                 <Button transparent
-                   >
-                   <Icon name="arrow-forward" style={{ color: '#0A69FE' }} />
-                 </Button>
+                <Button transparent onPress={this.handleLogout}>
+                <Icon name="arrow-forward" style={{ color: 'blue' }} />
+                </Button>
                 </Right>
-             </ListItem>
+                </ListItem>
+            }
+            {
+              user ?
+                <ListItem icon>
+                <Left>
+                <Icon name="log-out" style={{ color: 'crimson' }}/>
+                </Left>
+                <Body>
+                <Text style={{color: 'crimson'}}> 登出 </Text>
+                </Body>
+                <Right>
+                <Button transparent onPress={this.handleLogout}>
+                <Icon name="arrow-forward" style={{ color: 'crimson' }} />
+                </Button>
+                </Right>
+                </ListItem>
+              :
+                <ListItem icon>
+                <Left>
+                <Icon name="log-in" style={{ color: 'blue' }}/>
+                </Left>
+                <Body>
+                <Text style={{color: 'blue'}}> 登录 </Text>
+                </Body>
+                <Right>
+                <Button transparent onPress={Actions.login}>
+                <Icon name="arrow-forward" style={{ color: 'blue' }} />
+                </Button>
+                </Right>
+                </ListItem>
 
-            <ListItem icon>
-               <Left>
-                 <Icon name="bulb"/>
-               </Left>
-               <Body>
-                 <Text>个人简介</Text>
-               </Body>
-               <Right>
-                 <Text>Nice Guy</Text>
-                 <Button transparent
-                   >
-                   <Icon name="arrow-forward" style={{ color: '#0A69FE' }} />
-                 </Button>
-               </Right>
-             </ListItem>
-
-             <ListItem icon>
-               <Left>
-                 <Icon name="pulse"/>
-               </Left>
-               <Body>
-                 <Text>公开信息</Text>
-               </Body>
-               <Right>
-                <Switch value={true} />
-              </Right>
-             </ListItem>
+            }
           </Content>
         <NavBarBelow/>
       </Container>

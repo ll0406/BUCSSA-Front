@@ -1,4 +1,4 @@
-import {FETCH_LOGIN, RECEIVE_LOGIN, LOGIN_ERROR, SERVER_ERROR, INVALIDATE_USER} from '../constants';
+import {FETCH_LOGIN, RECEIVE_LOGIN, LOGIN_ERROR, SERVER_ERROR, INVALIDATE_USER, CLEAR_LOGIN_ERROR} from '../constants';
 import * as ENDPOINTS from "../endpoints";
 import { Actions } from 'react-native-router-flux';
 
@@ -7,6 +7,10 @@ export const requestLogin = () => {
     type: FETCH_LOGIN,
   }
 }
+
+export const clearLoginError = () => ({
+    type: CLEAR_LOGIN_ERROR,
+});
 
 export const receiveLogin = (datas) => {
   return {
@@ -56,16 +60,15 @@ export const fetchLogin = (user, pass) => dispatch => {
 };
 
 export const userAuth = (uid, token) => dispatch => {
-
   dispatch(requestLogin());
-
   fetch(`${ENDPOINTS.BASE}${ENDPOINTS.USER_AUTH}?uid=${uid}&token=${token}`)
     .then(res => res.text())
     .then(
       text => {
         const json = JSON.parse(text);
         if (json.success){
-          dispatch(receiveLogin(json.datas))
+          dispatch(receiveLogin(json.datas));
+          dispatch(clearLoginError());
           Actions.newsPage();
         } else {
           dispatch(invalidateUser);

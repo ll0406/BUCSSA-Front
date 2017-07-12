@@ -6,7 +6,7 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 import { connect } from 'react-redux';
 
 import * as ENDPOINTS from "../endpoints";
-import { fetchLogin, userAuth } from "../actions/loginActions";
+import { fetchLogin, userAuth, clearLoginError } from "../actions/loginActions";
 
 const mapStateToProps = (state) => {
   const {loginReducer} = state;
@@ -20,6 +20,7 @@ class Login extends Component {
       user:"",
       pass:"",
       cookieLogin: false,
+      missingField: false,
     }
   }
 
@@ -41,10 +42,24 @@ class Login extends Component {
   handleLogin = () => {
     const { user, pass } = this.state;
     const { dispatch } = this.props;
-    dispatch(fetchLogin(user, pass));
+
+    if (user === "" || pass === "") {
+      this.setState({
+        missingField: true,
+      })
+      return;
+    }
+    else {
+      this.setState({
+        missingField: false,
+      })
+      dispatch(fetchLogin(user, pass));
+    }
   }
 
   handleGuestLogin = () => {
+    const { dispatch } = this.props;
+    dispatch(clearLoginError());
     Actions.newsPage();
   }
 
@@ -52,7 +67,8 @@ class Login extends Component {
 
   render() {
     const {errors, isFetching} = this.props.loginReducer;
-    const {cookieLogin} = this.state;
+    const {cookieLogin, missingField} = this.state;
+
     return (
       <Container>
         <View style={{flex: 10}}>
@@ -89,10 +105,14 @@ class Login extends Component {
           </View>
           <View style={{flex: 2, flexDirection: 'column', alignItems: 'center'}}>
 
-            {errors !== [] &&
+            {
+              missingField && <Text style={{color: 'crimson'}}> 请填写完整登录信息 </Text>
+            }
+
+            { (errors !== undefined && errors.length !== 0 && !missingField) &&
               errors.map((error, i) => (
-                <Text key={i}> {error} </Text>
-              ))}
+                <Text key={i} style={{color: 'crimson'}}> {error} </Text>
+            ))}
 
             {
               isFetching && <Spinner color='black' />

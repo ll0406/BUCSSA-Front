@@ -24,3 +24,7 @@ export const setPhoto = (uri) => ({
   type: SET_PHOTO,
   payload: uri
 });
+
+export const submitChange = (user) => ({
+
+})

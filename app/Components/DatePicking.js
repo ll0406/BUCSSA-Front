@@ -6,24 +6,17 @@ import {
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {Content, Container, Header, Button, Text} from 'native-base';
-import {connect} from 'react-redux'
 import moment from 'moment';
 
-import {setBD} from '../actions/profilePage'
-
-const mapStateToProps = (state) => ({
-  birthday: state.reducer.bd,
-  user: state.loginReducer.userData
-})
-
 class DatePick extends Component {
-
   constructor(props) {
       super(props);
-      const { user, birthday } = this.props;
+      const { bd } = this.props;
       this.state = {
-        date:  user ? moment(user.dateOfBirth)._d : birthday,
+        date: bd,
       };
+
+      debugger;
   }
 
 
@@ -32,9 +25,9 @@ class DatePick extends Component {
   };
 
   onSubmit = () => {
-    const {dispatch} = this.props;
-    dispatch(setBD(this.state.date));
-    Actions.pop();
+    const { dispatch, submitAction } = this.props;
+    dispatch(submitAction(this.state.date));
+    Actions.pop({refresh:{}}); //triigers rerender
   }
 
   render() {
@@ -49,7 +42,7 @@ class DatePick extends Component {
           mode="date"
           onDateChange={this.onDateChange}
         />
-        <Button full onPress={() => this.onSubmit()}>
+        <Button full onPress={this.onSubmit}>
           <Text>保存</Text>
         </Button>
       </Content>
@@ -59,4 +52,4 @@ class DatePick extends Component {
 
 }
 
-export default connect(mapStateToProps)(DatePick)
+export default DatePick;

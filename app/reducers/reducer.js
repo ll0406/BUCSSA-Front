@@ -1,9 +1,9 @@
-import {GCHANGE, SCHANGE, SET_NAME, SET_BIRTHDAY, SET_NEWSOFFSET, SET_PHOTO, ADD_TO_POTENTIAL} from '../constants';
+import { SCHANGE, SET_NAME, SET_BIRTHDAY, SET_NEWSOFFSET, SET_PHOTO, ADD_TO_POTENTIAL} from '../constants';
 import { REHYDRATE } from 'redux-persist/constants';
 import _ from 'lodash';
 
 const initialState = {
-  profileKeys: ['key3', 'key3'], //First gender, second status
+  profileKeys: ['3', 'key3'], //First gender, second status
   name: '咸鱼',
   bd: new Date(),
   photoUri: undefined,
@@ -49,20 +49,12 @@ function reducer(state = initialState, action){
   const {type, payload} = action
 
   switch (type) {
-    case GCHANGE: {
-      newState.profileKeys[0] = payload
-      break;
-    }
     case SCHANGE: {
       newState.profileKeys[1] = payload
       break;
     }
     case SET_NAME: {
       newState.name = payload
-      break;
-    }
-    case SET_BIRTHDAY: {
-      newState.bd = payload
       break;
     }
     case SET_PHOTO: {
