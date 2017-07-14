@@ -29,7 +29,7 @@ const scenes = Actions.create(
       component={NewsP}
       title={"BUCSSA活动推送"}
       type='replace'
-      hideNavBar={false}
+      hideNavBar={true}
       />
     <Scene
       key="profilePage"

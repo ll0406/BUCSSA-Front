@@ -5,11 +5,16 @@ import {
   Alert,
   TouchableOpacity,
   ImagePickerIOS,
+  DatePickerIOS,
+  StyleSheet,
+  Text
 } from 'react-native';
+import DateTimePicker from 'react-native-modal-datetime-picker';
+import Modal from 'react-native-modalbox';
 
 import {Button, Switch,Form, Input,Header,Right,Icon,
         ListItem,Picker, Left,Thumbnail,Container, Card,CardItem,
-        Body,Text,Content, Center, Item, Radio} from 'native-base';
+        Body,Content, Center, Item, Radio} from 'native-base';
 import {Col, Row, Grid} from 'react-native-easy-grid';
 import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
@@ -35,20 +40,38 @@ class ProfilePage extends Component {
   //Probably not necessary
   constructor(props) {
       super(props);
+      const {defaultBirthday, user} = this.props
 
+      let displayBD = defaultBirthday;
+      if (user !== undefined) {
+        displayBD = this.parseDate(user.dateOfBirth);
+        displayBD.setMinutes( displayBD.getMinutes() + displayBD.getTimezoneOffset());
+      }
+      this.state = {
+        isDateTimePickerVisible: false,
+        birthday: displayBD,
+        pickerDate: displayBD,
+        dateModified: false,
+      }
+  }
+
+  parseDate(input) {
+    let parts = input.split('-');
+    // new Date(year, month [, day [, hours[, minutes[, seconds[, ms]]]]])
+    return new Date(parts[0], parts[1]-1, parts[2]);
   }
 
 
   formatDate(date){
-    var monthNames = [
+    let monthNames = [
       "January", "February", "March",
       "April", "May", "June", "July",
       "August", "September", "October",
       "November", "December"
     ];
-    var day = date.getDate();
-    var monthIndex = date.getMonth();
-    var year = date.getFullYear();
+    const day = date.getDate();
+    const monthIndex = date.getMonth();
+    const year = date.getFullYear();
 
     return day + ' ' + monthNames[monthIndex] + ' ' + year;
   }
@@ -82,9 +105,39 @@ class ProfilePage extends Component {
 
   }
 
+  showBdPicker = () => {
+    this.refs.bdPicker.open();
+  }
+
+  handleDatePicked = () => {
+    const {dispatch} = this.props;
+    this.setState({
+      birthday: this.state.pickerDate,
+      dateModified: true,
+    });
+    dispatch(setBD(this.state.pickerDate));
+    this.refs.bdPicker.close();
+  }
+
+  handlePickerClose = () => {
+    if (!this.state.dateModified) {
+      this.setState({
+        pickerDate: this.state.birthday,
+      })
+    } else {
+      this.setState({
+        dateModified: false
+      })
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     console.log("NEXT PROPS at PROFILE", nextProps)
   }
+
+  onDateChange = (date) => {
+    this.setState({pickerDate: date});
+  };
 
 
 
@@ -92,7 +145,6 @@ class ProfilePage extends Component {
     console.log("RENDER PROFILE")
     const {profileKeys, defaultBirthday, defaultName, photoUri, user, changeDetected} = this.props
     const displayName = user ? user.realname : defaultName;
-    const displayBD = user ? moment(user.dateOfBirth)._d : moment(defaultBirthday)._d;
     const genderIndex = user ? `${user.gender}` : profileKeys[0];
 
     const defaultPhoto = 'https://image.ibb.co/m8tG7v/123.jpg'
@@ -177,11 +229,9 @@ class ProfilePage extends Component {
               <Text>生日</Text>
               </Body>
               <Right>
-              <Text>{this.formatDate(displayBD)}</Text>
+              <Text>{this.formatDate(this.state.birthday)}</Text>
               <Button transparent
-              onPress={() => Actions.datePick({bd: displayBD,
-                                            dispatch: this.props.dispatch,
-                                            submitAction: setBD})}
+              onPress={this.showBdPicker}
               >
               <Icon name="arrow-forward" style={{ color: '#0A69FE' }} />
               </Button>
@@ -232,8 +282,7 @@ class ProfilePage extends Component {
               </Body>
               <Right>
               <Text>Nice Guy</Text>
-              <Button transparent
-              >
+              <Button transparent>
               <Icon name="arrow-forward" style={{ color: '#0A69FE' }} />
               </Button>
               </Right>
@@ -292,10 +341,59 @@ class ProfilePage extends Component {
 
             }
           </Content>
+        <Modal
+          style={styles.bdPickerModal}
+          position={"bottom"}
+          ref={"bdPicker"}
+          onClosed={this.handlePickerClose}
+          >
+          <View style={styles.modalTopContainer}>
+            <Text style={styles.modalTopText}> 选择你的生日 </Text>
+          </View>
+          <DatePickerIOS
+          date={this.state.pickerDate}
+          mode="date"
+          onDateChange={this.onDateChange}
+          />
+          <View>
+            <Button block primary onPress={this.handleDatePicked}>
+              <Text style={styles.buttonText}>
+                确认
+              </Text>
+             </Button>
+          </View>
+        </Modal>
         <NavBarBelow/>
       </Container>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  modalTopContainer: {
+    alignItems: 'center',
+  },
+
+  modalTopText: {
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+
+  buttonText: {
+    fontSize: 20,
+    color: 'white',
+  },
+  wrapper: {
+    paddingTop: 50,
+    flex: 1
+  },
+  bdPickerModal: {
+    justifyContent: 'flex-start',
+    height: 300
+  }
+});
+
+
+
 
 export default connect(mapStateToProps)(ProfilePage)

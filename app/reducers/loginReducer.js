@@ -53,6 +53,7 @@ function loginReducer(state = initialState, action){
     }
     case SET_BIRTHDAY: {
       newState.userData.dateOfBirth = payload;
+      newState.changeDetected = true;
       break;
     }
 

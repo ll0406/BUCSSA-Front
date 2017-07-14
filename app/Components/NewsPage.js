@@ -11,9 +11,17 @@ import {
   Alert,
   StyleSheet,
   Dimensions,
-  ScrollView
+  ScrollView,
 } from 'react-native';
-import {Content, Container, Header, Title, Footer, FooterTab, Button, Left, Right, Body, Icon, Text, Thumbnail, CardItem, Card, Spinner} from 'native-base';
+import {Content, Container, Header, Title, Footer,
+  FooterTab, Button, Left, Right, Body, Icon, Text,
+  Thumbnail, CardItem, Card, Spinner} from 'native-base';
+
+import Drawer from 'react-native-drawer'
+
+import {Col, Row, Grid} from 'react-native-easy-grid';
+
+
 
 import {Actions} from 'react-native-router-flux'
 
@@ -24,6 +32,7 @@ import NewsWebScene from './NewsWebScene'
 import {connect} from 'react-redux';
 import {setNewsOffset, fetchNews, receiveNews} from '../actions/newsPage'
 import defaultNews from './newsData'
+import SideMenu from './SideMenu'
 
 //The props is passed to this level of newsPage
 const mapStateToProps = (state) => ({
@@ -71,29 +80,46 @@ class NewsP extends Component {
     dispatch(fetchNews(current_page_index = this.props.newsList.length / 10));
   }
 
+  closeControlPanel = () => {
+    this._drawer.close()
+  };
+  openControlPanel = () => {
+    this._drawer.open()
+  };
 
   render() {
     const {initialOffset, isFetching, newsList} = this.props
 
     return (
           <Container>
-            <Header/>
+            <Drawer
+              ref={(ref) => this._drawer = ref}
+              content={<SideMenu />}
+              openDrawerOffset={3.5/5}
+              tapToClose={true}
+              panOpenMask={0.05}
+              panCloseMask={0.2}
+            >
               <Content
                 onMomentumScrollEnd={this.setCurrentReadOffset}
                 contentOffset={{x:0,y:this.state.offset}}
-                removeClippedSubviews={true}>
-              {newsList.map((news, i) => (
-                <NewsCard key={i} newsObj={news} />
-              ))}
-              {isFetching?
-                <Spinner/>
-                :
-                <Button block onPress={()=>this.fetchButtonOnClick()}>
-                  <Text>Fetch More News </Text>
-                </Button>
-              }
-              </Content>
-              <NavBarBelow/>
+                removeClippedSubviews={true}
+                >
+
+                {newsList.map((news, i) => (
+                  <NewsCard key={i} newsObj={news} />
+                ))}
+                {isFetching?
+                  <Spinner/>
+                  :
+                  <Button block onPress={()=>this.fetchButtonOnClick()}>
+                    <Text>Fetch More News </Text>
+                  </Button>
+                }
+
+                  </Content>
+              </Drawer>
+            <NavBarBelow />
           </Container>
       );
   }

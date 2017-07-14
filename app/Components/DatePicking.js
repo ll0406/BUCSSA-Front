@@ -11,12 +11,22 @@ import moment from 'moment';
 class DatePick extends Component {
   constructor(props) {
       super(props);
-      const { bd } = this.props;
       this.state = {
-        date: bd,
+        date: new Date(),
       };
+  }
 
-      debugger;
+  parseDate(input) {
+    let parts = input.split('-');
+    // new Date(year, month [, day [, hours[, minutes[, seconds[, ms]]]]])
+    return new Date(eval(parts[0]), eval(parts[1]-1), eval(parts[2]));
+  }
+
+  componentDidMount () {
+    const { bd } = this.props;
+    this.setState({
+      date: this.parseDate(bd),
+    })
   }
 
 
@@ -37,6 +47,7 @@ class DatePick extends Component {
     <Container>
       <Header/>
       <Content>
+        <Text> {this.props.bd} </Text>
         <DatePickerIOS
           date={this.state.date}
           mode="date"
