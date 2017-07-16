@@ -1,4 +1,5 @@
-import {FETCH_LOGIN, RECEIVE_LOGIN, LOGIN_ERROR, SERVER_ERROR, INVALIDATE_USER, CLEAR_LOGIN_ERROR} from '../constants';
+import {FETCH_LOGIN, RECEIVE_LOGIN, LOGIN_ERROR, SERVER_ERROR,
+  INVALIDATE_USER, CLEAR_LOGIN_ERROR, UPDATE_SUCCESS, UPDATE_FAIL} from '../constants';
 import * as ENDPOINTS from "../endpoints";
 import { Actions } from 'react-native-router-flux';
 
@@ -59,6 +60,33 @@ export const fetchLogin = (user, pass) => dispatch => {
     );
 };
 
+export const userUpdate = (data) => dispatch => {
+  fetch(`${ENDPOINTS.BASE}${ENDPOINTS.USER_UPDATE}`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'text/html'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(res => res.text())
+  .then(
+    text => {
+      const json = JSON.parse(text);
+      console.log(json);
+      dispatch({
+        type: UPDATE_SUCCESS,
+      })
+    },
+    err => {
+      dispatch({
+        type: UPDATE_FAIL,
+      })
+      console.error(err);
+    }
+  );
+}
 export const userAuth = (uid, token) => dispatch => {
   dispatch(requestLogin());
   fetch(`${ENDPOINTS.BASE}${ENDPOINTS.USER_AUTH}?uid=${uid}&token=${token}`)
@@ -87,6 +115,7 @@ export const userAuth = (uid, token) => dispatch => {
       }
     )
 }
+
 
 export const invalidateUser = () => {
   return {

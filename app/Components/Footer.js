@@ -17,23 +17,23 @@ export default class NavBarBelow extends Component{
       <Footer>
         <FooterTab>
             <Button transparent onPress={goToHome}>
-                <Icon name="apps" />
+                <Icon name="ios-apps" style={{color:'pink'}} />
             </Button>
         </FooterTab>
         <FooterTab>
             <Button transparent onPress={goToNews}>
-                <Icon  name="paper" />
+                <Icon  name="ios-home" style={{color:'pink'}} />
             </Button>
         </FooterTab>
         <FooterTab>
             <Button transparent onPress={goToInbox}>
-                <Icon name='mail-open' />
+                <Icon name='ios-mail' style={{color:'pink'}}/>
             </Button>
         </FooterTab>
 
         <FooterTab>
             <Button transparent onPress={goToProfile}>
-            <Icon name='ios-person' />
+            <Icon name='ios-person' style={{color:'pink'}} />
             </Button>
         </FooterTab>
       </Footer>
