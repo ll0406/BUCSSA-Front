@@ -50,6 +50,5 @@ export default function newReducer(state = initialState, action){
       break;
     }
   }
-  console.log("General new state ==> ", newState)
   return newState
 }

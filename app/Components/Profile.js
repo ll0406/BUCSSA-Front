@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import Modal from 'react-native-modalbox';
-
+import DropdownAlert from 'react-native-dropdownalert'
 import {Button, Switch,Form, Input,Header,Right,Icon,
         ListItem,Picker, Left,Thumbnail,Container, Card,CardItem,
         Body,Content, Center, Item, Radio} from 'native-base';
@@ -22,7 +22,8 @@ import moment from 'moment';
 
 import NavBarBelow from './Footer';
 import {gChange, sChange, setPhoto, setBD} from '../actions/profilePage';
-import {INVALIDATE_USER} from '../constants';
+import { userUpdate } from '../actions/userActions';
+import {INVALIDATE_USER, DISMISS_ALERT} from '../constants';
 
 
 
@@ -34,6 +35,7 @@ const mapStateToProps = (state) => ({
   photoUri: state.reducer.photoUri,
   user: state.loginReducer.userData,
   changeDetected: state.loginReducer.changeDetected,
+  alert: state.loginReducer.alert,
 })
 
 class ProfilePage extends Component {
@@ -48,7 +50,6 @@ class ProfilePage extends Component {
         displayBD.setMinutes( displayBD.getMinutes() + displayBD.getTimezoneOffset());
       }
       this.state = {
-        isDateTimePickerVisible: false,
         birthday: displayBD,
         pickerDate: displayBD,
         dateModified: false,
@@ -131,19 +132,49 @@ class ProfilePage extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log("NEXT PROPS at PROFILE", nextProps)
-  }
 
   onDateChange = (date) => {
     this.setState({pickerDate: date});
   };
 
+  handleUserUpdate = () => {
+    const { user, dispatch } = this.props;
+    let parts = user.dateOfBirth.split('-'); //Why?
+    const newInfo = {
+      "uid": user.uid,
+      "realname": user.realname,
+      "gender": user.gender,
+      "birthyear": eval(parts[0]),
+      "birthmonth": eval(parts[1]),
+      "birthday": eval(parts[2])
+    }
+    dispatch(userUpdate(newInfo));
+  }
+
+  handleAlert = (alert) => {
+    const { dispatch } = this.props;
+    console.log("ALERT is", alert)
+    this.dropdown.alertWithType(alert.type, alert.title, alert.message)
+    this.handleDismiss();
+  }
+
+  handleDismiss = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: DISMISS_ALERT,
+    })
+  }
+
+  componentWillUpdate(nextProps){
+    debugger;
+    if (nextProps.alert !== undefined) {
+      this.handleAlert(nextProps.alert);
+    }
+  }
 
 
   render() {
-    console.log("RENDER PROFILE")
-    const {profileKeys, defaultBirthday, defaultName, photoUri, user, changeDetected} = this.props
+    const { profileKeys, defaultBirthday, defaultName, photoUri, user, changeDetected, updating } = this.props
     const displayName = user ? user.realname : defaultName;
     const genderIndex = user ? `${user.gender}` : profileKeys[0];
 
@@ -152,8 +183,8 @@ class ProfilePage extends Component {
 
     return (
       <Container>
-        <Header/>
           <Content>
+            <View style={{height:20}}></View>
             <Grid>
               <Row size={1}>
               </Row>
@@ -303,7 +334,7 @@ class ProfilePage extends Component {
                 <Text style={{color: 'blue'}}> 保存信息 </Text>
                 </Body>
                 <Right>
-                <Button transparent onPress={this.handleLogout}>
+                <Button transparent onPress={this.handleUserUpdate}>
                 <Icon name="arrow-forward" style={{ color: 'blue' }} />
                 </Button>
                 </Right>
@@ -364,6 +395,10 @@ class ProfilePage extends Component {
           </View>
         </Modal>
         <NavBarBelow/>
+        <DropdownAlert
+        ref={(ref) => this.dropdown = ref}
+        successColor={'pink'}
+        />
       </Container>
     )
   }

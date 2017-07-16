@@ -36,7 +36,7 @@ const scenes = Actions.create(
       component={ProfilePage}
       type='replace'
       title={"我"}
-      hideNavBar={false}
+      hideNavBar={true}
       />
 
     <Scene

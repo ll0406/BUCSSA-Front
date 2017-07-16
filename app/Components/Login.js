@@ -6,7 +6,7 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 import { connect } from 'react-redux';
 
 import * as ENDPOINTS from "../endpoints";
-import { fetchLogin, userAuth, clearLoginError } from "../actions/loginActions";
+import { fetchLogin, userAuth, clearLoginError } from "../actions/userActions";
 
 const mapStateToProps = (state) => {
   const {loginReducer} = state;
@@ -36,7 +36,6 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    console.log("Login MOunt");
   }
 
   handleLogin = () => {

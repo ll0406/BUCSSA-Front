@@ -1,6 +1,7 @@
 import {
   FETCH_LOGIN, RECEIVE_LOGIN, LOGIN_ERROR, SERVER_ERROR, INVALIDATE_USER,
-  GCHANGE, CLEAR_LOGIN_ERROR, SET_BIRTHDAY
+  GCHANGE, CLEAR_LOGIN_ERROR, SET_BIRTHDAY, UPDATE_SUCCESS, UPDATE_FAIL ,
+  DISMISS_ALERT,
     } from '../constants';
 import { REHYDRATE } from 'redux-persist/constants';
 
@@ -9,6 +10,7 @@ const initialState={
   errors: [],
   userData: undefined,
   changeDetected: false,
+  alert: undefined,
 }
 
 function loginReducer(state = initialState, action){
@@ -56,7 +58,27 @@ function loginReducer(state = initialState, action){
       newState.changeDetected = true;
       break;
     }
-
+    case UPDATE_SUCCESS: {
+      newState.changeDetected = false
+      newState.alert = {
+        type: 'success',
+        title: '成功',
+        message: '成功更新个人资料 σ`∀´)σ!!!'
+      }
+      break;
+    }
+    case UPDATE_FAIL: {
+      newState.alert = {
+        type: 'success',
+        title: '失败',
+        message: '服务器好像坏掉了呢 இдஇ'
+      }
+      break;
+    }
+    case DISMISS_ALERT: {
+      newState.alert = undefined
+      break;
+    }
     case REHYDRATE: {
       const savedData =  action.payload ? action.payload.loginReducer : initialState;
       newState = {...savedData};

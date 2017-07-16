@@ -18,10 +18,13 @@ export const SET_PHOTO = "SET_PHOTO"; //Pick the photo
 //Roomate Adding to List
 export const ADD_TO_POTENTIAL = "ADD_TO_POTENTIAL"; //When card is swiped to the left
 
-//Lgoin
+//User
 export const RECEIVE_LOGIN = "RECEIVE_LOGIN";
 export const LOGIN_ERROR = "LOGIN_ERROR";
 export const FETCH_LOGIN = "FETCH_LOGIN";
 export const SERVER_ERROR = "SERVER_ERROR";
 export const INVALIDATE_USER = "INVALIDATE_USER";
 export const CLEAR_LOGIN_ERROR = "CLEAR_LOGIN_ERROR";
+export const UPDATE_SUCCESS = "UPDATE_SUCCESS";
+export const UPDATE_FAIL = "UPDATE_FAIL";
+export const DISMISS_ALERT = "DISMISS_ALERT";
