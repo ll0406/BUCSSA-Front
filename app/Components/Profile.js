@@ -33,9 +33,9 @@ const mapStateToProps = (state) => ({
   defaultName: state.reducer.name,
   defaultBirthday: state.reducer.bd,
   photoUri: state.reducer.photoUri,
-  user: state.loginReducer.userData,
-  changeDetected: state.loginReducer.changeDetected,
-  alert: state.loginReducer.alert,
+  user: state.userReducer.userData,
+  changeDetected: state.userReducer.changeDetected,
+  alert: state.userReducer.alert,
 })
 
 class ProfilePage extends Component {

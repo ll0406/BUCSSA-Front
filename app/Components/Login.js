@@ -9,8 +9,8 @@ import * as ENDPOINTS from "../endpoints";
 import { fetchLogin, userAuth, clearLoginError } from "../actions/userActions";
 
 const mapStateToProps = (state) => {
-  const {loginReducer} = state;
-  return {loginReducer};
+  const {userReducer} = state;
+  return {userReducer};
 }
 
 class Login extends Component {
@@ -25,7 +25,7 @@ class Login extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { userData, isFetching, errors } = nextProps.loginReducer;
+    const { userData, isFetching, errors } = nextProps.userReducer;
     const { dispatch } = nextProps;
     //If user defined, then try log in with token
     if (userData && !isFetching && errors.length === 0) {
@@ -65,7 +65,7 @@ class Login extends Component {
 
 
   render() {
-    const {errors, isFetching} = this.props.loginReducer;
+    const {errors, isFetching} = this.props.userReducer;
     const {cookieLogin, missingField} = this.state;
 
     return (

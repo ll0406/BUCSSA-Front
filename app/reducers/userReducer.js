@@ -13,7 +13,7 @@ const initialState={
   alert: undefined,
 }
 
-function loginReducer(state = initialState, action){
+function userReducer(state = initialState, action){
   let newState = Object.assign({}, state);
   const {type, payload, error} = action;
 
@@ -80,7 +80,7 @@ function loginReducer(state = initialState, action){
       break;
     }
     case REHYDRATE: {
-      const savedData =  action.payload ? action.payload.loginReducer : initialState;
+      const savedData =  action.payload ? action.payload.userReducer : initialState;
       newState = {...savedData};
       //Prevent changeDetected rehydrate
       newState.changeDetected = false;
@@ -89,4 +89,4 @@ function loginReducer(state = initialState, action){
   return newState;
 };
 
-export default loginReducer;
+export default userReducer;

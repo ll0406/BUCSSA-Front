@@ -14,11 +14,6 @@ import { FooterTab, Button, Left, Right, Body, Icon,
   Thumbnail, CardItem, Card, Spinner} from 'native-base';
 
   import Svg,{
-      Circle,
-      LinearGradient,
-      RadialGradient,
-      Line,
-      Path,
       Polygon,
   } from 'react-native-svg';
 
