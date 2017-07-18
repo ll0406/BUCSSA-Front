@@ -72,7 +72,7 @@ function userReducer(state = initialState, action){
         type: 'success',
         title: '失败',
         message: '服务器好像坏掉了呢 இдஇ'
-      }
+      };
       break;
     }
     case DISMISS_ALERT: {
@@ -84,6 +84,7 @@ function userReducer(state = initialState, action){
       newState = {...savedData};
       //Prevent changeDetected rehydrate
       newState.changeDetected = false;
+      break;
     }
   }
   return newState;

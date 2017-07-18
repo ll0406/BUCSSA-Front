@@ -13,9 +13,9 @@ import {
 import { FooterTab, Button, Left, Right, Body, Icon,
   Thumbnail, CardItem, Card, Spinner} from 'native-base';
 
-  import Svg,{
-      Polygon,
-  } from 'react-native-svg';
+import Svg,{
+    Polygon,
+} from 'react-native-svg';
 
 
 

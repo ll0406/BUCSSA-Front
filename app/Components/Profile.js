@@ -18,7 +18,6 @@ import {Button, Switch,Form, Input,Header,Right,Icon,
 import {Col, Row, Grid} from 'react-native-easy-grid';
 import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
-import moment from 'moment';
 
 import NavBarBelow from './Footer';
 import {gChange, sChange, setPhoto, setBD} from '../actions/profilePage';
@@ -166,7 +165,6 @@ class ProfilePage extends Component {
   }
 
   componentWillUpdate(nextProps){
-    debugger;
     if (nextProps.alert !== undefined) {
       this.handleAlert(nextProps.alert);
     }
@@ -198,7 +196,7 @@ class ProfilePage extends Component {
               <Right>
                 <TouchableOpacity onPress={()=>this.pickImage()}>
                   <Thumbnail style={{width: 100, height: 100, borderRadius: 50}}
-                  source={{uri: picUri }}
+                  source={{uri: picUri, cache: 'force-cache'}} //force cache the image
                   />
                 </TouchableOpacity>
 

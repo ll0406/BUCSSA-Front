@@ -6,7 +6,7 @@ import {
   Alert,
   TouchableOpacity
 } from 'react-native';
-import {Content, Container, Header, Title, Footer, FooterTab, Button, Left, Right, Body, Icon, Text, Thumbnail, CardItem, Card, Spinner} from 'native-base';
+import {Content, Container, Header, Title, Footer, FooterTab, Button, Left, Right, Body, Text, Thumbnail, CardItem, Card, Spinner} from 'native-base';
 import {Actions} from 'react-native-router-flux'
 
 export default class NewsCard extends Component {
@@ -42,7 +42,7 @@ export default class NewsCard extends Component {
                 >
                 <Image
                 style={[{width: 150, height: 150, resizeMode: 'cover', marginBottom:10, borderRadius:25, right:10}, sideStyle]}
-                source={{uri: imgPrefix + cover}}/>
+                source={{uri: imgPrefix + cover, cache: 'force-cache'}}/>
                 </TouchableOpacity>
                 <Text style={{fontSize:10, marginBottom:5}}>
                   {postDate}

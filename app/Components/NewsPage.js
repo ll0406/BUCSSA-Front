@@ -15,7 +15,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import {Content, Container, Header, Title, Footer,
-  FooterTab, Button, Left, Right, Body, Icon, Text,
+  FooterTab, Button, Left, Right, Body, Text,
   Thumbnail, CardItem, Card, Spinner} from 'native-base';
 
 import Drawer from 'react-native-drawer'
