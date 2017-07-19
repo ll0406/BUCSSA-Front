@@ -97,7 +97,7 @@ class NewsP extends Component {
   };
 
   goToWeb(link) {
-  return Actions.webPage({this_url:link});
+  Actions.webPage({this_url:link});
 }
 
 

@@ -12,4 +12,4 @@ export const GET_MESSAGE_LIST = 'pm/getMessages.php';
 export const GET_MESSAGE = 'pm/getMessagesByplid.php';
 export const REPLY_MESSAGE = 'pm/replyMessage.php';
 export const SEND_MESSAGE = 'pm/sendMessage.php';
-export const DELETE_MESSAGE = 'pm/deleteChat.php'
+export const DELETE_MESSAGE = 'pm/deleteChat.php';

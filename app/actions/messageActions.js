@@ -41,14 +41,38 @@ export const fetchMessageList = (uid, token) => dispatch => {
   )
 }
 
-export const fetchMessage = (uid, plid, daterange, type, token) => dispatch => {
+export const fetchMessage = (uid, plid, daterange, type, page, pageSize, token) => dispatch => {
   dispatch({ type: REQUEST_MESSAGE });
-  fetch(`${ENDPOINTS.BASE}${ENDPOINTS.GET_MESSAGE}?uid=${uid}&plid=${plid}&daterange=${daterange}&type=${type}&token=${token}`)
+  console.log(`${ENDPOINTS.BASE}${ENDPOINTS.GET_MESSAGE}?uid=${uid}&plid=${plid}&daterange=${daterange}&type=${type}&page=${page}&pageSize=${pageSize}&token=${token}`)
+  fetch(`${ENDPOINTS.BASE}${ENDPOINTS.GET_MESSAGE}?uid=${uid}&plid=${plid}&daterange=${daterange}&type=${type}&page=${page}&pageSize=${pageSize}&token=${token}`)
   .then(res => res.text())
   .then(
     text => {
-      const json = JSON.parse(text)
+      const json = JSON.parse(text);
       console.log(json);
+      if (json.success) {
+        const messageData = json.datas.map(message => {
+          return {
+            author: message.author,
+            authorId: message.authorid,
+            dateline: message.dateline,
+            message: message.message,
+            pmId: message.pmid,
+          }
+        });
+        const data = {
+          currentPage: page,
+          messages: messageData,
+        }
+        if (page === 0) {
+          dispatch({
+            type: RECEIVE_MESSAGE,
+            payload: data,
+          })
+        } else {
+
+        }
+      }
     },
     err => {
       console.error(err);

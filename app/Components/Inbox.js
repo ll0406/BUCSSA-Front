@@ -3,7 +3,7 @@ import { Image, TouchableOpacity, View, StyleSheet, Text } from 'react-native';
 import { Header,Container, Content, Card, CardItem, Thumbnail,
    Button, Icon, Spinner } from 'native-base';
 import Svg, { Circle } from 'react-native-svg';
-import {Actions} from 'react-native-router-flux';
+import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import {Col, Row, Grid} from 'react-native-easy-grid';
 import Swipeout from 'react-native-swipeout';
@@ -30,7 +30,12 @@ class Inbox extends Component {
       dispatch(fetchMessageList(user.uid, user.token));
     }
   }
-  
+
+  handleMessagePress(plid, pmType, pmSubject, pmNum){
+    console.log(plid, pmType);
+    Actions.messagePage({plid, pmType, pmSubject, pmNum});
+  }
+
   render() {
     const { user, messageList, isFetchingList, dispatch} = this.props;
     const { uid, token } = user;
@@ -38,8 +43,9 @@ class Inbox extends Component {
         <Container>
           <Header/>
           <Content>
-             {
-                messageList.map((message, i) => {
+            {
+                (!isFetchingList && messageList !== undefined)
+                 && messageList.map((message, i) => {
                   const { plid } = message;
                   return (
                     <Card key={i}>
@@ -79,7 +85,7 @@ class Inbox extends Component {
                             </Col>
                             <Col size={0.2} alignItems={'center'} justifyContent={'center'}>
                               <View alignItems={'center'} justifyContent={'center'}>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={() => this.handleMessagePress(message.plid, message.pmType, message.subject)} >
                                   <Icon name="ios-arrow-forward" style={{color:'pink'}} />
                                 </TouchableOpacity>
                               </View>

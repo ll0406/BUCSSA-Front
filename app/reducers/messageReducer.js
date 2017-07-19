@@ -6,7 +6,8 @@ const initialState = {
   isFetchingList: false,
   isFetchingMessage: false,
   messageList: [],
-  cachedMessages: [],
+  messages: [],
+  currentPage: 0,
 }
 
 function messageReducer (state = initialState, action) {
@@ -32,10 +33,8 @@ function messageReducer (state = initialState, action) {
 
     case RECEIVE_MESSAGE: {
       newState.isFetchingMessage = false;
-      newState.cachedMessages.unshift(payload);
-      if (newState.cachedMessages > 50) {
-        newState.cachedMessages.pop();
-      }
+      newState.messages = payload.messages;
+      newState.currentPage = payload.currentPage;
       break;
     }
 

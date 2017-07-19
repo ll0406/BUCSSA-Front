@@ -9,7 +9,7 @@ import personPage from './Components/personPage';
 import homePage from './Components/homePage';
 import PotentialList from './Components/potentialList';
 import DatePick from './Components/DatePicking';
-import MailPage from './Components/mail';
+import ChatPage from './Components/Chat';
 import Inbox from './Components/Inbox';
 import MessagePage from './Components/MessagePage';
 import Login from './Components/Login';
@@ -80,12 +80,6 @@ const scenes = Actions.create(
       hideNavBar={false}
       />
     <Scene
-      key="mailPage"
-      component={MailPage}
-      title={"MAIL"}
-      hideNavBar={false}
-      />
-    <Scene
       key="inbox"
       component={Inbox}
       title={"收件箱"}
@@ -93,7 +87,7 @@ const scenes = Actions.create(
       hideNavBar={false}
       />
     <Scene
-      key="message"
+      key="messagePage"
       component={MessagePage}
       title={"信息"}
       hideNavBar={false}

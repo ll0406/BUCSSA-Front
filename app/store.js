@@ -16,5 +16,6 @@ const store = createStore(
 );
 
 persistStore(store, {storage: AsyncStorage})
+//persistStore(store, {storage: AsyncStorage}).purge()
 
 export default store;

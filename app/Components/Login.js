@@ -78,6 +78,7 @@ class Login extends Component {
               <Item rounded style={{marginBottom: 10, borderRadius: 25, paddingLeft:15 }}>
                 <Icon name="ios-person-outline" />
                 <Input
+
                   autoCapitalize='none'
                   placeholder="Username"
                   onChangeText={(text) => this.setState({user: text})}
