@@ -6,7 +6,7 @@ import { Content, Container, Item , Input , Left, Body,Card,
 import { connect } from 'react-redux'
 import { AutoGrowingTextInput } from 'react-native-autogrow-textinput';
 
-import { fetchMessage } from '../actions/messageActions';
+import { fetchMessage, fetchMessageList } from '../actions/messageActions';
 import MessageCard from './MessageCard';
 
 
@@ -22,42 +22,55 @@ class MessagePage extends Component {
     super(props);
     this.state = {
       inputText: "",
-      inputHeight: 1,
+      contentHeight: 0,
     }
   }
 
   componentDidMount() {
     const { dispatch, plid, pmType, pmNum, user } = this.props;
-
     dispatch(fetchMessage(user.uid, plid, 5, pmType, 0, 20, user.token));
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log("Will ReceiveProps", nextProps);
+  componentWillUnmount() {
+    const { user, dispatch } = this.props;
+    dispatch(fetchMessageList(user.uid, user.token));
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    console.log("Should Update? ", this.props.messages !== nextProps.messages)
-    return this.props.messages !== nextProps.messages;
+  componentDidUpdate() {
+    const { messages, isFetchingMessage } = this.props
+    if (messages && !isFetchingMessage) {
+      setTimeout(() => {
+        if (this.state.contentHeight > Dimensions.get('window').height-50) {
+          this.refs._scrollView._root.scrollToEnd({animated: false});
+        }
+      }, 100);
+    }
+  }
+
+  handleFetchUpdate() {
+
   }
 
   render() {
     const { user, messages, isFetchingMessage } = this.props
     const { uid } = user;
-    console.log("Messages", messages);
+
     return (
       <Container>
         <Header />
-        <Content>
+        <Content
+          ref='_scrollView'
+          onContentSizeChange={(contentWidth, contentHeight) => {this.setState({contentHeight})}}
+          >
           {
             (!isFetchingMessage && messages!== undefined) &&
-            messages.map((m, i) => {
-              return (
-                <MessageCard
-                  key={i}
-                  uid={uid}
-                  messageObject={m}
-                  />
+              messages.map((m, i) => {
+                return (
+                  <MessageCard
+                    key={i}
+                    uid={uid}
+                    messageObject={m}
+                    />
               )
             })
           }
@@ -69,6 +82,7 @@ class MessagePage extends Component {
             <AutoGrowingTextInput
               style={styles.textInput}
               placeholder={'Your Message'}
+              onChangeText={(text) => this.setState({inputText: text})}
               />
           </View>
         </KeyboardAvoidingView>

@@ -44,7 +44,7 @@ class Inbox extends Component {
           <Header/>
           <Content>
             {
-                (!isFetchingList && messageList !== undefined)
+                ( messageList !== undefined)
                  && messageList.map((message, i) => {
                   const { plid } = message;
                   return (
@@ -106,7 +106,6 @@ class Inbox extends Component {
                 )}
               )
             }
-            {isFetchingList && <Spinner color='black' /> }
           </Content>
           <NavBarBelow/>
         </Container>

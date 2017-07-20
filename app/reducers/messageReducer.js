@@ -33,8 +33,10 @@ function messageReducer (state = initialState, action) {
 
     case RECEIVE_MESSAGE: {
       newState.isFetchingMessage = false;
-      newState.messages = payload.messages;
-      newState.currentPage = payload.currentPage;
+      if (JSON.stringify(newState.messages) !== JSON.stringify(payload.messages)) {
+        newState.messages = payload.messages;
+        newState.currentPage = payload.currentPage;
+      }
       break;
     }
 
