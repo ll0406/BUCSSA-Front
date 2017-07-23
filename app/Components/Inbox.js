@@ -11,6 +11,7 @@ import Swipeout from 'react-native-swipeout';
 import InboxData from './InboxData'
 import NavBarBelow from './Footer'
 
+import { CLEAR_BUFFER } from '../constants';
 import { fetchMessageList, requestDeleteMessage } from '../actions/messageActions';
 
 const mapStateToProps = (state) => ({
@@ -26,6 +27,7 @@ class Inbox extends Component {
 
   componentDidMount() {
     const { user, dispatch } = this.props;
+    dispatch({type: CLEAR_BUFFER});
     if(user !== undefined) {
       dispatch(fetchMessageList(user.uid, user.token));
     }
@@ -85,7 +87,7 @@ class Inbox extends Component {
                             </Col>
                             <Col size={0.2} alignItems={'center'} justifyContent={'center'}>
                               <View alignItems={'center'} justifyContent={'center'}>
-                                <TouchableOpacity onPress={() => this.handleMessagePress(message.plid, message.pmType, message.subject)} >
+                                <TouchableOpacity onPress={() => this.handleMessagePress(message.plid, message.pmType, message.subject, message.pmNum)} >
                                   <Icon name="ios-arrow-forward" style={{color:'pink'}} />
                                 </TouchableOpacity>
                               </View>
