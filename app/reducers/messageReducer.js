@@ -1,13 +1,15 @@
-import { RECEIVE_MESSAGELIST, RECEIVE_MESSAGE,
-  REQUEST_MESSAGELIST, REQUEST_MESSAGE, DELETE_MESSAGE } from '../constants';
+import { RECEIVE_MESSAGELIST, RECEIVE_NEW_MESSAGE,
+  REQUEST_MESSAGELIST, REQUEST_MESSAGE, DELETE_MESSAGE,
+  RECEIVE_RESET_MESSAGE, CLEAR_BUFFER, SET_NEW_NUM } from '../constants';
 import { REHYDRATE } from 'redux-persist/constants';
 
 const initialState = {
   isFetchingList: false,
   isFetchingMessage: false,
   messageList: [],
-  messages: [],
-  currentPage: 0,
+  messages: undefined,
+  incomingMessage: undefined,
+  newNum: 0,
 }
 
 function messageReducer (state = initialState, action) {
@@ -31,15 +33,24 @@ function messageReducer (state = initialState, action) {
       break;
     }
 
-    case RECEIVE_MESSAGE: {
+    case RECEIVE_NEW_MESSAGE: {
       newState.isFetchingMessage = false;
-      if (JSON.stringify(newState.messages) !== JSON.stringify(payload.messages)) {
-        newState.messages = payload.messages;
-        newState.currentPage = payload.currentPage;
+      newState.incomingMessage = {
+        payload: payload.messages,
+        type: "new"
       }
+      newState.newNum = 0;
       break;
     }
-
+    case RECEIVE_RESET_MESSAGE: {
+      newState.isFetchingMessage = false;
+      newState.messages = payload.messages;
+      break;
+    }
+    case CLEAR_BUFFER: {
+      newState.incomingMessage = undefined;
+      break;
+    }
     case DELETE_MESSAGE: {
       const plidsToDelete = payload;
       newState.messageList = state.messageList.filter(message => {
@@ -47,7 +58,10 @@ function messageReducer (state = initialState, action) {
       });
       break;
     }
-
+    case SET_NEW_NUM: {
+      newState.newNum = payload;
+      break;
+    }
     case REHYDRATE: {
       const savedData = payload ? payload.messageReducer : initialState;
       newState = { ...savedData };
