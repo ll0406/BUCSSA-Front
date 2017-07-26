@@ -11,7 +11,7 @@ import Swipeout from 'react-native-swipeout';
 import InboxData from './InboxData'
 import NavBarBelow from './Footer'
 
-import { CLEAR_BUFFER } from '../constants';
+import { CLEAR_MESSAGES } from '../constants';
 import { fetchMessageList, requestDeleteMessage } from '../actions/messageActions';
 
 const mapStateToProps = (state) => ({
@@ -27,14 +27,13 @@ class Inbox extends Component {
 
   componentDidMount() {
     const { user, dispatch } = this.props;
-    dispatch({type: CLEAR_BUFFER});
+    dispatch({type: CLEAR_MESSAGES});
     if(user !== undefined) {
       dispatch(fetchMessageList(user.uid, user.token));
     }
   }
 
   handleMessagePress(plid, pmType, pmSubject, pmNum){
-    console.log(plid, pmType);
     Actions.messagePage({plid, pmType, pmSubject, pmNum});
   }
 

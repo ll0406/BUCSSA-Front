@@ -74,7 +74,6 @@ export const userUpdate = (data) => dispatch => {
   .then(
     text => {
       const json = JSON.parse(text);
-      console.log(json);
       dispatch({
         type: UPDATE_SUCCESS,
       })

@@ -12,7 +12,8 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
 import {Content, Container, Header, Title, Footer,
   FooterTab, Button, Left, Right, Body, Text,
@@ -47,6 +48,7 @@ class NewsP extends Component {
       offset: this.props.initialOffset,
       listLength: this.props.newsList.length, //Will change later
       contentHeight: 0,
+      refreshing: false,
     }
   }
 
@@ -97,9 +99,17 @@ class NewsP extends Component {
   };
 
   goToWeb(link) {
-  Actions.webPage({this_url:link});
-}
+    Actions.webPage({this_url:link});
+  }
 
+  onRefresh = () => {
+    this.setState({refreshing: true});
+    console.log("Start to refresh");
+    setTimeout(() => {
+      this.setState({refreshing: false});
+      console.log("Refresh Stop")
+    }, 2000);
+  }
 
   render() {
     const {initialOffset, isFetching, newsList} = this.props
@@ -115,6 +125,12 @@ class NewsP extends Component {
               panCloseMask={0.4}
             >
               <Content
+                refreshControl={
+                    <RefreshControl
+                      refreshing={this.state.refreshing}
+                      onRefresh={this.onRefresh}
+                    />
+                  }
                 onScroll={this.setCurrentReadOffset}
                 scrollEventThrottle={300}
                 contentOffset={{x:0,y:initialOffset}}
