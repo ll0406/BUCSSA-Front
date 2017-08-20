@@ -152,7 +152,6 @@ class ProfilePage extends Component {
 
   handleAlert = (alert) => {
     const { dispatch } = this.props;
-    console.log("ALERT is", alert)
     this.dropdown.alertWithType(alert.type, alert.title, alert.message)
     this.handleDismiss();
   }

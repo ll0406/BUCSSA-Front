@@ -16,3 +16,4 @@ export const DELETE_MESSAGE = 'pm/deleteChat.php';
 export const CHECK_NEW_MESSAGE = 'pm/checkNewMessageByplid.php';
 export const GET_MESSAGE_BYOFFSET = 'pm/getMsgByOffset.php';
 export const REPLY = 'pm/replyMessage.php'
+export const SET_READ = 'pm/setRead.php'

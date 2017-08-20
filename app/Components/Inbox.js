@@ -11,8 +11,8 @@ import Swipeout from 'react-native-swipeout';
 import InboxData from './InboxData'
 import NavBarBelow from './Footer'
 
-import { CLEAR_BUFFER } from '../constants';
-import { fetchMessageList, requestDeleteMessage } from '../actions/messageActions';
+import { CLEAR_MESSAGES } from '../constants';
+import { fetchMessageList, requestDeleteMessage, setRead } from '../actions/messageActions';
 
 const mapStateToProps = (state) => ({
   user: state.userReducer.userData,
@@ -27,14 +27,13 @@ class Inbox extends Component {
 
   componentDidMount() {
     const { user, dispatch } = this.props;
-    dispatch({type: CLEAR_BUFFER});
+    dispatch({type: CLEAR_MESSAGES});
     if(user !== undefined) {
       dispatch(fetchMessageList(user.uid, user.token));
     }
   }
 
   handleMessagePress(plid, pmType, pmSubject, pmNum){
-    console.log(plid, pmType);
     Actions.messagePage({plid, pmType, pmSubject, pmNum});
   }
 
@@ -48,7 +47,7 @@ class Inbox extends Component {
             {
                 ( messageList !== undefined)
                  && messageList.map((message, i) => {
-                  const { plid } = message;
+                  const { plid, pmType} = message;
                   return (
                     <Card key={i}>
                       <Swipeout
@@ -66,7 +65,7 @@ class Inbox extends Component {
                             text: '删除',
                             backgroundColor: 'red',
                             onPress: function(){
-                              dispatch(requestDeleteMessage(uid, [plid], token));
+                              dispatch(requestDeleteMessage(uid, [plid], [pmType], token));
                             },
                           }
                         ]}

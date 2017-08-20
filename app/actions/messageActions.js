@@ -1,6 +1,6 @@
 import { RECEIVE_MESSAGELIST, RECEIVE_NEW_MESSAGE,
   REQUEST_MESSAGELIST, REQUEST_MESSAGE, DELETE_MESSAGE,
-  RECEIVE_RESET_MESSAGE, SET_NEW_NUM } from '../constants';
+  RECEIVE_OLD_MESSAGE, SET_NEW_NUM } from '../constants';
 import * as ENDPOINTS from '../endpoints';
 import { Actions } from 'react-native-router-flux';
 
@@ -48,8 +48,6 @@ export const fetchMessage = (uid, plid, daterange, type, page, pageSize, token, 
   .then(
     text => {
       const json = JSON.parse(text);
-      console.log("MESSAGE ==> ");
-      console.log(json);
       if (json.success) {
         const messageData = json.datas.map(message => {
           return {
@@ -84,8 +82,7 @@ export const fetchMessage = (uid, plid, daterange, type, page, pageSize, token, 
 }
 
 
-export const requestDeleteMessage = (uid, plids, token) => dispatch => {
-  console.log("DELETE MESSAGE id: ", plids);
+export const requestDeleteMessage = (uid, plids, types, token) => dispatch => {
   dispatch({
     type: DELETE_MESSAGE,
     payload: plids,
@@ -93,6 +90,7 @@ export const requestDeleteMessage = (uid, plids, token) => dispatch => {
   const data = {
     uid,
     plids: plids.join(),
+    types: types.join(),
     token
   }
   fetch(`${ENDPOINTS.BASE}${ENDPOINTS.DELETE_MESSAGE}`, {
@@ -121,13 +119,11 @@ export const requestDeleteMessage = (uid, plids, token) => dispatch => {
 }
 
 export const checkNewMessage = (uid, plid, lastpmid, token) => dispatch => {
-  console.log(`${ENDPOINTS.BASE}${ENDPOINTS.CHECK_NEW_MESSAGE}?uid=${uid}&plid=${plid}&lastpmid=${lastpmid}&token=${token}`)
   fetch(`${ENDPOINTS.BASE}${ENDPOINTS.CHECK_NEW_MESSAGE}?uid=${uid}&plid=${plid}&lastpmid=${lastpmid}&token=${token}`)
   .then(res => res.text())
   .then(
     text => {
       const json = JSON.parse(text);
-      console.log("RES JSON", json);
       if (json.success) {
         dispatch({
           type: SET_NEW_NUM,
@@ -146,11 +142,7 @@ export const requestMessageByOffset = (uid, plid, type, pmid, offset, token) => 
   .then(res => res.text())
   .then(
     text => {
-      console.log("Text");
-      console.log(text);
       const json = JSON.parse(text);
-      console.log("BY OFFSET MESSAGE ==> ");
-      console.log(json);
       if (json.success) {
         const messageData = json.datas.map(message => {
           return {
@@ -160,6 +152,7 @@ export const requestMessageByOffset = (uid, plid, type, pmid, offset, token) => 
             user: {
               _id: eval(message.authorid),
               name: message.author,
+              avatar: message.authoravatar,
             },
             pmid: message.pmid,
           }
@@ -173,7 +166,10 @@ export const requestMessageByOffset = (uid, plid, type, pmid, offset, token) => 
             payload: data,
           })
         } else {
-
+          dispatch({
+            type: RECEIVE_OLD_MESSAGE,
+            payload: data,
+          })
         }
       }
     },
@@ -204,11 +200,42 @@ export const replyMessage = (uid, username, plid, message, token) => dispatch =>
   .then(
     text => {
       const json = JSON.parse(text);
-      console.log(json);
       if (json.success) {
         console.log("replying success");
       } else {
         console.log("replying fail");
+      }
+    },
+    err => {
+      console.err("server err");
+    }
+  )
+}
+
+export const setMessageRead = (uid, plids, types ,token) => dispatch => {
+  const data = {
+    uid,
+    plids: plids.join(),
+    types: types.join(),
+    token
+  }
+  fetch(`${ENDPOINTS.BASE}${ENDPOINTS.SET_READ}`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'text/html'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(res => res.text())
+  .then(
+    text => {
+      const json = JSON.parse(text);
+      if (json.success) {
+        console.log("set read success");
+      } else {
+        console.log("set read fail");
       }
     },
     err => {
