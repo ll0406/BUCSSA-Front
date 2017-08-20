@@ -124,6 +124,15 @@ class NewsP extends Component {
               panOpenMask={0.2}
               panCloseMask={0.4}
             >
+            {
+              <View
+                style={{position:'absolute',
+                width:Dimensions.get('window').width, height:360,
+                alignItems:'center', justifyContent:'center', backgroundColor:'red'}}>
+                    <Text> 123 </Text>
+                    <Text> 123 </Text>
+                </View>
+              }
               <Content
                 refreshControl={
                     <RefreshControl

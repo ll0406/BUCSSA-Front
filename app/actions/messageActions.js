@@ -82,7 +82,7 @@ export const fetchMessage = (uid, plid, daterange, type, page, pageSize, token, 
 }
 
 
-export const requestDeleteMessage = (uid, plids, token) => dispatch => {
+export const requestDeleteMessage = (uid, plids, types, token) => dispatch => {
   dispatch({
     type: DELETE_MESSAGE,
     payload: plids,
@@ -90,6 +90,7 @@ export const requestDeleteMessage = (uid, plids, token) => dispatch => {
   const data = {
     uid,
     plids: plids.join(),
+    types: types.join(),
     token
   }
   fetch(`${ENDPOINTS.BASE}${ENDPOINTS.DELETE_MESSAGE}`, {

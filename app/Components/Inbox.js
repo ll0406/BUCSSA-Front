@@ -12,7 +12,7 @@ import InboxData from './InboxData'
 import NavBarBelow from './Footer'
 
 import { CLEAR_MESSAGES } from '../constants';
-import { fetchMessageList, requestDeleteMessage } from '../actions/messageActions';
+import { fetchMessageList, requestDeleteMessage, setRead } from '../actions/messageActions';
 
 const mapStateToProps = (state) => ({
   user: state.userReducer.userData,
@@ -47,7 +47,7 @@ class Inbox extends Component {
             {
                 ( messageList !== undefined)
                  && messageList.map((message, i) => {
-                  const { plid } = message;
+                  const { plid, pmType} = message;
                   return (
                     <Card key={i}>
                       <Swipeout
@@ -65,7 +65,7 @@ class Inbox extends Component {
                             text: '删除',
                             backgroundColor: 'red',
                             onPress: function(){
-                              dispatch(requestDeleteMessage(uid, [plid], token));
+                              dispatch(requestDeleteMessage(uid, [plid], [pmType], token));
                             },
                           }
                         ]}
