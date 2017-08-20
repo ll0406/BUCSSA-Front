@@ -1,34 +1,42 @@
 import {Actions, Router, Scene} from 'react-native-router-flux';
-import React, { Component } from 'react'
-import NewsP from './Components/NewsPage'
-import NewsWebScene from './Components/NewsWebScene'
-import RoommateDeck from './Components/Roommate'
-import ProfilePage from './Components/Profile'
-import newSwipe from './Components/newSwipe'
-import personPage from './Components/personPage'
-import homePage from './Components/homePage'
-import PotentialList from './Components/potentialList'
-import DatePick from './Components/DatePicking'
-import MailPage from './Components/mail'
-import Inbox from './Components/Inbox'
-import MessagePage from './Components/MessagePage'
+import React, { Component } from 'react';
+import NewsP from './Components/NewsPage';
+import NewsWebScene from './Components/NewsWebScene';
+import RoommateDeck from './Components/Roommate';
+import ProfilePage from './Components/Profile';
+import newSwipe from './Components/newSwipe';
+import personPage from './Components/personPage';
+import homePage from './Components/homePage';
+import PotentialList from './Components/potentialList';
+import DatePick from './Components/DatePicking';
+import ChatPage from './Components/Chat';
+import Inbox from './Components/Inbox';
+import MessagePage from './Components/MessagePage';
+import Login from './Components/Login';
 
 const scenes = Actions.create(
   <Scene key="root">
+    <Scene
+      key="login"
+      component={Login}
+      title={"登录"}
+      type='replace'
+      hideNavBar={true}
+      initial
+      />
     <Scene
       key="newsPage"
       component={NewsP}
       title={"BUCSSA活动推送"}
       type='replace'
-      hideNavBar={false}
-      initial
+      hideNavBar={true}
       />
     <Scene
       key="profilePage"
       component={ProfilePage}
       type='replace'
       title={"我"}
-      hideNavBar={false}
+      hideNavBar={true}
       />
 
     <Scene
@@ -72,12 +80,6 @@ const scenes = Actions.create(
       hideNavBar={false}
       />
     <Scene
-      key="mailPage"
-      component={MailPage}
-      title={"MAIL"}
-      hideNavBar={false}
-      />
-    <Scene
       key="inbox"
       component={Inbox}
       title={"收件箱"}
@@ -85,7 +87,7 @@ const scenes = Actions.create(
       hideNavBar={false}
       />
     <Scene
-      key="message"
+      key="messagePage"
       component={MessagePage}
       title={"信息"}
       hideNavBar={false}

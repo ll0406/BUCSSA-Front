@@ -17,3 +17,24 @@ export const SET_PHOTO = "SET_PHOTO"; //Pick the photo
 
 //Roomate Adding to List
 export const ADD_TO_POTENTIAL = "ADD_TO_POTENTIAL"; //When card is swiped to the left
+
+//User
+export const RECEIVE_LOGIN = "RECEIVE_LOGIN";
+export const LOGIN_ERROR = "LOGIN_ERROR";
+export const FETCH_LOGIN = "FETCH_LOGIN";
+export const SERVER_ERROR = "SERVER_ERROR";
+export const INVALIDATE_USER = "INVALIDATE_USER";
+export const CLEAR_LOGIN_ERROR = "CLEAR_LOGIN_ERROR";
+export const UPDATE_SUCCESS = "UPDATE_SUCCESS";
+export const UPDATE_FAIL = "UPDATE_FAIL";
+export const DISMISS_ALERT = "DISMISS_ALERT";
+
+//MessagePage
+export const REQUEST_MESSAGE = 'REQUEST_MESSAGE';
+export const REQUEST_MESSAGELIST = 'REQUEST_MESSAGELIST';
+export const RECEIVE_MESSAGELIST = "RECEIVE_MESSAGELIST";
+export const RECEIVE_OLD_MESSAGE = "RECEIVE_OLD_MESSAGE";
+export const RECEIVE_NEW_MESSAGE = "RECEIVE_NEW_MESSAGE";
+export const DELETE_MESSAGE = "DELETE_MESSAGE";
+export const CLEAR_MESSAGES = "CLEAR_MESSAGES";
+export const SET_NEW_NUM = "SET_NEW_NUM";

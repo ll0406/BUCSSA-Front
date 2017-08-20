@@ -3,9 +3,10 @@ import React, { Component } from 'react';
 import {
   View,
   Image,
-  Alert
+  Alert,
+  TouchableOpacity
 } from 'react-native';
-import {Content, Container, Header, Title, Footer, FooterTab, Button, Left, Right, Body, Icon, Text, Thumbnail, CardItem, Card, Spinner} from 'native-base';
+import {Content, Container, Header, Title, Footer, FooterTab, Button, Left, Right, Body, Text, Thumbnail, CardItem, Card, Spinner} from 'native-base';
 import {Actions} from 'react-native-router-flux'
 
 export default class NewsCard extends Component {
@@ -20,39 +21,38 @@ export default class NewsCard extends Component {
 
   render() {
     const imgPrefix = "http://demo.bucssa.net/"
+    const { index } = this.props
     const {tid, postDate, cover, title, summary} = this.props.newsObj
-    return (
-      <Card>
-            <CardItem bordered>
-                <Left>
-                    <Thumbnail square source={require('../img/one.png')}/>
-                    <Body>
-                      <Text>{title}</Text>
-                      <Text note>{postDate}</Text>
-                    </Body>
-                </Left>
-            </CardItem>
 
-            <CardItem>
+    let sideStyle;
+    if (index % 2 == 0){
+      sideStyle = {left: 8}
+    } else {
+      sideStyle = {right: 5}
+    }
+
+    return (
+      <Card style={{width:180, shadowOpacity:0, borderColor: 'pink'}}>
+            <CardItem style={{height:250, backgroundColor: 'pink'}}>
                 <Body>
-                    <Image
-                      style={{ width:340, height:220, resizeMode: 'contain' }}
-                      source={{uri: imgPrefix + cover}}/>
-                    <Text>
-                      {summary}...
-                    </Text>
-                </Body>
-            </CardItem>
-            <CardItem>
-            <Right>
-              <Button transparent textStyle={{color: '#87838B'}}
+                <TouchableOpacity
                 onPress={() => this.goToWeb(
                   `http://demo.bucssa.net/forum.php?mod=viewthread&tid=${tid}&mobile=2`
                 )}
-              >
-                  <Text>详情</Text>
-              </Button>
-            </Right>
+                >
+                <Image
+                style={[{width: 150, height: 150, resizeMode: 'cover', marginBottom:10, borderRadius:25, right:10}, sideStyle]}
+                source={{uri: imgPrefix + cover, cache: 'force-cache'}}/>
+                </TouchableOpacity>
+                <Text style={{fontSize:10, marginBottom:5}}>
+                  {postDate}
+                </Text>
+                <Text style={{fontSize:14, marginBottom:10, fontWeight:'bold'}}>
+                  {title}
+                </Text>
+
+
+                </Body>
             </CardItem>
        </Card>
     )

@@ -6,44 +6,54 @@ import {
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {Content, Container, Header, Button, Text} from 'native-base';
-import {connect} from 'react-redux'
-import {setBD} from '../actions/profilePage'
-
-const mapStateToProps = (state) => ({
-  birthday: state.reducer.bd
-})
+import moment from 'moment';
 
 class DatePick extends Component {
+  constructor(props) {
+      super(props);
+      this.state = {
+        date: new Date(),
+      };
+  }
 
-  static defaultProps = {
-    date: new Date(),
-  };
+  parseDate(input) {
+    let parts = input.split('-');
+    // new Date(year, month [, day [, hours[, minutes[, seconds[, ms]]]]])
+    return new Date(eval(parts[0]), eval(parts[1]-1), eval(parts[2]));
+  }
 
-  state = {
-    date: this.props.birthday,
-  };
+  componentDidMount () {
+    const { bd } = this.props;
+    this.setState({
+      date: this.parseDate(bd),
+    })
+  }
+
 
   onDateChange = (date) => {
     this.setState({date: date});
   };
 
   onSubmit = () => {
-    const {dispatch} = this.props;
-    dispatch(setBD(this.state.date));
-    Actions.pop();
+    const { dispatch, submitAction } = this.props;
+    dispatch(submitAction(this.state.date));
+    Actions.pop({refresh:{}}); //triigers rerender
   }
 
   render() {
+
+
     return(
     <Container>
       <Header/>
       <Content>
+        <Text> {this.props.bd} </Text>
         <DatePickerIOS
           date={this.state.date}
           mode="date"
           onDateChange={this.onDateChange}
         />
-        <Button full onPress={() => this.onSubmit()}>
+        <Button full onPress={this.onSubmit}>
           <Text>保存</Text>
         </Button>
       </Content>
@@ -53,4 +63,4 @@ class DatePick extends Component {
 
 }
 
-export default connect(mapStateToProps)(DatePick)
+export default DatePick;

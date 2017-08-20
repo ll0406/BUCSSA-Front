@@ -4,7 +4,7 @@ import {Actions} from 'react-native-router-flux'
 import { Content, Container, InputGroup, Input , Left, Body,Card, CardItem ,Text, Header, Button, Toast } from 'native-base';
 
 
-export default class MailPage extends Component {
+export default class ChatPage extends Component {
   constructor(props) {
     super(props);
     this.state = {

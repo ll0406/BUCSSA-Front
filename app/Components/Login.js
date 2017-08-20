@@ -1,72 +1,131 @@
 import React, { Component } from 'react';
-import { Container, Content, Form, Item, Input, Button } from 'native-base';
+import { View } from 'react-native';
+import { Container, Content, Form, Item, Input, Button, Text, Icon, Spinner } from 'native-base';
 import {Actions} from 'react-native-router-flux';
+import { Col, Row, Grid } from "react-native-easy-grid";
+import { connect } from 'react-redux';
 
-import * as ENDPOINTS from "../constants"
+import * as ENDPOINTS from "../endpoints";
+import { fetchLogin, userAuth, clearLoginError } from "../actions/userActions";
 
+const mapStateToProps = (state) => {
+  const {userReducer} = state;
+  return {userReducer};
+}
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       user:"",
       pass:"",
+      cookieLogin: false,
+      missingField: false,
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { userData, isFetching, errors } = nextProps.userReducer;
+    const { dispatch } = nextProps;
+    //If user defined, then try log in with token
+    if (userData && !isFetching && errors.length === 0) {
+      dispatch(userAuth(userData.uid, userData.token));
+      this.setState({cookieLogin: true});
+    }
+
+  }
+
+  componentDidMount() {
   }
 
   handleLogin = () => {
-    const {user, pass} = this.state;
-    
+    const { user, pass } = this.state;
+    const { dispatch } = this.props;
+
+    if (user === "" || pass === "") {
+      this.setState({
+        missingField: true,
+      })
+      return;
+    }
+    else {
+      this.setState({
+        missingField: false,
+      })
+      dispatch(fetchLogin(user, pass));
+    }
   }
 
-  export function queryStringBuilder(query) {
-  let queryString = '';
+  handleGuestLogin = () => {
+    const { dispatch } = this.props;
+    dispatch(clearLoginError());
+    Actions.newsPage();
+  }
 
-  Object.keys(query).forEach((q, index) => {
-    // Remove empty values
-    if (query[q] === null || query[q] === 'undefined') {
-      queryString += '';
-    } else {
-      let value = query[q];
 
-      if (Array.isArray(value)) {
-        value = value.join();
-      }
-
-      if (queryString[0] !== '?') {
-        queryString += `?${q}=${value}`;
-      } else {
-        queryString += `&${q}=${value}`;
-      }
-    }
-  });
-
-  return queryString;
-}
 
   render() {
+    const {errors, isFetching} = this.props.userReducer;
+    const {cookieLogin, missingField} = this.state;
+
     return (
       <Container>
-        <Content>
-          <Form>
-            <Item>
-              <Input
-              placeholder="Username"
-              onChangeText={(text) => this.setState({user: text})}
-              />
-            </Item>
-            <Item last>
-              <Input placeholder="Password"
-              onChangeText={(text) => this.setState({pass: text})}/>
-            </Item>
-          </Form>
+        <View style={{flex: 10}}>
+          <View style={{flex: 3}}>
+          </View>
+          <View style={{flex: 5, flexDirection: 'column'}}>
+            <Form>
+              <Item rounded style={{marginBottom: 10, borderRadius: 25, paddingLeft:15 }}>
+                <Icon name="ios-person-outline" />
+                <Input
 
-          <Button onPress={this.handleLogin} >
+                  autoCapitalize='none'
+                  placeholder="Username"
+                  onChangeText={(text) => this.setState({user: text})}
+                />
+              </Item>
+              <Item rounded style={{marginBottom: 50, borderRadius: 25, paddingLeft:15 }}>
+                <Icon name="ios-unlock-outline" />
+                <Input
+                  autoCapitalize='none'
+                  placeholder="Password"
+                  secureTextEntry
+                  onChangeText={(text) => this.setState({pass: text})}
+                />
+              </Item>
+            </Form>
 
-          </Button>
+            <Button block onPress={this.handleLogin} style={{marginBottom: 5}}>
+              <Text> 登录 </Text>
+            </Button>
+            <Button block onPress={this.handleGuestLogin} style={{marginBottom: 5}}>
+              <Text> 游客登录 </Text>
+            </Button>
 
-        </Content>
+          </View>
+          <View style={{flex: 2, flexDirection: 'column', alignItems: 'center'}}>
+
+            {
+              missingField && <Text style={{color: 'crimson'}}> 请填写完整登录信息 </Text>
+            }
+
+            { (errors !== undefined && errors.length !== 0 && !missingField) &&
+              errors.map((error, i) => (
+                <Text key={i} style={{color: 'crimson'}}> {error} </Text>
+            ))}
+
+            {
+              isFetching && <Spinner color='black' />
+            }
+            {
+              (isFetching && cookieLogin) &&
+              <Text> Token Login </Text>
+            }
+          </View>
+        </View>
       </Container>
     );
   }
 }
+
+export default connect(mapStateToProps)(Login)

@@ -137,8 +137,7 @@ export default class personPage extends Component {
                   </CardItem>
 
                   <CardItem bordered>
-                              <Button transparent textStyle={{color: '#87838B'}}
-                                onPress={() => Actions.mailPage({recipient:this.person})}>
+                              <Button transparent textStyle={{color: '#87838B'}}>
                                   <Text>联系TA</Text>
                               </Button>
                   </CardItem>

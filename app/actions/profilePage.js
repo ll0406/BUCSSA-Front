@@ -15,12 +15,17 @@ export const setName = (name) => ({
   payload: name
 });
 
-export const setBD = (date) => ({
-  type: SET_BIRTHDAY,
-  payload: date
-});
+export const setBD = (date) => {
+  const dateString = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
+  return {type: SET_BIRTHDAY, payload: dateString}
+
+}
 
 export const setPhoto = (uri) => ({
   type: SET_PHOTO,
   payload: uri
 });
+
+export const submitChange = (user) => ({
+
+})
