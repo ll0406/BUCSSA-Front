@@ -9,7 +9,7 @@ import {Col, Row, Grid} from 'react-native-easy-grid';
 import Swipeout from 'react-native-swipeout';
 
 import InboxData from './InboxData'
-import NavBarBelow from './Footer'
+import Footer from './Footer'
 
 import { CLEAR_MESSAGES } from '../constants';
 import { fetchMessageList, requestDeleteMessage, setRead } from '../actions/messageActions';
@@ -108,7 +108,7 @@ class Inbox extends Component {
               )
             }
           </Content>
-          <NavBarBelow/>
+          <Footer/>
         </Container>
       );
   }

@@ -1,6 +1,7 @@
 import {Actions, Router, Scene} from 'react-native-router-flux';
 import React, { Component } from 'react';
 import NewsP from './Components/NewsPage';
+import NewsPage from './Components/NewsPage2';
 import NewsWebScene from './Components/NewsWebScene';
 import RoommateDeck from './Components/Roommate';
 import ProfilePage from './Components/Profile';
@@ -26,7 +27,7 @@ const scenes = Actions.create(
       />
     <Scene
       key="newsPage"
-      component={NewsP}
+      component={NewsPage}
       title={"BUCSSA活动推送"}
       type='replace'
       hideNavBar={true}
