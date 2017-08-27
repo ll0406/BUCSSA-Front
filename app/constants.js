@@ -12,6 +12,7 @@ export const SET_NEWSOFFSET = "SET_READOFFSET"; //Memorize the Scroll location
 export const RECEIVE_NEWS = "RECEIVE_NEWS";
 export const RECEIVE_NEWS_ERROR = "RECEIVE_NEWS_ERROR";
 export const REQUEST_NEWS = "REQUEST_NEWS";
+export const CLEAN_LIST = "CLEAN_LIST"
 //Photo Picker
 export const SET_PHOTO = "SET_PHOTO"; //Pick the photo
 

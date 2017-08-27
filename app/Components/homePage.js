@@ -33,7 +33,7 @@ export default class homePage extends Component {
   }
 
   render() {
-    let image = {uri: 'http://www.bu.edu/anthrop/files/2015/09/2000px-Boston_University_Wordmark.png'};
+    let image = {uri: 'http://pa1.narvii.com/6320/ae4c50660f0628fe828461c534c525a213711879_hq.gif'};
     let demoUri = 'https://mp.weixin.qq.com/s/TZrZTEK1l4X1lkqHYmm33g'
     return (
       <View style={{flex:6.2, flexDirection: 'column'}}>
@@ -50,7 +50,6 @@ export default class homePage extends Component {
               <TouchableOpacity onPress={()=> Actions.webPage({this_url:demoUri})}>
                 <Image style={styles.newsPoster} source={require('./img/demo1.png')}/>
               </TouchableOpacity>
-
           </Swiper>
         </View>
         <View style={{flex:4, flexDirection:'row', justifyContent: 'space-around', alignItems: 'center'}}>

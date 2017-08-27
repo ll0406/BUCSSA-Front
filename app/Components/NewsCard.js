@@ -2,12 +2,18 @@
 import React, { Component } from 'react';
 import {
   View,
+  Text,
   Image,
   Alert,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions,
+  StyleSheet,
 } from 'react-native';
-import {Content, Container, Header, Title, Footer, FooterTab, Button, Left, Right, Body, Text, Thumbnail, CardItem, Card, Spinner} from 'native-base';
+
+import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import {Actions} from 'react-native-router-flux'
+import {Col, Row, Grid} from 'react-native-easy-grid';
+
 
 export default class NewsCard extends Component {
   constructor(props) {
@@ -16,45 +22,53 @@ export default class NewsCard extends Component {
   }
 
   goToWeb(link) {
-  return Actions.webPage({this_url:link});
-}
+    return Actions.webPage({this_url:link});
+  }
 
   render() {
     const imgPrefix = "http://demo.bucssa.net/"
     const { index } = this.props
-    const {tid, postDate, cover, title, summary} = this.props.newsObj
+    const {tid, postDate, cover, title, author} = this.props.newsObj
 
-    let sideStyle;
-    if (index % 2 == 0){
-      sideStyle = {left: 8}
-    } else {
-      sideStyle = {right: 5}
-    }
+    const viewHeight = title.length / 22.0 * 22.0 + 22.0;
+
 
     return (
-      <Card style={{width:180, shadowOpacity:0, borderColor: 'pink'}}>
-            <CardItem style={{height:250, backgroundColor: 'pink'}}>
-                <Body>
-                <TouchableOpacity
-                onPress={() => this.goToWeb(
+      <View style={{
+        width: Dimensions.get('window').width * (61/75),
+        paddingBottom: 20,
+        backgroundColor: 'white'
+      }}>
+          <Grid>
+            <Col size={0.2} style={{alignItems:'flex-start', backgroundColor: 'gray', marginRight: 10}}>
+            </Col>
+            <Col size={12}>
+              <TouchableOpacity onPress={() => this.goToWeb(
                   `http://demo.bucssa.net/forum.php?mod=viewthread&tid=${tid}&mobile=2`
-                )}
-                >
-                <Image
-                style={[{width: 150, height: 150, resizeMode: 'cover', marginBottom:10, borderRadius:25, right:10}, sideStyle]}
-                source={{uri: imgPrefix + cover, cache: 'force-cache'}}/>
-                </TouchableOpacity>
-                <Text style={{fontSize:10, marginBottom:5}}>
-                  {postDate}
-                </Text>
-                <Text style={{fontSize:14, marginBottom:10, fontWeight:'bold'}}>
-                  {title}
-                </Text>
-
-
-                </Body>
-            </CardItem>
-       </Card>
+                )}>
+                <Text style={{fontSize: 14, fontWeight: 'bold', marginBottom: 5}}>{title}</Text>
+                <Text style={{fontSize: 10}}> by {author}, {postDate} </Text>
+              </TouchableOpacity>
+            </Col>
+            <Col size={2} style={{justifyContent: 'center', alignItems: 'flex-end'}}>
+            <Icon
+              name='ios-heart-outline'
+              type='ionicon'
+              color='red'
+              onPress={() => console.log('hello')} />
+            </Col>
+          </Grid>
+       </View>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  newsCard: {
+    width: Dimensions.get('window').width * (61/75),
+    height: Dimensions.get('window').height * (90/1334),
+    shadowOpacity: 0,
+    borderColor: 'red',
+    marginBottom: 20
+  }
+})

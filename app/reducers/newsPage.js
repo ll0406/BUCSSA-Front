@@ -3,6 +3,7 @@ import {
   RECEIVE_NEWS_ERROR,
   SET_NEWSOFFSET,
   REQUEST_NEWS,
+  CLEAN_LIST
 } from '../constants';
 import { REHYDRATE } from 'redux-persist/constants';
 
@@ -24,6 +25,10 @@ function newsPageReducer(state = initialState, action){
     }
     case REQUEST_NEWS: {
       newState.isFetching = true;
+      break;
+    }
+    case CLEAN_LIST: {
+      newState.newsList = [];
       break;
     }
     case RECEIVE_NEWS: {

@@ -1,4 +1,7 @@
-import {REQUEST_NEWS, SET_NEWSOFFSET, RECEIVE_NEWS, RECEIVE_NEWS_ERROR} from '../constants';
+import {REQUEST_NEWS, SET_NEWSOFFSET,
+  RECEIVE_NEWS, RECEIVE_NEWS_ERROR,
+  CLEAN_LIST,
+} from '../constants';
 
 const hrefPrefix = "http://bucssa.net/api/mobile/index.php?version=4&module=forumdisplay&fid=2&page="
 
@@ -35,6 +38,23 @@ export const fetchNews = (current_page_index = 0) => dispatch => {
   .then(res => res.json())
   .then(
     json => {dispatch(receiveNews(json));},
+    err => console.error(err)
+  );
+};
+
+export const refreshNews = () => dispatch => {
+  dispatch(requestNews());
+  fetch(hrefPrefix + '0')
+  .then(res => res.json())
+  .then(
+    json => {
+      dispatch(
+        {
+          type: CLEAN_LIST,
+        }
+      );
+      dispatch(receiveNews(json));
+    },
     err => console.error(err)
   );
 };
