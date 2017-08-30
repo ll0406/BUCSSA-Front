@@ -14,6 +14,7 @@ import ChatPage from './Components/Chat';
 import Inbox from './Components/Inbox';
 import MessagePage from './Components/MessagePage';
 import Login from './Components/Login';
+import AccountPage from './Components/AccountPage';
 
 const scenes = Actions.create(
   <Scene key="root">
@@ -23,7 +24,6 @@ const scenes = Actions.create(
       title={"登录"}
       type='replace'
       hideNavBar={true}
-      initial
       />
     <Scene
       key="newsPage"
@@ -34,10 +34,11 @@ const scenes = Actions.create(
       />
     <Scene
       key="profilePage"
-      component={ProfilePage}
+      component={AccountPage}
       type='replace'
       title={"我"}
       hideNavBar={true}
+      initial
       />
 
     <Scene

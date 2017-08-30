@@ -13,8 +13,6 @@ import {
   Dimensions,
   FlatList,
   TouchableOpacity,
-  TouchableHighlight,
-  RefreshControl,
   Text,
   Button
 } from 'react-native';
@@ -145,7 +143,7 @@ class NewsPage extends Component {
                 item.map((swiperObj, index) => {
                   return (
                     <TouchableOpacity key={index}>
-                      <Image style={styles.newsPoster} source={{uri: swiperObj.imageUrl}} />
+                      <Image style={styles.newsPoster} source={{uri: swiperObj.imageUrl, cache: 'force-cache'}} />
                     </TouchableOpacity>
                   )
                 })
