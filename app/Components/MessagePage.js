@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
-import { View, TextInput, StyleSheet, Dimensions, KeyboardAvoidingView } from 'react-native';
-import { Actions } from 'react-native-router-flux'
-import { Content, Container, Item , Input , Left, Body,Card,
-   CardItem ,Text, Header, Button} from 'native-base';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  Dimensions,
+  KeyboardAvoidingView,
+  Image,
+  Text,
+  TouchableOpacity
+ } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
-import { GiftedChat, Bubble } from 'react-native-gifted-chat';
+import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat';
 
 //On Socket Implementation
 import SocketIOClient from 'socket.io-client';
@@ -13,14 +20,15 @@ import { fetchMessage, fetchMessageList, requestMessageByOffset,
          replyMessage, setMessageRead} from '../actions/messageActions';
 import { CLEAR_MESSAGES } from '../constants';
 
-import MessageCard from './MessageCard';
-
 const mapStateToProps = (state) => ({
   user: state.userReducer.userData,
   initialMessages: state.messageReducer.initialMessages,
   oldMessages: state.messageReducer.oldMessages,
   isFetchingMessage: state.messageReducer.isFetchingMessage,
 })
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 class MessagePage extends Component {
   constructor(props) {
@@ -82,7 +90,6 @@ class MessagePage extends Component {
     }
   }
 
-
   componentDidMount() {
     const { dispatch, plid, pmType, pmNum, user } = this.props;
     dispatch(fetchMessage(user.uid, plid, 5, pmType, 0, 30, user.token, 'new'));
@@ -142,21 +149,21 @@ class MessagePage extends Component {
 
   }
 
-  onListViewScroll(event) {
-        let nativeoffsetY = event.nativeEvent.contentOffset.y;
-        this.setState({
-            scrolled: nativeoffsetY > 0,
-            contentOffset: nativeoffsetY,
-        });
-        if (nativeoffsetY === 0 && this.state.incomingBuffer.length !== 0) {
-          this.setState((previousState) => {
-            return {
-              messages: GiftedChat.append(previousState.messages, this.state.incomingBuffer),
-              incomingBuffer: [],
-            };
-          });
-        }
-    }
+  _renderTime = (props) => {
+    return (
+        <Text
+          style={{
+            fontSize: 8,
+            color: 'gray',
+            marginBottom: 5,
+            paddingRight: 10,
+            paddingLeft: 10,
+          }}
+        >
+          {props.currentMessage.createdAt.toLocaleTimeString()}
+        </Text>
+    );
+  }
 
   renderBubble = (props) => {
     return (
@@ -164,60 +171,133 @@ class MessagePage extends Component {
        {...props}
        textStyle={{
             left: {
-              fontWeight: 'bold',
+              fontSize: 14,
+              color: 'black'
             },
             right: {
-    	         fontWeight: 'bold',
+    	         fontSize: 14,
+               color: 'black'
     	       }
         }}
         wrapperStyle={{
             left: {
-              backgroundColor: 'lightgray',
+              backgroundColor: '#fdf1f0',
             },
             right: {
-              backgroundColor: 'pink'
+              backgroundColor: '#fdf1f0'
             }
         }} /> )
       }
 
+  _renderSend = (props) => {
+    return (
+      <Send
+        {...props}
+        >
+        <View style={{marginRight: 10, marginBottom: 5}}>
+            <Image source={require('../img/send.png')} resizeMode={'center'}/>
+        </View>
+      </Send>
+    );
+  }
+
   render() {
-     const { user, isFetchingMessage, pmNum } = this.props;
+     const { user, isFetchingMessage, pmNum, pmType, toUsername, pmSubject } = this.props;
      const { messages } = this.state;
      return (
-       <Container>
-          <Header />
+       <View style={{flex: 1}}>
+        <View style={styles.topBar}>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => Actions.pop()}
+          >
+            <Image
+              style={styles.backButton}
+              source={require('../img/leftArrow.png')}
+              />
+          </TouchableOpacity>
+          <Text style={styles.topBarText}>
+            {pmType=== 1 ?
+              `${toUsername}` :
+              `群聊: ${pmSubject}`
+            }
+          </Text>
+          <View style={styles.separator} />
+        </View>
           { (messages.length !== 0) &&
              <GiftedChat
               messages={messages}
               onSend={(newMessage) => this.onSend(newMessage)}
               user={{
                 _id: eval(user.uid),
+                avatar: user.avatar['0'],
               }}
+              placeholder='请输入...'
               loadEarlier={messages.length < pmNum}
               onLoadEarlier={this.onLoadEarlier}
               renderBubble={this.renderBubble}
-              listViewProps={{
-                    onScroll:this.onListViewScroll.bind(this),
-                    ref:(ref)=>{this._listView = ref},
-                }}
+              renderTime={this._renderTime}
+              renderSend={this._renderSend}
+              showUserAvatar={true}
             />
         }
-        </Container>
+        </View>
      )
   }
 }
 
 const styles = StyleSheet.create({
-  textInputView: {
-    borderColor:'pink',
-    width: Dimensions.get('window').width,
-    borderWidth: 4,
-    borderStyle: 'solid',
-    borderRadius: 25,
+  topBar: {
+    marginTop: windowHeight * (35/1334),
+    height: windowHeight * (100/1334),
+    width: windowWidth,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  topBarText: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   textInput: {
     marginLeft: 15,
     fontSize: 18,
+  },
+  avatarContainer: {
+    height: windowHeight * (50/1334),
+    width: windowHeight * (50/1334),
+    borderRadius: Dimensions.get('window').height * (25/1334),
+    overflow: 'hidden'
+  },
+  avatar: {
+    height: windowHeight * (50/1334),
+    width: windowHeight * (50/1334),
+  },
+  inputToolbar: {
+    width: windowWidth,
+    height: windowHeight * (90/1334),
+    backgroundColor: '#f9685d',
+    justifyContent: 'center',
+  },
+  sendImg: {
+    width: windowWidth * (75/750),
+    height: windowHeight * (50/1334),
+  },
+  separator: {
+    height: 1,
+    width: Dimensions.get('window').width * (65/75),
+    backgroundColor: "#e77163",
+    position: 'absolute',
+    bottom: 1,
+  },
+  buttonContainer: {
+    height: windowHeight * (50/1334),
+    width: windowWidth * (50/1334),
+    position: 'absolute',
+    left: windowWidth * (50/750)
+  },
+  backButton: {
+    height: windowHeight * (50/1334),
+    width: windowWidth * (60/1334),
   }
 
 })

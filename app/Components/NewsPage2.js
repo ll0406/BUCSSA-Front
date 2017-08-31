@@ -60,7 +60,6 @@ class NewsPage extends Component {
         readyToRefresh: true
       })
     }
-    console.log(yCoord);
   }
 
   componentDidMount() {
@@ -87,16 +86,12 @@ class NewsPage extends Component {
 
   onRefresh = () => {
     this.setState({refreshing: true});
-    console.log("Start to refresh");
     setTimeout(() => {
       this.setState({refreshing: false});
-      console.log("Refresh Stop")
     }, 2000);
   }
 
   handleListEndReach = () => {
-    console.log("END Reached");
-    console.log(this.props.newsList.length / 10)
     const { dispatch, isFetching} = this.props;
     if (!isFetching) {
       dispatch(fetchNews(current_page_index = this.props.newsList.length / 10));
@@ -106,7 +101,6 @@ class NewsPage extends Component {
   handleRelease = (event) => {
     if (this.state.readyToRefresh) {
       const { dispatch } = this.props;
-      console.log("REFRESH NOW")
       this.refs.NewsList.scrollToOffset({offset: -150});
       this.setState({ refreshing: true }, () => dispatch(refreshNews()))
       setTimeout(() => {
