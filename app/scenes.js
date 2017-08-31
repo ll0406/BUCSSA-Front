@@ -11,7 +11,7 @@ import homePage from './Components/homePage';
 import PotentialList from './Components/potentialList';
 import DatePick from './Components/DatePicking';
 import ChatPage from './Components/Chat';
-import Inbox from './Components/Inbox';
+import Inbox from './Components/Inbox2';
 import MessagePage from './Components/MessagePage';
 import Login from './Components/Login';
 import AccountPage from './Components/AccountPage';
@@ -24,6 +24,7 @@ const scenes = Actions.create(
       title={"登录"}
       type='replace'
       hideNavBar={true}
+      initial
       />
     <Scene
       key="newsPage"
@@ -38,7 +39,6 @@ const scenes = Actions.create(
       type='replace'
       title={"我"}
       hideNavBar={true}
-      initial
       />
 
     <Scene
@@ -86,13 +86,13 @@ const scenes = Actions.create(
       component={Inbox}
       title={"收件箱"}
       type='replace'
-      hideNavBar={false}
+      hideNavBar={true}
       />
     <Scene
       key="messagePage"
       component={MessagePage}
       title={"信息"}
-      hideNavBar={false}
+      hideNavBar={true}
       />
   </Scene>
 );
