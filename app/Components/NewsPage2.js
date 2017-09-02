@@ -21,8 +21,12 @@ import Footer from './Footer'
 import NewsCard from './NewsCard'
 import NewsWebScene from './NewsWebScene'
 import { LinearGradient } from 'expo';
-import {setNewsOffset, fetchNews, receiveNews, refreshNews} from '../actions/newsPage'
-import defaultNews from './newsData'
+import {setNewsOffset, fetchNews, receiveNews, refreshNews} from '../actions/newsPage';
+import {
+  fetchThreadCollection,
+  requestAddThread,
+  requestDeleteThread
+ } from  '../actions/newsCollectionAction';
 
 import {connect} from 'react-redux';
 import {Thumbnail, Spinner} from 'native-base';
@@ -39,6 +43,9 @@ const mapStateToProps = (state) => ({
   initialOffset: state.newsPageReducer.newsOffset,
   newsList: state.newsPageReducer.newsList,
   isFetching: state.newsPageReducer.isFetching,
+  user: state.userReducer.userData,
+  collectionList: state.collectionReducer.collectionList,
+  tidList: state.collectionReducer.tidList
 })
 
 class NewsPage extends Component {
@@ -53,6 +60,21 @@ class NewsPage extends Component {
     }
   }
 
+  addToCollection = (tid, subject, author, dateline) => {
+    const { dispatch, user } = this.props;
+    dispatch(
+      requestAddThread(user.uid, tid, subject, author, dateline, user.token)
+    );
+  }
+
+  deleteFromCollection = (tid, subject, author, dateline) => {
+    const { dispatch, user } = this.props;
+    dispatch(
+      requestDeleteThread(user.uid, tid, subject, author, dateline, user.token)
+    );
+  }
+
+
   setCurrentReadOffset = (event) => {
     const yCoord = (event.nativeEvent.contentOffset.y);
     if (yCoord < -150) {
@@ -63,7 +85,7 @@ class NewsPage extends Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const { dispatch, user, collectionList } = this.props;
     const { listLength } = this.state;
 
     //Do not load every time!!
@@ -71,6 +93,9 @@ class NewsPage extends Component {
       dispatch(
         fetchNews(current_page_index = this.props.newsList.length / 10)
       );
+    }
+    if (user !== undefined) {
+      dispatch(fetchThreadCollection(user.uid, user.token));
     }
   }
 
@@ -114,6 +139,7 @@ class NewsPage extends Component {
   _keyExtractor = (item, index) => index;
 
   _renderItem = ({item}) => {
+    const loggedIn = this.props.user !== undefined;
     if (Array.isArray(item)) {
       return (
         <View
@@ -146,15 +172,24 @@ class NewsPage extends Component {
         </View>
       )
     } else {
+      const { tidList } = this.props;
+      const inCollection = tidList && tidList.includes(item.tid);
       return (
-        <NewsCard newsObj={item} />
+        <NewsCard
+          newsObj={item}
+          isLoggedIn={loggedIn}
+          addAction={this.addToCollection}
+          deleteAction={this.deleteFromCollection}
+          isInCollection={inCollection}
+          />
       );
     }
     return null;
   }
 
+
   render() {
-    const {initialOffset, isFetching, newsList} = this.props;
+    const { initialOffset, isFetching, newsList, tidList, user } = this.props;
     const {refreshing} = this.state;
 
     const swiperDummy = [
@@ -213,7 +248,7 @@ class NewsPage extends Component {
         }
         </View>
         <View style={styles.listView}>
-            {
+        { (!user || tidList) &&
             <FlatList
               data={pageData}
               renderItem={this._renderItem}
@@ -226,6 +261,7 @@ class NewsPage extends Component {
               scrollEventThrottle={60}
               ref='NewsList'
               refreshing ={this.state.refreshing}
+              extraData={this.props.tidList}
             />
           }
         </View>

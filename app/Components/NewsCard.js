@@ -10,10 +10,9 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import { Card, ListItem, Button, Icon } from 'react-native-elements'
-import {Actions} from 'react-native-router-flux'
+import { Card, ListItem, Button, Icon } from 'react-native-elements';
+import {Actions} from 'react-native-router-flux';
 import {Col, Row, Grid} from 'react-native-easy-grid';
-
 
 export default class NewsCard extends Component {
   constructor(props) {
@@ -27,12 +26,9 @@ export default class NewsCard extends Component {
 
   render() {
     const imgPrefix = "http://demo.bucssa.net/"
-    const { index } = this.props
-    const {tid, postDate, cover, title, author} = this.props.newsObj
-
+    const { index, addAction, isLoggedIn, isInCollection, deleteAction } = this.props
+    const {tid, postDate, title, author} = this.props.newsObj
     const viewHeight = title.length / 22.0 * 22.0 + 22.0;
-
-
     return (
       <View style={{
         width: Dimensions.get('window').width * (61/75),
@@ -51,11 +47,27 @@ export default class NewsCard extends Component {
               </TouchableOpacity>
             </Col>
             <Col size={2} style={{justifyContent: 'center', alignItems: 'flex-end'}}>
-            <Icon
-              name='ios-heart-outline'
-              type='ionicon'
-              color='red'
-              onPress={() => console.log('hello')} />
+            {
+              isLoggedIn ?
+                (
+                  isInCollection ?
+                      <Icon
+                      name='ios-heart'
+                      type='ionicon'
+                      color='red'
+                      onPress={() => deleteAction(tid, title, author, postDate)}
+                      />
+                    :
+                      <Icon
+                      name='ios-heart-outline'
+                      type='ionicon'
+                      color='red'
+                      onPress={() => addAction(tid, title, author, postDate)}
+                      />
+                )
+                :
+                null
+            }
             </Col>
           </Grid>
        </View>

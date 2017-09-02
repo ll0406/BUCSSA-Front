@@ -14,11 +14,9 @@ export const receiveNews = json => {
   return {
       payload: json.Variables.forum_threadlist.map(thread => {
           return {
-            summary: 'Some random words: A money arrives underneath a transient vegetable. Our stray follows a pompous cotton.',
             tid: thread.tid,
             author: thread.author,
             postDate: thread.dateline,
-            cover: thread.coverpath,
             title: thread.subject,
           }
         }),
