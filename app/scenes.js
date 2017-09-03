@@ -15,6 +15,7 @@ import Inbox from './Components/Inbox2';
 import MessagePage from './Components/MessagePage';
 import Login from './Components/Login';
 import AccountPage from './Components/AccountPage';
+import NewsCollection from './Components/NewsCollection';
 
 const scenes = Actions.create(
   <Scene key="root">
@@ -92,6 +93,12 @@ const scenes = Actions.create(
       key="messagePage"
       component={MessagePage}
       title={"信息"}
+      hideNavBar={true}
+      />
+    <Scene
+      key="collectionPage"
+      component={NewsCollection}
+      title={"Collection"}
       hideNavBar={true}
       />
   </Scene>

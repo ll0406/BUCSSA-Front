@@ -17,11 +17,16 @@ import {
   Button
 } from 'react-native';
 
-import Footer from './Footer'
-import NewsCard from './NewsCard'
-import NewsWebScene from './NewsWebScene'
-import { LinearGradient } from 'expo';
-import {setNewsOffset, fetchNews, receiveNews, refreshNews} from '../actions/newsPage';
+import Footer from './Footer';
+import NewsCard from './NewsCard';
+
+import {
+  setNewsOffset,
+  fetchNews,
+  receiveNews,
+  refreshNews
+} from '../actions/newsPage';
+
 import {
   fetchThreadCollection,
   requestAddThread,
@@ -29,12 +34,11 @@ import {
  } from  '../actions/newsCollectionAction';
 
 import {connect} from 'react-redux';
-import {Thumbnail, Spinner} from 'native-base';
 import { Icon } from 'react-native-elements'
 
 import {Col, Row, Grid} from 'react-native-easy-grid';
 
-import {Actions} from 'react-native-router-flux';
+import { Actions } from 'react-native-router-flux';
 import Swiper from 'react-native-swiper';
 
 
@@ -109,7 +113,7 @@ class NewsPage extends Component {
     dispatch(setNewsOffset(this.state.offset))
   }
 
-  goToWeb(link) {
+  goToWeb = (link) => {
     Actions.webPage({this_url:link});
   }
 
@@ -185,6 +189,7 @@ class NewsPage extends Component {
           addAction={this.addToCollection}
           deleteAction={this.deleteFromCollection}
           isInCollection={inCollection}
+          isTransparent={false}
           />
       );
     }

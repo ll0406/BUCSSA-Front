@@ -79,10 +79,13 @@ class AccountPage extends Component {
     )
   }
 
-  renderListItem = (listText, hasArrow) => {
+  renderListItem = (listText, hasArrow, onPressFunc) => {
     return (
       <View style={styles.listItem}>
-      <TouchableOpacity style={styles.listItem}>
+      <TouchableOpacity
+        style={styles.listItem}
+        onPress={() => onPressFunc()}
+        >
           <Grid>
             <Col size={8} style={{justifyContent: 'center'}}>
                 <Text>{listText}</Text>
@@ -196,10 +199,10 @@ class AccountPage extends Component {
         </View>
 
         <View style={styles.listView}>
-          {this.renderListItem('我的好友', true)}
-          {this.renderListItem('我的收藏', true)}
-          {this.renderListItem('系统设置', true)}
-          {this.renderListItem('退出登录', false)}
+          {this.renderListItem('我的好友', true, () => console.log("Hello"))}
+          {this.renderListItem('我的收藏', true, () => Actions.collectionPage() )}
+          {this.renderListItem('系统设置', true, () => console.log("Hello"))}
+          {this.renderListItem('退出登录', false, () => console.log("Hello"))}
         </View>
 
 

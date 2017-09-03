@@ -15,8 +15,8 @@ export const receiveNews = json => {
           return {
             tid: thread.tid,
             author: thread.author,
-            postDate: thread.dateline,
-            title: thread.subject,
+            dateline: thread.dateline,
+            subject: thread.subject,
             isCollected: thread.isCollected,
             url: thread.url,
           }

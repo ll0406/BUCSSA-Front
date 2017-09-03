@@ -7,7 +7,6 @@ import {
   StyleSheet,
   Dimensions
 } from 'react-native';
-import { Container, Header, Title, Content, Button, Left, Right, Body, Icon, Thumbnail} from 'native-base';
 import {Actions} from 'react-native-router-flux';
 import {Col, Row, Grid} from 'react-native-easy-grid';
 

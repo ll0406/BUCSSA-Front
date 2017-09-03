@@ -1,5 +1,13 @@
 import React, {Component, PropTypes} from 'react';
-import {View, Text, Navigator, TouchableHighlight, WebView} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableHighlight,
+  WebView,
+  Dimensions,
+} from 'react-native';
+
 import {Actions} from 'react-native-router-flux'
 
 export default class NewsWebScene extends Component {

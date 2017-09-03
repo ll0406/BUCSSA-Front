@@ -128,6 +128,12 @@ class Inbox extends Component {
     );
   };
 
+  _renderHeader= () => {
+    return (
+      <View style={{width: windowWidth * (61/75), height: 20}} />
+    );
+  }
+
   render() {
     const { user, messageList, isFetchingList, dispatch} = this.props;
     const { uid, token } = user;
@@ -163,6 +169,7 @@ class Inbox extends Component {
               showsVerticalScrollIndicator={true}
               ItemSeparatorComponent={this._renderSeparator}
               ListFooterComponent={this._renderSeparator}
+              ListHeaderComponent={this._renderHeader}
               />
           </View>
 
@@ -207,7 +214,7 @@ const styles = StyleSheet.create({
   listView: {
     backgroundColor: 'transparent',
     position: 'absolute',
-    top: windowHeight * (135/1334),
+    top: windowHeight * (124/1334),
     left: 0,
     right: 0,
     bottom: 0,
