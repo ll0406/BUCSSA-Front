@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   footerView: {
     height:  Dimensions.get('window').height * (100/1334),
     width: Dimensions.get('window').width,
-    backgroundColor: '#f2b7b0',
+    backgroundColor: '#c03431',
     zIndex: 3,
     position: 'absolute',
     top: Dimensions.get('window').height * (1234/1334),
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   footerIcon: {
     height: Dimensions.get('window').height * (30/1334),
     width: Dimensions.get('window').width * (90/750),
-    marginBottom: Dimensions.get('window').height * (6/1334),
+    marginBottom: Dimensions.get('window').height * (15/1334),
   },
   footerFont: {
     fontSize: 8,

@@ -27,7 +27,7 @@ export default class NewsCard extends Component {
   render() {
     const imgPrefix = "http://demo.bucssa.net/"
     const { index, addAction, isLoggedIn, isInCollection, deleteAction } = this.props
-    const {tid, postDate, title, author} = this.props.newsObj
+    const {tid, postDate, title, author, url, isCollected} = this.props.newsObj
     const viewHeight = title.length / 22.0 * 22.0 + 22.0;
     return (
       <View style={{
@@ -39,11 +39,9 @@ export default class NewsCard extends Component {
             <Col size={0.2} style={{alignItems:'flex-start', backgroundColor: 'gray', marginRight: 10}}>
             </Col>
             <Col size={12}>
-              <TouchableOpacity onPress={() => this.goToWeb(
-                  `http://demo.bucssa.net/forum.php?mod=viewthread&tid=${tid}&mobile=2`
-                )}>
+              <TouchableOpacity onPress={() => this.goToWeb(url)}>
                 <Text style={{fontSize: 14, fontWeight: 'bold', marginBottom: 5}}>{title}</Text>
-                <Text style={{fontSize: 10}}> by {author}, {postDate} </Text>
+                <Text style={{fontSize: 10}}> by {author}, {new Date(postDate*1000).toLocaleDateString()} </Text>
               </TouchableOpacity>
             </Col>
             <Col size={2} style={{justifyContent: 'center', alignItems: 'flex-end'}}>
@@ -59,10 +57,10 @@ export default class NewsCard extends Component {
                       />
                     :
                       <Icon
-                      name='ios-heart-outline'
-                      type='ionicon'
-                      color='red'
-                      onPress={() => addAction(tid, title, author, postDate)}
+                        name='ios-heart-outline'
+                        type='ionicon'
+                        color='red'
+                        onPress={() => addAction(tid, title, author, postDate)}
                       />
                 )
                 :

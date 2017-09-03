@@ -213,7 +213,7 @@ class MessagePage extends Component {
           >
             <Image
               style={styles.backButton}
-              source={require('../img/leftArrow.png')}
+              source={require('../img/leftArrow-white.png')}
               />
           </TouchableOpacity>
           <Text style={styles.topBarText}>
@@ -248,15 +248,22 @@ class MessagePage extends Component {
 
 const styles = StyleSheet.create({
   topBar: {
-    marginTop: windowHeight * (35/1334),
-    height: windowHeight * (100/1334),
+    height: windowHeight * (124/1334),
+    backgroundColor: '#c03431',
     width: windowWidth,
     alignItems: 'center',
-    justifyContent: 'center',
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    shadowColor: 'black',
+    shadowOffset: { height: 2, width: 2 },
+    zIndex: 2,
   },
   topBarText: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: 'white',
+    bottom: windowHeight * (25/1334),
+    position: 'absolute',
   },
   textInput: {
     marginLeft: 15,
@@ -293,11 +300,12 @@ const styles = StyleSheet.create({
     height: windowHeight * (50/1334),
     width: windowWidth * (50/1334),
     position: 'absolute',
-    left: windowWidth * (50/750)
+    left: windowWidth * (50/750),
+    bottom: windowHeight * (18/1334),
   },
   backButton: {
-    height: windowHeight * (50/1334),
-    width: windowWidth * (60/1334),
+    height: windowHeight * (41/1334),
+    width: windowHeight * (41/1334),
   }
 
 })

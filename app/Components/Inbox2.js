@@ -79,8 +79,7 @@ class Inbox extends Component {
                 item.hasNew > 0 &&
                 <Badge
                 containerStyle={{
-                  backgroundColor: '#e77163',
-
+                  backgroundColor: '#c03431',
                 }}
                 wrapperStyle={styles.badge}
                 value={item.hasNew}
@@ -137,11 +136,11 @@ class Inbox extends Component {
           <View style={styles.backgroundImageView}>
             <Image
               style={styles.backgroundImage}
-              source={require('../img/messageBackground.png')}
+              source={require('../img/iconBackground.png')}
             />
           </View>
 
-          <View style={styles.header}>
+          <View style={styles.topBar}>
             <TouchableOpacity style={styles.addButtonContainer}>
               <Image
                 source={require('../img/addMessage.png')}
@@ -163,7 +162,6 @@ class Inbox extends Component {
               keyExtractor={this._keyExtractor}
               showsVerticalScrollIndicator={true}
               ItemSeparatorComponent={this._renderSeparator}
-              ListHeaderComponent={this._renderSeparator}
               ListFooterComponent={this._renderSeparator}
               />
           </View>
@@ -183,22 +181,28 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   backgroundImage: {
-    height: windowHeight * (3/4),
-    width: windowWidth,
-  },
-  header: {
-    top: windowHeight * (35/1334),
-    height: windowHeight * (100/1334),
-    width: windowWidth,
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 2,
     position: 'absolute',
+    height: windowWidth * (447/750),
+    width: windowWidth * (447/750),
+    bottom: windowHeight * (12/1334),
+    left: windowWidth * (-65/750),
+  },
+  topBar: {
+    height: windowHeight * (124/1334),
+    backgroundColor: '#ededed',
+    alignItems: 'center',
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    shadowColor: 'black',
+    shadowOffset: { height: 2, width: 2 },
+    zIndex: 2,
   },
   headerText: {
-    color: '#e77163',
+    color: '#c03431',
     fontWeight: 'bold',
-    fontSize: 18
+    fontSize: 18,
+    position: 'absolute',
+    bottom: windowHeight * (30/1334),
   },
   listView: {
     backgroundColor: 'transparent',
@@ -218,7 +222,7 @@ const styles = StyleSheet.create({
   separator: {
     height: 1,
     width: windowWidth * (65/75),
-    backgroundColor: "#e77163",
+    backgroundColor: "#c03431",
   },
   msgTitleFont: {
     fontWeight: 'bold',
@@ -249,6 +253,7 @@ const styles = StyleSheet.create({
   addButtonContainer: {
     position: 'absolute',
     right: windowWidth * (50/750),
+    bottom: windowHeight * (25/1334),
   },
   addButton: {
     height: windowHeight * (50/1334),

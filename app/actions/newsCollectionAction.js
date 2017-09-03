@@ -35,7 +35,7 @@ export const fetchThreadCollection = (uid, token) => dispatch => {
 export const requestDeleteThread = (uid, tid, subject, author, dateline, token) => dispatch => {
   const data = {
     uid,
-    tid,
+    tids: [tid].join(','),
     token
   }
   fetch(`${ENDPOINTS.BASE}${ENDPOINTS.DELETE_THREAD_FROM_COLLLECTION}`, {

@@ -150,10 +150,10 @@ class AccountPage extends Component {
           </TouchableOpacity>
 
           <LinearGradient
-          colors={['#F7931E', '#F9685D']}
-          start={[0.0, 0.5]}
-          end={[1.0, 0.5]}
-          style={styles.gradient}
+              colors={['#c2281b', '#8e1b11']}
+              start={[0.0, 0.5]}
+              end={[1.0, 0.5]}
+              style={styles.gradient}
             >
 
             <View style={styles.profileNameView}>
@@ -217,19 +217,18 @@ const styles = StyleSheet.create({
     flex: 1
   },
   topView: {
-    marginTop: Dimensions.get('window').height * (35/1334),
-    height: Dimensions.get('window').height * (460/1334),
+    height: Dimensions.get('window').height * (495/1334),
   },
   gradient: {
     height: Dimensions.get('window').height * (265/1334),
     zIndex: 1,
   },
   modifyButton: {
-    height: Dimensions.get('window').height * (40/1334),
-    width: Dimensions.get('window').height * (40/1334) * (205/33),
+    height: Dimensions.get('window').width * (144/750) * (32/144),
+    width: Dimensions.get('window').width * (144/750),
     position: 'absolute',
-    right: Dimensions.get('window').width * (-20/750),
-    bottom: Dimensions.get('window').height * (15/1334),
+    right: Dimensions.get('window').width * (30/750),
+    bottom: Dimensions.get('window').height * (17/1334),
   },
   profileSvg: {
     position: 'absolute',
@@ -275,9 +274,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   separator: {
-    height: Dimensions.get('window').height * (3/1334),
+    height: 1,
     width: Dimensions.get('window').width * (650/750),
-    backgroundColor: '#F9685D',
+    backgroundColor: '#c03431',
     position: 'absolute',
     bottom: 1,
     right: Dimensions.get('window').width * (50/750)
@@ -290,9 +289,9 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * (650/750),
   },
   listSeparator: {
-    height: Dimensions.get('window').height * (3/1334),
+    height: 1,
     width: Dimensions.get('window').width * (650/750),
-    backgroundColor: '#F9685D',
+    backgroundColor: '#c03431',
     position: 'absolute',
     bottom: 1,
   }

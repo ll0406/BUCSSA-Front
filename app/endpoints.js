@@ -20,3 +20,4 @@ export const SET_READ = '/pm/chat/setRead.php';
 export const GET_THREAD_COLLECTION = '/thread/collection/get.php';
 export const ADD_THREAD_TO_COLLECTION = '/thread/collection/add.php';
 export const DELETE_THREAD_FROM_COLLLECTION = '/thread/collection/delete.php';
+export const GET_OFFICIAL_THREAD = '/thread/getOfficialThreads.php';
