@@ -2,8 +2,7 @@ import {REQUEST_NEWS, SET_NEWSOFFSET,
   RECEIVE_NEWS, RECEIVE_NEWS_ERROR,
   CLEAN_LIST,
 } from '../constants';
-
-const hrefPrefix = "http://bucssa.net/api/mobile/index.php?version=4&module=forumdisplay&fid=2&page="
+import * as ENDPOINTS from '../endpoints';
 
 export const setNewsOffset = (offset) => ({
   type: SET_NEWSOFFSET,
@@ -12,14 +11,14 @@ export const setNewsOffset = (offset) => ({
 
 export const receiveNews = json => {
   return {
-      payload: json.Variables.forum_threadlist.map(thread => {
+      payload: json.datas.map(thread => {
           return {
-            summary: 'Some random words: A money arrives underneath a transient vegetable. Our stray follows a pompous cotton.',
             tid: thread.tid,
             author: thread.author,
-            postDate: thread.dateline,
-            cover: thread.coverpath,
-            title: thread.subject,
+            dateline: thread.dateline,
+            subject: thread.subject,
+            isCollected: thread.isCollected,
+            url: thread.url,
           }
         }),
       type: RECEIVE_NEWS,
@@ -32,19 +31,22 @@ export const requestNews = () => {
   }
 }
 
-export const fetchNews = (current_page_index = 0) => dispatch => {
+export const fetchNews = (current_page_index = 0, uid) => dispatch => {
   dispatch(requestNews());
-  fetch(hrefPrefix + (current_page_index + 1))
+  fetch(`${ENDPOINTS.BASE}${ENDPOINTS.GET_OFFICIAL_THREAD}?uid=${uid}&pageIndex=${current_page_index+1}&pageSize=10`)
   .then(res => res.json())
   .then(
-    json => {dispatch(receiveNews(json));},
+    json => {
+      console.log("RES is ==> ", json)
+      dispatch(receiveNews(json));
+    },
     err => console.error(err)
   );
 };
 
-export const refreshNews = () => dispatch => {
+export const refreshNews = (uid) => dispatch => {
   dispatch(requestNews());
-  fetch(hrefPrefix + '0')
+  fetch(`${ENDPOINTS.BASE}${ENDPOINTS.GET_OFFICIAL_THREAD}?uid=${uid}&pageIndex=1&pageSize=10`)
   .then(res => res.json())
   .then(
     json => {

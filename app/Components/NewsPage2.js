@@ -17,20 +17,28 @@ import {
   Button
 } from 'react-native';
 
-import Footer from './Footer'
-import NewsCard from './NewsCard'
-import NewsWebScene from './NewsWebScene'
-import { LinearGradient } from 'expo';
-import {setNewsOffset, fetchNews, receiveNews, refreshNews} from '../actions/newsPage'
-import defaultNews from './newsData'
+import Footer from './Footer';
+import NewsCard from './NewsCard';
+
+import {
+  setNewsOffset,
+  fetchNews,
+  receiveNews,
+  refreshNews
+} from '../actions/newsPage';
+
+import {
+  fetchThreadCollection,
+  requestAddThread,
+  requestDeleteThread
+ } from  '../actions/newsCollectionAction';
 
 import {connect} from 'react-redux';
-import {Thumbnail, Spinner} from 'native-base';
 import { Icon } from 'react-native-elements'
 
 import {Col, Row, Grid} from 'react-native-easy-grid';
 
-import {Actions} from 'react-native-router-flux';
+import { Actions } from 'react-native-router-flux';
 import Swiper from 'react-native-swiper';
 
 
@@ -39,7 +47,14 @@ const mapStateToProps = (state) => ({
   initialOffset: state.newsPageReducer.newsOffset,
   newsList: state.newsPageReducer.newsList,
   isFetching: state.newsPageReducer.isFetching,
+  user: state.userReducer.userData,
+  collectionList: state.collectionReducer.collectionList,
+  tidList: state.collectionReducer.tidList
 })
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 
 class NewsPage extends Component {
   constructor(props) {
@@ -53,6 +68,21 @@ class NewsPage extends Component {
     }
   }
 
+  addToCollection = (tid, subject, author, dateline) => {
+    const { dispatch, user } = this.props;
+    dispatch(
+      requestAddThread(user.uid, tid, subject, author, dateline, user.token)
+    );
+  }
+
+  deleteFromCollection = (tid, subject, author, dateline) => {
+    const { dispatch, user } = this.props;
+    dispatch(
+      requestDeleteThread(user.uid, tid, subject, author, dateline, user.token)
+    );
+  }
+
+
   setCurrentReadOffset = (event) => {
     const yCoord = (event.nativeEvent.contentOffset.y);
     if (yCoord < -150) {
@@ -63,14 +93,17 @@ class NewsPage extends Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const { dispatch, user, collectionList } = this.props;
     const { listLength } = this.state;
 
     //Do not load every time!!
     if (listLength === 0){
       dispatch(
-        fetchNews(current_page_index = this.props.newsList.length / 10)
+        fetchNews(current_page_index = this.props.newsList.length / 10, user.uid)
       );
+    }
+    if (user !== undefined) {
+      dispatch(fetchThreadCollection(user.uid, user.token));
     }
   }
 
@@ -80,7 +113,7 @@ class NewsPage extends Component {
     dispatch(setNewsOffset(this.state.offset))
   }
 
-  goToWeb(link) {
+  goToWeb = (link) => {
     Actions.webPage({this_url:link});
   }
 
@@ -100,9 +133,9 @@ class NewsPage extends Component {
 
   handleRelease = (event) => {
     if (this.state.readyToRefresh) {
-      const { dispatch } = this.props;
+      const { dispatch, user } = this.props;
       this.refs.NewsList.scrollToOffset({offset: -150});
-      this.setState({ refreshing: true }, () => dispatch(refreshNews()))
+      this.setState({ refreshing: true }, () => dispatch(refreshNews(user.uid)))
       setTimeout(() => {
         this.refs.NewsList.scrollToOffset({offset: 0});
         this.setState({ refreshing: false })
@@ -114,6 +147,7 @@ class NewsPage extends Component {
   _keyExtractor = (item, index) => index;
 
   _renderItem = ({item}) => {
+    const loggedIn = this.props.user !== undefined;
     if (Array.isArray(item)) {
       return (
         <View
@@ -146,15 +180,25 @@ class NewsPage extends Component {
         </View>
       )
     } else {
+      const { tidList } = this.props;
+      const inCollection = tidList && tidList.includes(item.tid);
       return (
-        <NewsCard newsObj={item} />
+        <NewsCard
+          newsObj={item}
+          isLoggedIn={loggedIn}
+          addAction={this.addToCollection}
+          deleteAction={this.deleteFromCollection}
+          isInCollection={inCollection}
+          isTransparent={false}
+          />
       );
     }
     return null;
   }
 
+
   render() {
-    const {initialOffset, isFetching, newsList} = this.props;
+    const { initialOffset, isFetching, newsList, tidList, user } = this.props;
     const {refreshing} = this.state;
 
     const swiperDummy = [
@@ -180,23 +224,9 @@ class NewsPage extends Component {
           style={styles.topBar}
         >
             <Image
-            style={styles.topBarIcon}
-            source={require('../img/one.png')}
+            style={styles.topBarImage}
+            source={require('../img/topBarImage.png')}
               />
-          <LinearGradient
-          colors={['#F7931E', '#F9685D']}
-          start={[0.0, 0.5]}
-          end={[1.0, 0.5]}
-          style={styles.topBarGradient}>
-              <Text
-                style={{
-                  backgroundColor: 'transparent',
-                  fontSize: 15,
-                  color: '#fff',
-                }}>
-                BUCSSA
-              </Text>
-          </LinearGradient>
         </View>
         <View style={styles.refreshView}>
         {
@@ -213,7 +243,7 @@ class NewsPage extends Component {
         }
         </View>
         <View style={styles.listView}>
-            {
+        { (!user || tidList) &&
             <FlatList
               data={pageData}
               renderItem={this._renderItem}
@@ -226,11 +256,11 @@ class NewsPage extends Component {
               scrollEventThrottle={60}
               ref='NewsList'
               refreshing ={this.state.refreshing}
+              extraData={this.props.tidList}
             />
           }
         </View>
         <View style={styles.newsBottomView}>
-          <Image style={styles.newsBottom} source={require('../img/newsBottom.png')} />
           <View style={styles.iconsView}>
             <Grid>
               <Col style={{alignItems: 'center', justifyContent: 'center'}}>
@@ -279,7 +309,7 @@ const styles = StyleSheet.create({
   listView: {
     backgroundColor: 'transparent',
     position: 'absolute',
-    top: 60,
+    top: windowHeight * (124/1334),
     left: 0,
     right: 0,
     bottom: 0,
@@ -291,7 +321,7 @@ const styles = StyleSheet.create({
   refreshView: {
     backgroundColor: 'transparent',
     position: 'absolute',
-    top: 60,
+    top: windowHeight * (124/1334),
     left: 0,
     right: 0,
     bottom: 0,
@@ -313,27 +343,21 @@ const styles = StyleSheet.create({
     zIndex: 3,
   },
   topBar: {
-    marginTop: Dimensions.get('window').height * (35/1334),
-    height: Dimensions.get('window').height * (85/1334),
-    overflow: 'hidden',
-  },
-  topBarGradient: {
-    height: Dimensions.get('window').height * (85/1334),
+    height: windowHeight * (124/1334),
+    backgroundColor: '#ededed',
     alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1,
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    shadowColor: 'black',
+    shadowOffset: { height: 2, width: 2 },
+    zIndex: 5,
   },
-  topBarIcon: {
+  topBarImage: {
     position: 'absolute',
-    height: 75,
-    width: 75,
-    opacity: 0.3,
-    top: -5,
-    left: -10,
-    right: 0,
-    bottom: 0,
-    zIndex: 2,
+    height: windowWidth * (65/75) * (81/650),
+    width: windowWidth * (65/75),
     overflow: 'hidden',
+    bottom: 5,
   },
   row: {
     padding: 10,
@@ -382,6 +406,7 @@ const styles = StyleSheet.create({
         marginBottom: 0
   },
   newsBottom: {
+    justifyContent: 'center',
     width: Dimensions.get('window').width,
     height:  Dimensions.get('window').height * (90/1334),
     position: 'absolute',
@@ -390,9 +415,9 @@ const styles = StyleSheet.create({
   },
   doggy: {
     height:  Dimensions.get('window').height * (255/1334),
-    width: Dimensions.get('window').height * (255/1334) * (297/237),
+    width: Dimensions.get('window').height * (255/1334) * (278/267),
     position: 'absolute',
-    bottom: Dimensions.get('window').height * (80/1334),
+    bottom: Dimensions.get('window').height * (75/1334),
     left: Dimensions.get('window').width * (20 / 750),
     zIndex: 99,
   },
@@ -409,17 +434,17 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * (330/750),
     position: 'absolute',
     right: Dimensions.get('window').width * (50/750),
-    top: Dimensions.get('window').height * (20/1334),
+    top: Dimensions.get('window').height * (70/1334),
     backgroundColor: 'transparent'
   },
   icon: {
-    height: 40,
-    width: 40,
+    height: 45,
+    width: 45,
     marginBottom: 10,
   },
   iconText: {
-    fontSize: 12,
-    color: '#F7931E',
+    fontSize: 13,
+    color: '#c03431',
   }
 })
 
