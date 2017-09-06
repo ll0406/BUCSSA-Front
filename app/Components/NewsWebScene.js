@@ -22,7 +22,6 @@ export default class NewsWebScene extends Component {
     return (
           <WebView
             source={{uri:this.props.this_url}}
-            style={{marginTop: 70}}
           />
     )
   }

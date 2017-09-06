@@ -84,6 +84,8 @@ function userReducer(state = initialState, action){
       newState = {...savedData};
       //Prevent changeDetected rehydrate
       newState.changeDetected = false;
+      newState.errors = [];
+      newState.isFetching = false;
       break;
     }
   }

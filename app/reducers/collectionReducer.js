@@ -22,8 +22,12 @@ function collectionReducer(state = initialState, action){
       break;
     }
     case RECEIVE_COLLECTION: {
-      newState.collectionList = payload;
-      newState.tidList = payload.map(news => {
+      let actualPayload = payload;
+      if (payload === null) {
+        actualPayload = [];
+      }
+      newState.collectionList = actualPayload;
+      newState.tidList = actualPayload.map(news => {
         return (news.tid);
       })
       newState.errors = [];

@@ -4,6 +4,7 @@ import newsPageReducer from './newsPage';
 import userReducer from './userReducer';
 import messageReducer from './messageReducer';
 import collectionReducer from './collectionReducer';
+import friendsReducer from './friendsReducer';
 
 const appReducer = combineReducers({
   reducer,
@@ -11,6 +12,7 @@ const appReducer = combineReducers({
   userReducer,
   messageReducer,
   collectionReducer,
+  friendsReducer,
 });
 
 export default appReducer;
