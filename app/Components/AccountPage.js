@@ -145,12 +145,12 @@ class AccountPage extends Component {
                 />
           </Svg>
 
-          <TouchableOpacity style={styles.imageContainer}>
+          <View style={styles.imageContainer}>
             <Image
               style={styles.profileImg}
               source={{uri: picUri, cache: 'force-cache'}}
             />
-          </TouchableOpacity>
+          </View>
 
           <LinearGradient
               colors={['#c2281b', '#8e1b11']}
@@ -199,7 +199,7 @@ class AccountPage extends Component {
         </View>
 
         <View style={styles.listView}>
-          {this.renderListItem('我的好友', true, () => console.log("Hello"))}
+          {this.renderListItem('我的好友', true, () => Actions.friendsPage() )}
           {this.renderListItem('我的收藏', true, () => Actions.collectionPage() )}
           {this.renderListItem('系统设置', true, () => console.log("Hello"))}
           {this.renderListItem('退出登录', false, () => console.log("Hello"))}
@@ -217,7 +217,8 @@ class AccountPage extends Component {
 
 const styles = StyleSheet.create({
   pageView: {
-    flex: 1
+    flex: 1,
+    backgroundColor: 'white',
   },
   topView: {
     height: Dimensions.get('window').height * (495/1334),

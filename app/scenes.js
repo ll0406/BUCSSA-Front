@@ -16,6 +16,7 @@ import MessagePage from './Components/MessagePage';
 import Login from './Components/Login';
 import AccountPage from './Components/AccountPage';
 import NewsCollection from './Components/NewsCollection';
+import FriendsPage from './Components/FriendsPage';
 
 const scenes = Actions.create(
   <Scene key="root">
@@ -101,6 +102,12 @@ const scenes = Actions.create(
       title={"Collection"}
       hideNavBar={true}
       />
+      <Scene
+        key="friendsPage"
+        component={FriendsPage}
+        title={"Friends"}
+        hideNavBar={true}
+        />
   </Scene>
 );
 

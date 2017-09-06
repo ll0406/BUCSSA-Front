@@ -15,9 +15,7 @@ import { connect } from 'react-redux';
 import {Col, Row, Grid} from 'react-native-easy-grid';
 import Swipeout from 'react-native-swipeout';
 import { Badge } from 'react-native-elements';
-
-import InboxData from './InboxData'
-import Footer from './Footer'
+import Footer from './Footer';
 
 import { CLEAR_MESSAGES } from '../constants';
 import { fetchMessageList, requestDeleteMessage, setRead } from '../actions/messageActions';
@@ -49,8 +47,6 @@ class Inbox extends Component {
   }
 
   _renderItem = ({item}) => {
-    console.log("renderItem");
-    console.log(item)
     return (
       <Swipeout
         backgroundColor='transparent'
@@ -138,7 +134,7 @@ class Inbox extends Component {
     const { user, messageList, isFetchingList, dispatch} = this.props;
     const { uid, token } = user;
       return(
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, backgroundColor: 'white'}}>
           <View style={styles.backgroundImageView}>
             <Image
               style={styles.backgroundImage}

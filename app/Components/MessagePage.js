@@ -205,7 +205,7 @@ class MessagePage extends Component {
      const { user, isFetchingMessage, pmNum, pmType, toUsername, pmSubject } = this.props;
      const { messages } = this.state;
      return (
-       <View style={{flex: 1}}>
+       <View style={{flex: 1, backgroundColor: 'white'}}>
         <View style={styles.topBar}>
           <TouchableOpacity
             style={styles.buttonContainer}
@@ -222,7 +222,6 @@ class MessagePage extends Component {
               `群聊: ${pmSubject}`
             }
           </Text>
-          <View style={styles.separator} />
         </View>
           { (messages.length !== 0) &&
              <GiftedChat
@@ -308,6 +307,6 @@ const styles = StyleSheet.create({
     width: windowHeight * (41/1334),
   }
 
-})
+});
 
 export default connect(mapStateToProps)(MessagePage)

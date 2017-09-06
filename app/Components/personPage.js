@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Image, View } from 'react-native';
 import { Badge, Content, Container, Icon, DeckSwiper, Card, CardItem, Left, Body, Thumbnail, Text, Header, Button } from 'native-base';
-import {Actions} from 'react-native-router-flux';
+import { Actions } from 'react-native-router-flux';
 
 export default class personPage extends Component {
   constructor(props) {

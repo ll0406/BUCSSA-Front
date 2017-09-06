@@ -201,6 +201,10 @@ class NewsPage extends Component {
     const { initialOffset, isFetching, newsList, tidList, user } = this.props;
     const {refreshing} = this.state;
 
+    if (user !== undefined) {
+      console.log(user);
+    }
+
     const swiperDummy = [
       {
         imageUrl:'https://media.giphy.com/media/5bQtihx7wT5QI/giphy.gif',
@@ -305,6 +309,7 @@ class NewsPage extends Component {
 const styles = StyleSheet.create({
   scrollview: {
     flex: 1,
+    backgroundColor: 'white',
   },
   listView: {
     backgroundColor: 'transparent',

@@ -93,7 +93,7 @@ class NewsCollection extends Component {
     const { user, collectionList} = this.props;
 
     return (
-      <View style={{flex:1}}>
+      <View style={{flex:1, backgroundColor: 'white'}}>
         <View style={styles.backgroundImageView}>
           <Image
             style={styles.backgroundImage}
