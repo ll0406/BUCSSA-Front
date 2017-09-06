@@ -57,7 +57,7 @@ class FriendsPage extends Component {
           </Col>
           <Col size={51} style={{justifyContent: 'center'}}>
             <Text
-              style={styles.msgTitleFont}
+              style={styles.usernameFont}
               numberOfLines={1}
               ellipsizeMode='tail'
             >
@@ -187,6 +187,10 @@ const styles = StyleSheet.create({
     height: windowHeight * (120/1334),
     width: windowWidth * (65/75),
   },
+  usernameFont: {
+    fontWeight: 'bold',
+    fontSize: 14,
+  }
 
 });
 

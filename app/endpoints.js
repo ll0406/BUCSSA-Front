@@ -15,6 +15,7 @@ export const CHECK_NEW_MESSAGE = '/pm/check/newByPlid.php';
 export const GET_MESSAGE_BYOFFSET = '/pm/message/getByOffset.php';
 export const REPLY = '/pm/message/reply.php';
 export const SET_READ = '/pm/chat/setRead.php';
+export const CREATE_MESSAGE = '/pm/chat/create.php';
 
 //thread
 export const GET_THREAD_COLLECTION = '/thread/collection/get.php';

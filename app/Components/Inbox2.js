@@ -47,6 +47,7 @@ class Inbox extends Component {
   }
 
   _renderItem = ({item}) => {
+    const { dispatch, user } = this.props;
     return (
       <Swipeout
         backgroundColor='transparent'
@@ -59,7 +60,7 @@ class Inbox extends Component {
             text: '删除',
             backgroundColor: 'red',
             onPress: function(){
-              dispatch(requestDeleteMessage(uid, [plid], [pmType], token));
+              dispatch(requestDeleteMessage(user.uid, [item.plid], [item.pmType], user.token));
             },
           }
         ]}
@@ -73,14 +74,18 @@ class Inbox extends Component {
               <Col size={14} style={{justifyContent: 'center'}}>
               {
                 item.hasNew > 0 &&
-                <Badge
-                containerStyle={{
-                  backgroundColor: '#c03431',
-                }}
-                wrapperStyle={styles.badge}
-                value={item.hasNew}
-                textStyle={{ fontSize: 12 }}
-                />
+                  <View
+                    style={{
+                      backgroundColor: '#c03431',
+                      position: 'absolute',
+                      zIndex: 3,
+                      top: windowHeight * (20/1334),
+                      left:  windowHeight * (70/1334),
+                      width: 10,
+                      height: 10,
+                      borderRadius: 5,
+                    }}
+                    />
               }
                 <View style={styles.msgImageContainer}>
                   <Image
@@ -143,7 +148,10 @@ class Inbox extends Component {
           </View>
 
           <View style={styles.topBar}>
-            <TouchableOpacity style={styles.addButtonContainer}>
+            <TouchableOpacity
+              style={styles.addButtonContainer}
+              onPress={() => Actions.createMessage()}
+              >
               <Image
                 source={require('../img/addMessage.png')}
                 style={styles.addButton}
@@ -159,10 +167,14 @@ class Inbox extends Component {
 
           <View style={styles.listView}>
             <FlatList
+              onRefresh={() => {
+                dispatch(fetchMessageList(user.uid, user.token));
+              }}
+              refreshing={isFetchingList}
               data={messageList}
               renderItem={this._renderItem}
               keyExtractor={this._keyExtractor}
-              showsVerticalScrollIndicator={true}
+              showsVerticalScrollIndicator={false}
               ItemSeparatorComponent={this._renderSeparator}
               ListFooterComponent={this._renderSeparator}
               ListHeaderComponent={this._renderHeader}

@@ -1,5 +1,6 @@
 import {Actions, Router, Scene} from 'react-native-router-flux';
 import React, { Component } from 'react';
+
 import NewsP from './Components/NewsPage';
 import NewsPage from './Components/NewsPage2';
 import NewsWebScene from './Components/NewsWebScene';
@@ -17,6 +18,7 @@ import Login from './Components/Login';
 import AccountPage from './Components/AccountPage';
 import NewsCollection from './Components/NewsCollection';
 import FriendsPage from './Components/FriendsPage';
+import CreateMessage from './Components/CreateMessage';
 
 const scenes = Actions.create(
   <Scene key="root">
@@ -89,6 +91,9 @@ const scenes = Actions.create(
       title={"收件箱"}
       type='replace'
       hideNavBar={true}
+      onEnter={() => {
+        console.log(Actions.refs.inbox)
+      }}
       />
     <Scene
       key="messagePage"
@@ -107,6 +112,13 @@ const scenes = Actions.create(
         component={FriendsPage}
         title={"Friends"}
         hideNavBar={true}
+        />
+      <Scene
+        key="createMessage"
+        component={CreateMessage}
+        title={"CreateMessage"}
+        hideNavBar={true}
+        onExit={() => console.log(Actions)}
         />
   </Scene>
 );

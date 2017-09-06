@@ -5,13 +5,15 @@ import * as ENDPOINTS from '../endpoints';
 import { Actions } from 'react-native-router-flux';
 
 export const fetchMessageList = (uid, token) => dispatch => {
+  console.log("Fetching Message List");
   dispatch({ type: REQUEST_MESSAGELIST });
-  fetch(`${ENDPOINTS.BASE}${ENDPOINTS.GET_MESSAGE_LIST}?uid=${uid}&token=${token}`)
+  fetch(`${ENDPOINTS.BASE}${ENDPOINTS.GET_MESSAGE_LIST}?uid=${uid}&token=${token}&pageSize=1000`)
   .then(res => res.text())
   .then(
     text => {
       const messageList = JSON.parse(text).datas.map(
         message => {
+          console.log(message);
           return (
             {
               avatar: message.avatar,
@@ -83,10 +85,6 @@ export const fetchMessage = (uid, plid, daterange, type, page, pageSize, token, 
 
 
 export const requestDeleteMessage = (uid, plids, types, token) => dispatch => {
-  dispatch({
-    type: DELETE_MESSAGE,
-    payload: plids,
-  });
   const data = {
     uid,
     plids: plids.join(),
@@ -108,7 +106,13 @@ export const requestDeleteMessage = (uid, plids, types, token) => dispatch => {
       const json = JSON.parse(text);
       if (json.success) {
         console.log("Delete success");
+        dispatch({
+          type: DELETE_MESSAGE,
+          payload: plids,
+        });
       } else {
+        console.log(json);
+        console.log(data);
         console.log("Delete fail");
       }
     },
@@ -204,6 +208,43 @@ export const replyMessage = (uid, username, plid, message, token) => dispatch =>
         console.log("replying success");
       } else {
         console.log("replying fail");
+      }
+    },
+    err => {
+      console.err("server err");
+    }
+  )
+}
+
+export const createMessage = (uid, username, touids, subject, message, token) => {
+  const data = {
+    uid,
+    username,
+    touids: touids.join(','),
+    subject,
+    message,
+    token
+  }
+  console.log(data);
+  fetch(`${ENDPOINTS.BASE}${ENDPOINTS.CREATE_MESSAGE}`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'text/html'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(res => res.text())
+  .then(
+    text => {
+      const json = JSON.parse(text);
+      if (json.success) {
+        console.log("Creating success");
+        Actions.pop({refresh: {data: 2}});
+      } else {
+        console.log(json.error);
+        console.log("Creating fail");
       }
     },
     err => {
