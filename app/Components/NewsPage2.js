@@ -286,7 +286,9 @@ class NewsPage extends Component {
                  <Text style={styles.iconText}>找室友</Text>
               </Col>
               <Col style={{alignItems: 'center', justifyContent: 'center'}}>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => Actions.classmateHome()}
+                  >
                   <Image
                     style={styles.icon}
                     source={require('../img/book.png')}
