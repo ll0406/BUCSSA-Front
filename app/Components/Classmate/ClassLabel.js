@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { Icon } from 'react-native-elements';
+import { Actions } from 'react-native-router-flux';
+
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -17,7 +19,10 @@ export default class ClassLabel extends Component {
     const { code, name, section, hasArrow } = this.props
     let labelText = `${section ? section : ''}  ${name}`
     return (
-      <TouchableOpacity style={styles.bottomView}>
+      <TouchableOpacity
+        onPress={() => Actions.classSections({classCode: code, className: name})}
+        style={styles.bottomView}
+        >
         <Grid>
           <Col size={4} >
             <View style={styles.midView}>
@@ -32,6 +37,7 @@ export default class ClassLabel extends Component {
               </View>
             </View>
           </Col>
+          <Col size={1} />
           <Col size={9} justifyContent={'center'} >
             <Text
               style={styles.nameText}
@@ -89,6 +95,5 @@ const styles = StyleSheet.create({
   nameText: {
     fontSize: 14,
     color: 'black',
-    marginLeft: windowWidth * (1/75),
   }
 });

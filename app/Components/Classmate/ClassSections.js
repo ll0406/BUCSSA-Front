@@ -28,12 +28,29 @@ class ClassSections extends Component {
   }
 
   _renderItem = ({item}) => {
+    console.log(this.props.className)
     return (
-      <ClassLabel
-        code={item.code}
-        name={item.name}
-        hasArrow={true}
-        />
+      <View style={styles.listItem}>
+        <ClassLabel
+          code={this.props.classCode}
+          name={this.props.className}
+          section={item.section}
+          hasArrow={false}
+          />
+        <View style={styles.infoView}>
+          <Grid>
+            <Col size={0.2} backgroundColor={'gray'} marginRight={10}/>
+            <Col size={14} >
+              <Text>
+                教师: {item.faculty}
+              </Text>
+              <Text>
+                时间: {item.time}
+              </Text>
+            </Col>
+          </Grid>
+        </View>
+      </View>
     )
   }
 
@@ -51,20 +68,6 @@ class ClassSections extends Component {
     );
   }
 
-  _renderFooter = () => {
-    return (
-      <View style={styles.footerView}>
-        <View style={{
-          height: 1,
-          width: windowWidth * (65/75),
-          backgroundColor: "#c03431",
-          marginBottom: windowHeight * (15/1334),
-        }}
-        />
-        <Text style={{fontSize: 12}}>以上就是全部结果了哦!</Text>
-      </View>
-    )
-  }
 
   render() {
     return(
@@ -83,7 +86,7 @@ class ClassSections extends Component {
           <Text
             style={styles.headerText}
             >
-              加入课程
+              {this.props.classCode}
           </Text>
           <View style={styles.topBarSeparator} />
         </View>
@@ -93,18 +96,19 @@ class ClassSections extends Component {
           <FlatList
             data={[
               {
-                code: 'CO201',
-                name: 'Design New Media'
+                section: 'A1',
+                time: 'Mon., Wed. 1:15 - 5:00p.m.',
+                faculty: 'Peter Rand'
               },
               {
-                code: 'PS101',
-                name: 'Introduction to Psychology'
+                section: 'A2',
+                time: 'Tue., Thur., 1:15 - 5:00p.m.',
+                faculty: 'Li Liu'
               }
             ]}
             renderItem={this._renderItem}
             ItemSeparatorComponent={this._renderSeparator}
             ListHeaderComponent={this._renderHeader}
-            ListFooterComponent={this._renderFooter}
             keyExtractor={this._keyExtractor}
             showsVerticalScrollIndicator={false}
             />
@@ -160,18 +164,15 @@ const styles = StyleSheet.create({
     width: windowWidth * (65/75),
   },
   listHeader: {
-    height: windowHeight * (80/1334),
+    height: windowHeight * (50/1334),
     width: windowWidth * (65/75),
   },
-  searchBar: {
-    height: windowHeight * (25/1334),
-    width: windowWidth * (65/75),
+  listItem: {
+    width: windowWidth * (65/75)
   },
-  footerView: {
-    height: windowHeight * (40/1334),
-    width: windowWidth * (65/75),
-    marginTop: windowHeight * (60/1334),
-    alignItems: 'flex-end',
+  infoView: {
+    marginTop: windowHeight * (20/1334),
+    width: windowWidth * (65/75)
   }
 });
 

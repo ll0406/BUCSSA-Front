@@ -23,6 +23,7 @@ import CreateMessage from './Components/CreateMessage';
 //Classmate Components
 import ClassmateHome from './Components/Classmate/ClassmateHome';
 import FindClass from './Components/Classmate/FindClass';
+import ClassSections from './Components/Classmate/ClassSections';
 
 
 const scenes = Actions.create(
@@ -106,6 +107,12 @@ const scenes = Actions.create(
       key="findClass"
       component={FindClass}
       title={"FindClass"}
+      hideNavBar={true}
+      />
+    <Scene
+      key="classSections"
+      component={ClassSections}
+      title={"ClassSections"}
       hideNavBar={true}
       />
 
