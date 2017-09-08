@@ -208,7 +208,9 @@ class AccountPage extends Component {
 
 
 
-        <Footer />
+        <Footer
+          current={Actions.currentScene}
+          />
       </View>
     )
   }

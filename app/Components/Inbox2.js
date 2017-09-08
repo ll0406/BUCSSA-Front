@@ -181,7 +181,9 @@ class Inbox extends Component {
               />
           </View>
 
-          <Footer />
+          <Footer
+            current={Actions.currentScene}
+          />
         </View>
       );
   }

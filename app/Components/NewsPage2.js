@@ -299,7 +299,9 @@ class NewsPage extends Component {
             </Grid>
           </View>
         </View>
-        <Footer />
+        <Footer
+          current={Actions.currentScene}
+          />
         <Image style={styles.doggy} source={require('../img/doggy.png')} />
       </View>
 

@@ -25,6 +25,7 @@ import ClassmateHome from './Components/Classmate/ClassmateHome';
 import FindClass from './Components/Classmate/FindClass';
 import ClassSections from './Components/Classmate/ClassSections';
 import ClassDetail from './Components/Classmate/ClassDetail';
+import GroupPage from './Components/Classmate/GroupPage';
 
 
 const scenes = Actions.create(
@@ -121,7 +122,12 @@ const scenes = Actions.create(
       component={ClassDetail}
       title={"ClassDetail"}
       hideNavBar={true}
-
+      />
+    <Scene
+      key="groupPage"
+      component={GroupPage}
+      title={"GroupPage"}
+      hideNavBar={true}
       />
 
 

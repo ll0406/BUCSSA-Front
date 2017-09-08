@@ -115,11 +115,94 @@ class ClassDetail extends Component {
     );
   };
 
+
+  _renderPostItem = ({item}) => {
+    return (
+      <TouchableOpacity style={styles.postItemView}>
+        <Grid>
+          <Col size={1.5}>
+            <View style={styles.avatarView}>
+              <Image
+                style={styles.avatar}
+                source={{uri: `http://bucssa.net/uc_server/avatar.php?uid=${item.authorId}&size=middle`}}
+                />
+            </View>
+          </Col>
+          <Col size={5}>
+            <Row size={1.5}>
+              <Col size={1.5} justifyContent='center'>
+                <Text
+                  style={{fontSize: 12}}
+                  numberOfLines={1}
+                  ellipsizeMode='tail'
+                  >
+                  {item.authorName}
+                </Text>
+              </Col>
+              <Col size={2.5} justifyContent='center'>
+                <Text
+                  style={{fontSize: 8, color: 'lightgray'}}
+                  numberOfLines={1}
+                  ellipsizeMode='tail'
+                  >
+                  {new Date(eval(item.dateline)*1000).toLocaleString()}
+                </Text>
+              </Col>
+              <Col size={0.8} alignItems='center' justifyContent='center'>
+                <Image
+                  source={require('../../img/postIcon.png')}
+                  resizeMode={'center'}
+                />
+              </Col>
+              <Col size={0.7} justifyContent='center'>
+                <Text
+                  style={{fontSize: 12, color: '#c03431'}}
+                  numberOfLines={1}
+                  ellipsizeMode='tail'
+                  >
+                  {item.comment}
+                </Text>
+              </Col>
+            </Row>
+            <Row size={4}>
+              <Col justifyContent='center'>
+                <Text
+                  style={styles.listItemFontBold}
+                  numberOfLines={1}
+                  ellipsizeMode='tail'
+                  >
+                  {item.subject}
+                </Text>
+                <Text
+                  style={styles.listItemFont}
+                  numberOfLines={2}
+                  ellipsizeMode='tail'
+                  >
+                  {item.content}
+                </Text>
+              </Col>
+            </Row>
+          </Col>
+          <Col size={1} justifyContent='center'>
+            <Icon
+              name='ios-arrow-forward'
+              type='ionicon'
+              color='#c03431'
+              size={25}
+            />
+          </Col>
+        </Grid>
+      </TouchableOpacity>
+    )
+  }
+
   _renderGroupItem = ({item}) => {
 
     return (
       <TouchableOpacity
-        style={styles.groupItemView}>
+        style={styles.groupItemView}
+        onPress={() => Actions.groupPage({groupObj: item})}
+          >
         <Grid>
           <Col size={8} justifyContent={'center'}>
             <Text
@@ -327,7 +410,14 @@ class ClassDetail extends Component {
                     ListFooterComponent={this._renderListSeparator}
                   />
                   :
-                  null
+                  <FlatList
+                    data={this.state.postResult}
+                    renderItem={this._renderPostItem}
+                    ItemSeparatorComponent={this._renderListSeparator}
+                    keyExtractor={this._keyExtractor}
+                    showsVerticalScrollIndicator={false}
+                    ListFooterComponent={this._renderListSeparator}
+                  />
                 }
               </View>
             </Col>
@@ -475,6 +565,23 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 14,
     marginBottom: 5,
+  },
+  postItemView: {
+    width: windowWidth * (642/750),
+    height: windowHeight * (180/1334),
+    marginBottom: 10,
+    marginTop: 10
+  },
+  avatarView: {
+    height: windowHeight * (100/1334),
+    width: windowHeight * (100/1334),
+    borderRadius: windowHeight * (50/1334),
+    overflow: 'hidden',
+    marginTop: 8,
+  },
+  avatar: {
+    height: windowHeight * (100/1334),
+    width: windowHeight * (100/1334),
   }
 })
 
