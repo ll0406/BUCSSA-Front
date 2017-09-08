@@ -7,7 +7,6 @@ import {
   FlatList,
   TouchableOpacity,
   Text,
-  ScrollView,
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -15,6 +14,8 @@ import { Actions } from 'react-native-router-flux';
 import {Col, Row, Grid} from 'react-native-easy-grid';
 
 import ClassLabel from './ClassLabel';
+import * as ENDPOINTS from "../../endpoints";
+
 
 const mapStateToProps = (state) => ({
   user: state.userReducer.userData,
@@ -25,27 +26,65 @@ const windowHeight = Dimensions.get('window').height;
 class ClassSections extends Component {
   constructor(props) {
     super(props);
+    this.state={
+      results: [],
+    }
+  }
+
+  componentDidMount() {
+    this.searchClass();
+  }
+
+  searchClass = () => {
+    fetch(`${ENDPOINTS.BASE}${ENDPOINTS.GET_CLASS}?key=${this.props.classObj.classCode}&pageSize=100`)
+      .then(res => res.text())
+      .then(
+        text => {
+          const json = JSON.parse(text);
+          if (json.success) {
+            console.log(json);
+            this.setState({
+              results: json.datas
+            });
+          } else {
+            console.log("FETCH Class Failed");
+         }
+        },
+        err => {
+          console.log(err);
+        }
+      )
   }
 
   _renderItem = ({item}) => {
-    console.log(this.props.className)
+    const { classCode, className, classSection, professorName, classSchedule, classLocation, classId, professorId } = item;
     return (
       <View style={styles.listItem}>
         <ClassLabel
-          code={this.props.classCode}
-          name={this.props.className}
-          section={item.section}
+          code={classCode}
+          name={className}
+          section={classSection}
           hasArrow={false}
+          onPressLabel={() => Actions.classDetail({
+            professorName,
+            classSchedule,
+            className,
+            classSection,
+            classCode,
+            classLocation,
+            classId,
+            professorId
+          })}
           />
         <View style={styles.infoView}>
           <Grid>
             <Col size={0.2} backgroundColor={'gray'} marginRight={10}/>
             <Col size={14} >
               <Text>
-                教师: {item.faculty}
+                教师: {professorName}
               </Text>
               <Text>
-                时间: {item.time}
+                时间: {classSchedule}
               </Text>
             </Col>
           </Grid>
@@ -86,7 +125,7 @@ class ClassSections extends Component {
           <Text
             style={styles.headerText}
             >
-              {this.props.classCode}
+              {this.props.classObj.classCode}
           </Text>
           <View style={styles.topBarSeparator} />
         </View>
@@ -94,18 +133,7 @@ class ClassSections extends Component {
         <View style={styles.listView}>
 
           <FlatList
-            data={[
-              {
-                section: 'A1',
-                time: 'Mon., Wed. 1:15 - 5:00p.m.',
-                faculty: 'Peter Rand'
-              },
-              {
-                section: 'A2',
-                time: 'Tue., Thur., 1:15 - 5:00p.m.',
-                faculty: 'Li Liu'
-              }
-            ]}
+            data={this.state.results}
             renderItem={this._renderItem}
             ItemSeparatorComponent={this._renderSeparator}
             ListHeaderComponent={this._renderHeader}

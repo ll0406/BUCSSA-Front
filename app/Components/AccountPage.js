@@ -17,7 +17,7 @@ import {Col, Row, Grid} from 'react-native-easy-grid';
 import Svg,{
     Circle
 } from 'react-native-svg';
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
 
 import Footer from './Footer';
 

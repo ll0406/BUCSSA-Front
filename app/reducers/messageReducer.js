@@ -20,7 +20,6 @@ function messageReducer (state = initialState, action) {
       newState.isFetchingList = true;
       break;
     }
-
     case REQUEST_MESSAGE: {
       newState.isFetchingMessage = true;
       break;

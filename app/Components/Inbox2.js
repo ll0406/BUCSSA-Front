@@ -135,6 +135,10 @@ class Inbox extends Component {
     );
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    console.log("!!! INBOX WILL UPDATE !!!");
+  }
+
   render() {
     const { user, messageList, isFetchingList, dispatch} = this.props;
     const { uid, token } = user;
@@ -167,10 +171,6 @@ class Inbox extends Component {
 
           <View style={styles.listView}>
             <FlatList
-              onRefresh={() => {
-                dispatch(fetchMessageList(user.uid, user.token));
-              }}
-              refreshing={isFetchingList}
               data={messageList}
               renderItem={this._renderItem}
               keyExtractor={this._keyExtractor}

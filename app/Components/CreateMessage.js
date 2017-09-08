@@ -20,6 +20,7 @@ import {
 import {
   createMessage,
 } from '../actions/messageActions';
+import { fetchMessageList } from '../actions/messageActions';
 
 const mapStateToProps = (state) => ({
   user: state.userReducer.userData,
@@ -150,8 +151,13 @@ class CreateMessage extends Component {
     console.log('Exit')
   }
 
+  componentWillUnmount() {
+    const { user, dispatch } = this.props;
+    dispatch(fetchMessageList(user.uid, user.token));
+  }
+
   render() {
-    const { user, friendsList, isFetchingList } = this.props;
+    const { user, friendsList, isFetchingList, dispatch } = this.props;
     const { selectedList } = this.state;
     return (
       <KeyboardAvoidingView
@@ -236,8 +242,8 @@ class CreateMessage extends Component {
                     this.state.selectedList.map((item) => eval(item.friendid)),
                     '',
                     this.state.text,
-                    user.token
-                  )}
+                    user.token)
+                  }
                   >
                   <Image source={require('../img/send.png')} resizeMode={'center'}/>
                 </TouchableOpacity>

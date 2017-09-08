@@ -85,7 +85,7 @@ class NewsPage extends Component {
 
   setCurrentReadOffset = (event) => {
     const yCoord = (event.nativeEvent.contentOffset.y);
-    if (yCoord < -150) {
+    if (yCoord < -(windowHeight * (170/1334)) ) {
       this.setState({
         readyToRefresh: true
       })
@@ -134,7 +134,7 @@ class NewsPage extends Component {
   handleRelease = (event) => {
     if (this.state.readyToRefresh) {
       const { dispatch, user } = this.props;
-      this.refs.NewsList.scrollToOffset({offset: -150});
+      this.refs.NewsList.scrollToOffset({offset: -(windowHeight * (170/1334))});
       this.setState({ refreshing: true }, () => dispatch(refreshNews(user.uid)))
       setTimeout(() => {
         this.refs.NewsList.scrollToOffset({offset: 0});
@@ -237,12 +237,12 @@ class NewsPage extends Component {
           refreshing ?
           <Image
           style={styles.refreshImg}
-          source={{uri: 'https://media.giphy.com/media/hVszEn2lsvdrq/giphy.gif'}}
+          source={require('../img/refreshing.gif')}
           />
           :
           <Image
           style={styles.refreshImg}
-          source={{uri:'https://68.media.tumblr.com/tumblr_m6rkikav5p1rwu15qo1_400.gif'}}
+          source={require('../img/pull.gif')}
           />
         }
         </View>
@@ -336,8 +336,9 @@ const styles = StyleSheet.create({
     zIndex: 3,
   },
   refreshImg: {
-    height: 150,
-    width: Dimensions.get('window').width * (61/75),
+    height: windowHeight * (150/1334),
+    width: windowHeight * (150/1334),
+    marginTop: windowHeight * (30/1334)
   },
   newsBottomView: {
     backgroundColor: 'transparent',

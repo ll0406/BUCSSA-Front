@@ -15,12 +15,13 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 export default class ClassLabel extends Component {
+
   render() {
     const { code, name, section, hasArrow } = this.props
     let labelText = `${section ? section : ''}  ${name}`
     return (
       <TouchableOpacity
-        onPress={() => Actions.classSections({classCode: code, className: name})}
+        onPress={this.props.onPressLabel}
         style={styles.bottomView}
         >
         <Grid>
@@ -91,6 +92,7 @@ const styles = StyleSheet.create({
   codeText: {
     fontSize: 14,
     color: 'white',
+    fontFamily: 'Courier',
   },
   nameText: {
     fontSize: 14,

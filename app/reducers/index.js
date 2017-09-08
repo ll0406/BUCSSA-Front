@@ -5,6 +5,7 @@ import userReducer from './userReducer';
 import messageReducer from './messageReducer';
 import collectionReducer from './collectionReducer';
 import friendsReducer from './friendsReducer';
+import classmateReducer from './classmateReducer';
 
 const appReducer = combineReducers({
   reducer,
@@ -13,6 +14,7 @@ const appReducer = combineReducers({
   messageReducer,
   collectionReducer,
   friendsReducer,
+  classmateReducer
 });
 
 export default appReducer;

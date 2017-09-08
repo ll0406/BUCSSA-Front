@@ -16,6 +16,7 @@ import {Col, Row, Grid} from 'react-native-easy-grid';
 import { SearchBar } from 'react-native-elements';
 
 import ClassLabel from './ClassLabel';
+import * as ENDPOINTS from "../../endpoints";
 
 const mapStateToProps = (state) => ({
   user: state.userReducer.userData,
@@ -28,16 +29,42 @@ class FindClass extends Component {
     super(props);
     this.state = {
       text: '',
+      results: [],
+      searched: false,
     }
+  }
+
+  searchClass = () => {
+    console.log(this.state.text);
+    fetch(`${ENDPOINTS.BASE}${ENDPOINTS.GET_CLASS}?key=${this.state.text}&pageSize=100`)
+      .then(res => res.text())
+      .then(
+        text => {
+          const json = JSON.parse(text);
+          if (json.success) {
+            console.log(json);
+            this.setState({
+              results: json.datas
+            });
+          } else {
+            console.log("FETCH Class Failed");
+         }
+        },
+        err => {
+          console.log(err);
+        }
+      )
   }
 
   _renderItem = ({item}) => {
     console.log("Render Item");
     return (
       <ClassLabel
-        code={item.code}
-        name={item.name}
+        code={item.classCode}
+        name={item.className}
         hasArrow={true}
+        onPressLabel={() =>
+          Actions.classSections({classObj: item})}
         />
     )
   }
@@ -67,7 +94,10 @@ class FindClass extends Component {
           onChangeText={(text) => this.setState({text})}
           placeholder='输入关键词进行搜索'
           placeholderTextColor='white'
-          onSubmitEditing={() => console.log('Submitting')}
+          onSubmitEditing={() => {
+            this.searchClass();
+            this.setState({searched: true});
+          }}
           icon={{color: 'white', name: 'search'}}
           />
       </View>
@@ -76,6 +106,7 @@ class FindClass extends Component {
 
   _renderFooter = () => {
     return (
+    this.state.searched &&
       <View style={styles.footerView}>
         <View style={{
           height: 1,
@@ -86,6 +117,7 @@ class FindClass extends Component {
         />
         <Text style={{fontSize: 12}}>以上就是全部结果了哦!</Text>
       </View>
+    
     )
   }
 
@@ -114,16 +146,7 @@ class FindClass extends Component {
         <View style={styles.listView}>
 
           <FlatList
-            data={[
-              {
-                code: 'CO201',
-                name: 'Design New Media'
-              },
-              {
-                code: 'PS101',
-                name: 'Introduction to Psychology'
-              }
-            ]}
+            data={this.state.results}
             renderItem={this._renderItem}
             ItemSeparatorComponent={this._renderSeparator}
             ListHeaderComponent={this._renderHeader}

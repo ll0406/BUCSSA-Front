@@ -20,9 +20,6 @@ export const fetchFriendsList = (uid, token) => dispatch => {
     .then(
       text => {
         const json = JSON.parse(text);
-        console.log(
-          "RES is ", json
-        )
         if (json.success) {
           dispatch({
             type: RECEIVE_FRIENDSLIST,

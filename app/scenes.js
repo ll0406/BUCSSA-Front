@@ -24,6 +24,7 @@ import CreateMessage from './Components/CreateMessage';
 import ClassmateHome from './Components/Classmate/ClassmateHome';
 import FindClass from './Components/Classmate/FindClass';
 import ClassSections from './Components/Classmate/ClassSections';
+import ClassDetail from './Components/Classmate/ClassDetail';
 
 
 const scenes = Actions.create(
@@ -114,6 +115,13 @@ const scenes = Actions.create(
       component={ClassSections}
       title={"ClassSections"}
       hideNavBar={true}
+      />
+    <Scene
+      key="classDetail"
+      component={ClassDetail}
+      title={"ClassDetail"}
+      hideNavBar={true}
+
       />
 
 

@@ -241,7 +241,7 @@ export const createMessage = (uid, username, touids, subject, message, token) =>
       const json = JSON.parse(text);
       if (json.success) {
         console.log("Creating success");
-        Actions.pop({refresh: {data: 2}});
+        Actions.pop();
       } else {
         console.log(json.error);
         console.log("Creating fail");

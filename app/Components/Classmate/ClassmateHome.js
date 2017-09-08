@@ -14,8 +14,15 @@ import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import {Col, Row, Grid} from 'react-native-easy-grid';
 
+import ClassLabel from './ClassLabel';
+import * as ENDPOINTS from "../../endpoints";
+
+import { fetchCollection } from '../../actions/classmateActions';
+
 const mapStateToProps = (state) => ({
   user: state.userReducer.userData,
+  collection: state.classmateReducer.classCollection,
+  isFetchingCollection: state.classmateReducer.isFetching,
 });
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -25,16 +32,53 @@ class ClassmateHome extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    const { user, dispatch } = this.props;
+    dispatch(fetchCollection(user.uid, user.token));
+  }
+
+
   _renderSeparator = () => {
     return (
       <View style={styles.separator} />
     );
   };
 
+  _renderListSeparator = () => {
+    return (
+      <View style={styles.listSeparator} />
+    );
+  };
+
+  _renderItem = ({item}) => {
+    const { classCode, className, classSection, professorName, classSchedule, classLocation, classId, professorId } = item;
+    return (
+      <ClassLabel
+        code={classCode}
+        name={className}
+        hasArrow={true}
+        section={classSection}
+        onPressLabel={() => Actions.classDetail({
+          professorName,
+          classSchedule,
+          className,
+          classSection,
+          classCode,
+          classLocation,
+          classId,
+          professorId
+        })}
+        />
+    )
+  }
+
+    _keyExtractor = (item, index) => index;
+
+
   render() {
 
     const hasClass = false;
-
+    const { collection } = this.props;
     return(
       <View style={{flex:1, backgroundColor: 'white'}}>
         <View style={styles.topBar}>
@@ -86,12 +130,20 @@ class ClassmateHome extends Component {
 
           <View style={styles.classView}>
             {
-              hasClass ?
-                null
-              :
+              (collection === undefined || collection.length === 0) ?
                 <View style={styles.noteView}>
                   <Text>当前还没有加入任何课程哦,</Text>
                   <Text>快去找找课友吧!</Text>
+                </View>
+              :
+                <View style={styles.listView}>
+                  <FlatList
+                    data={this.props.collection}
+                    renderItem={this._renderItem}
+                    ItemSeparatorComponent={this._renderListSeparator}
+                    keyExtractor={this._keyExtractor}
+                    showsVerticalScrollIndicator={false}
+                    />
                 </View>
             }
           </View>
@@ -124,14 +176,9 @@ const styles = StyleSheet.create({
   },
   listView: {
     backgroundColor: 'transparent',
-    position: 'absolute',
-    top: windowHeight * (124/1334),
-    left: 0,
-    right: 0,
-    bottom: 0,
+    width: windowWidth * (65/75),
+    justifyContent: 'center',
     alignItems: 'center',
-    height: windowHeight * (1099/1334),
-    zIndex: 3,
   },
   buttonContainer: {
     height: windowHeight * (50/1334),
@@ -150,6 +197,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#c03431",
     position: 'absolute',
     bottom: 0,
+  },
+  listSeparator: {
+    height: windowHeight * (30/1334),
+    width: windowWidth * (65/75),
   },
   scrollView: {
     position: 'absolute',
