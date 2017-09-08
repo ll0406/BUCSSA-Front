@@ -15,8 +15,6 @@ export const addClass = (uid, classId, token) => dispatch => {
     classid: eval(classId),
     token,
   }
-  console.log('AddClass called');
-  console.log(data);
   fetch(`${ENDPOINTS.BASE}${ENDPOINTS.ADD_CLASS}`, {
     method: 'POST',
     mode: 'cors',
@@ -73,4 +71,39 @@ export const fetchCollection = (uid, token) => dispatch => {
         console.log(err);
       }
     )
+}
+
+export const joinGroup = (uid, groupid, token) => {
+  const data = {
+    uid,
+    groupid,
+    token,
+  }
+  fetch(`${ENDPOINTS.BASE}${ENDPOINTS.JOIN_GROUP}`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'text/html'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(res => res.text())
+  .then(
+    text => {
+      const json = JSON.parse(text);
+      if (json.success) {
+        console.log("join success");
+      } else {
+        console.log(json);
+        console.log("join fail");
+      }
+    },
+    err => {
+      dispatch({
+        type: SERVER_ERROR,
+      });
+      console.err("server err");
+    }
+  )
 }

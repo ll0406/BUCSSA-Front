@@ -76,8 +76,6 @@ class ClassmateHome extends Component {
 
 
   render() {
-
-    const hasClass = false;
     const { collection } = this.props;
     return(
       <View style={{flex:1, backgroundColor: 'white'}}>
@@ -100,62 +98,66 @@ class ClassmateHome extends Component {
           <View style={styles.separator} />
         </View>
 
-        <ScrollView contentContainerStyle={styles.scrollView}>
-          <View style={styles.myClassTitleView}>
-            <Grid>
-              <Col />
-              <Col>
-                <Grid>
-                  <Col size={1} backgroundColor={'gray'} />
-                  <Col size={15} alignItems={'center'} justifyContent={'center'}>
-                    <Text style={{fontSize: 16}}>
-                      我的课程
-                    </Text>
-                  </Col>
-                  <Col size={1} backgroundColor={'gray'} />
-                </Grid>
-              </Col>
-              <Col alignItems={'flex-end'}>
-                <TouchableOpacity
-                  onPress={() => Actions.findClass()}
-                  >
-                  <Image
-                    source={require('../../img/addMessage.png')}
-                    style={styles.addButton}
-                  />
-                </TouchableOpacity>
-              </Col>
-            </Grid>
-          </View>
-
-          <View style={styles.classView}>
-            {
-              (collection === undefined || collection.length === 0) ?
-                <View style={styles.noteView}>
-                  <Text>当前还没有加入任何课程哦,</Text>
-                  <Text>快去找找课友吧!</Text>
-                </View>
-              :
-                <View style={styles.listView}>
-                  <FlatList
-                    data={this.props.collection}
-                    renderItem={this._renderItem}
-                    ItemSeparatorComponent={this._renderListSeparator}
-                    keyExtractor={this._keyExtractor}
-                    showsVerticalScrollIndicator={false}
+        <View style={styles.scrollView}>
+          <ScrollView contentContainerStyle={{alignItems: 'center'}}>
+            <View style={styles.myClassTitleView}>
+              <Grid>
+                <Col />
+                <Col>
+                  <Grid>
+                    <Col size={1} backgroundColor={'gray'} />
+                    <Col size={15} alignItems={'center'} justifyContent={'center'}>
+                      <Text style={{fontSize: 16}}>
+                        我的课程
+                      </Text>
+                    </Col>
+                    <Col size={1} backgroundColor={'gray'} />
+                  </Grid>
+                </Col>
+                <Col alignItems={'flex-end'}>
+                  <TouchableOpacity
+                    onPress={() => Actions.findClass()}
+                    >
+                    <Image
+                      source={require('../../img/addMessage.png')}
+                      style={styles.addButton}
                     />
-                </View>
-            }
-          </View>
+                  </TouchableOpacity>
+                </Col>
+              </Grid>
+            </View>
 
-          <TouchableOpacity style={styles.bigButton}>
-            <Text style={styles.buttonText}>我的小组</Text>
-          </TouchableOpacity>
+            <View style={styles.classView}>
+              {
+                (collection === undefined || collection.length === 0) ?
+                  <View style={styles.noteView}>
+                    <Text>当前还没有加入任何课程哦,</Text>
+                    <Text>快去找找课友吧!</Text>
+                  </View>
+                :
+                  <View style={styles.listView}>
+                    <FlatList
+                      data={this.props.collection}
+                      renderItem={this._renderItem}
+                      ItemSeparatorComponent={this._renderListSeparator}
+                      keyExtractor={this._keyExtractor}
+                      showsVerticalScrollIndicator={false}
+                      />
+                  </View>
+              }
+            </View>
 
-          <TouchableOpacity style={styles.bigButton}>
-            <Text style={styles.buttonText}>我的话题</Text>
-          </TouchableOpacity>
-        </ScrollView>
+            <TouchableOpacity
+              onPress={() => Actions.myGroups()}
+              style={styles.bigButton}>
+              <Text style={styles.buttonText}>我的小组</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.bigButton}>
+              <Text style={styles.buttonText}>我的话题</Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </View>
       </View>
     );
   }
@@ -205,7 +207,7 @@ const styles = StyleSheet.create({
   scrollView: {
     position: 'absolute',
     top: windowHeight * (214/1334),
-    height: windowHeight * (1000/1334),
+    height: windowHeight * (1120/1334),
     width: windowWidth,
     alignItems: 'center',
     backgroundColor: 'white',

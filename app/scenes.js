@@ -26,6 +26,8 @@ import FindClass from './Components/Classmate/FindClass';
 import ClassSections from './Components/Classmate/ClassSections';
 import ClassDetail from './Components/Classmate/ClassDetail';
 import GroupPage from './Components/Classmate/GroupPage';
+import PostPage from './Components/Classmate/PostPage';
+import MyGroups from './Components/Classmate/MyGroups';
 
 
 const scenes = Actions.create(
@@ -129,8 +131,18 @@ const scenes = Actions.create(
       title={"GroupPage"}
       hideNavBar={true}
       />
-
-
+    <Scene
+      key="postPage"
+      component={PostPage}
+      title={"PostPage"}
+      hideNavBar={true}
+      />
+    <Scene
+      key="myGroups"
+      component={MyGroups}
+      title={"MyGroups"}
+      hideNavBar={true}
+      />
   </Scene>
 );
 

@@ -15,6 +15,8 @@ import { Actions } from 'react-native-router-flux';
 import {Col, Row, Grid} from 'react-native-easy-grid';
 
 import * as ENDPOINTS from "../../endpoints";
+import { joinGroup } from '../../actions/classmateActions';
+
 
 const mapStateToProps = (state) => ({
   user: state.userReducer.userData,
@@ -37,7 +39,7 @@ class GroupPage extends Component {
   };
 
   render() {
-    const { groupObj } = this.props;
+    const { groupObj, user } = this.props;
     return (
       <ScrollView style={{flex:1, backgroundColor:'white'}}>
         <View style={styles.topBar}>
@@ -133,7 +135,9 @@ class GroupPage extends Component {
           </View>
           {this._renderListSeparator()}
           <View style={{height: 30, width: 1}} />
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity 
+            onPress={() => joinGroup(user.uid, groupObj.groupId, user.token)}
+            style={styles.button}>
             <Text style={styles.buttonText}>申请加入</Text>
           </TouchableOpacity>
 

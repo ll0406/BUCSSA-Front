@@ -118,9 +118,11 @@ class ClassDetail extends Component {
 
   _renderPostItem = ({item}) => {
     return (
-      <TouchableOpacity style={styles.postItemView}>
+      <TouchableOpacity
+        onPress={() => Actions.postPage({postObj:item})}
+        style={styles.postItemView}>
         <Grid>
-          <Col size={1.5}>
+          <Col size={1.2}>
             <View style={styles.avatarView}>
               <Image
                 style={styles.avatar}
@@ -128,7 +130,7 @@ class ClassDetail extends Component {
                 />
             </View>
           </Col>
-          <Col size={5}>
+          <Col size={5.3}>
             <Row size={1.5}>
               <Col size={1.5} justifyContent='center'>
                 <Text
@@ -573,15 +575,15 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   avatarView: {
-    height: windowHeight * (100/1334),
-    width: windowHeight * (100/1334),
-    borderRadius: windowHeight * (50/1334),
+    height: windowHeight * (80/1334),
+    width: windowHeight * (80/1334),
+    borderRadius: windowHeight * (40/1334),
     overflow: 'hidden',
-    marginTop: 8,
+    marginTop: 5,
   },
   avatar: {
-    height: windowHeight * (100/1334),
-    width: windowHeight * (100/1334),
+    height: windowHeight * (80/1334),
+    width: windowHeight * (80/1334),
   }
 })
 
