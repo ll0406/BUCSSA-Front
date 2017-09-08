@@ -39,3 +39,4 @@ export const CREATE_POST = '/classmate/post/create.php';
 export const GET_COMMENT = '/classmate/post/getComment.php';
 export const GET_POST = '/classmate/post/getPost.php';
 export const MAKE_COMMENT = '/classmate/post/makeComment.php';
+export const GET_MEMBERS = '/classmate/group/member.php'

@@ -153,9 +153,12 @@ class ClassmateHome extends Component {
               <Text style={styles.buttonText}>我的小组</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.bigButton}>
+            {
+              false &&
+              <TouchableOpacity style={styles.bigButton}>
               <Text style={styles.buttonText}>我的话题</Text>
-            </TouchableOpacity>
+              </TouchableOpacity>  
+            }
           </ScrollView>
         </View>
       </View>

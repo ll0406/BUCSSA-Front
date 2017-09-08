@@ -13,6 +13,8 @@ import {
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import {Col, Row, Grid} from 'react-native-easy-grid';
+import { Icon } from 'react-native-elements'
+
 
 import * as ENDPOINTS from "../../endpoints";
 import { joinGroup } from '../../actions/classmateActions';
@@ -28,8 +30,38 @@ class GroupPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: '',
+      members: [],
     }
+  }
+
+  componentDidMount() {
+    this.fetchMembers();
+  }
+
+  fetchMembers = () => {
+    const { groupObj } = this.props;
+    console.log(groupObj);
+    fetch(`${ENDPOINTS.BASE}${ENDPOINTS.GET_MEMBERS}?groupid=${groupObj.groupId}&pageSize=1000`)
+      .then(res => res.text())
+      .then(
+        text => {
+          const json = JSON.parse(text);
+          if (json.success) {
+            let actualPayload = json.datas;
+            console.log("FETCH members Success");
+            console.log(json);
+            if (actualPayload === null) {actualPayload = [];}
+            this.setState({
+              members: actualPayload
+            });
+          } else {
+            console.log("FETCH members Failed");
+         }
+        },
+        err => {
+          console.log(err);
+        }
+      )
   }
 
   _renderListSeparator = () => {
@@ -38,10 +70,67 @@ class GroupPage extends Component {
     );
   };
 
+  _renderMember = () => {
+    const { members } = this.state;
+    let endIndex;
+    if (members.length > 10) {
+      endIndex = 10;
+    } else {
+      endIndex = members.length - 1;
+    }
+    const renderArray = members.splice(0, endIndex);
+    console.log(renderArray);
+    return (
+      <View style={styles.membersView}>
+        <Grid>
+          <Col size={7}>
+            <Row alignItems='center'>
+              {
+                renderArray.map((member, index) => {
+                  return (
+                    <View
+                      key={index}
+                      style={styles.avatarView}>
+                      <Image
+                        source={{uri: member.avatar}}
+                        style={styles.avatar}
+                      />
+                    </View>
+                  )
+                })
+              }
+            </Row>
+          </Col>
+          <Col size={1}>
+            <Row alignItems='center'>
+              <Text
+                style={{fontSize: 12, marginRight: 5}}
+                >
+                全部
+                </Text>
+                <TouchableOpacity>
+                  <Icon
+                    name='ios-arrow-forward'
+                    type='ionicon'
+                    color='#c03431'
+                    size={25}
+                  />
+                </TouchableOpacity>
+            </Row>
+          </Col>
+        </Grid>
+      </View>
+    )
+  }
+
+
   render() {
     const { groupObj, user } = this.props;
     return (
-      <ScrollView style={{flex:1, backgroundColor:'white'}}>
+      <ScrollView
+        style={{flex:1, backgroundColor:'white'}}
+        contentContainerStyle={{alignItems: 'center'}}
+        >
         <View style={styles.topBar}>
           <View style={{backgroundColor: 'transparent', zIndex:2}}>
             <Text style={styles.headerText}>
@@ -135,7 +224,7 @@ class GroupPage extends Component {
           </View>
           {this._renderListSeparator()}
           <View style={{height: 30, width: 1}} />
-          <TouchableOpacity 
+          <TouchableOpacity
             onPress={() => joinGroup(user.uid, groupObj.groupId, user.token)}
             style={styles.button}>
             <Text style={styles.buttonText}>申请加入</Text>
@@ -146,12 +235,30 @@ class GroupPage extends Component {
           </TouchableOpacity>
         </View>
 
+        <View style={styles.titleView}>
+          <Text style={styles.titleFont}> 小组成员 </Text>
+        </View>
+
+        {this._renderMember()}
+        <View style={styles.listSeparator} />
+
       </ScrollView>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  avatarView: {
+    height: windowHeight * (100/1334),
+    width: windowHeight * (100/1334),
+    borderRadius: windowHeight * (50/1334),
+    marginRight: 10,
+    overflow: 'hidden',
+  },
+  avatar: {
+    height: windowHeight * (100/1334),
+    width: windowHeight * (100/1334),
+  },
   button: {
     borderRadius: 5,
     width: windowWidth * (65/75),
@@ -181,7 +288,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   titleView: {
-    height: windowHeight * (100/1334),
+    height: windowHeight * (80/1334),
     width: windowWidth,
     justifyContent: 'center',
     alignItems: 'center',
@@ -231,6 +338,11 @@ const styles = StyleSheet.create({
     width: windowWidth * (650/750),
     paddingTop: windowHeight * (30/1334),
     paddingBottom: windowHeight * (30/1334),
+  },
+  membersView: {
+    marginTop: windowHeight * (20/1334),
+    width: windowWidth * (650/750),
+    height: windowHeight * (140/1334),
   }
 })
 
