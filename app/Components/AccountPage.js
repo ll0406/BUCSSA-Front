@@ -148,7 +148,7 @@ class AccountPage extends Component {
           <View style={styles.imageContainer}>
             <Image
               style={styles.profileImg}
-              source={{uri: picUri, cache: 'force-cache'}}
+              source={{uri: picUri}}
             />
           </View>
 

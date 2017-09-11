@@ -88,10 +88,19 @@ class Inbox extends Component {
                     />
               }
                 <View style={styles.msgImageContainer}>
-                  <Image
-                    source={{uri: item.avatar, cache: 'force-cache'}}
+                  {
+                    item.pmType === 2 ?
+                    <Image
+                      source={{uri: 'https://cdn3.iconfinder.com/data/icons/pix-glyph-set/50/520643-group-512.png'}}
+                      style={styles.msgImage}
+                      />
+                    :
+                    <Image
+                    source={{uri: item.avatar}}
                     style={styles.msgImage}
                     />
+
+                  }
                 </View>
               </Col>
               <Col size={51} style={{justifyContent: 'center'}}>

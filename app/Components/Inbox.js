@@ -76,7 +76,7 @@ class Inbox extends Component {
                             <Col size={1}>
                               { message.pmType === 2 && <Icon name="ios-people" style={{color: 'pink', fontSize:40, marginLeft:6, marginTop:5}}/>}
                               { message.pmType === 1 && <Thumbnail style={{width: 50, height: 50, borderRadius: 25}}
-                              source={{uri: message.avatar, cache: 'force-cache'}} />}
+                              source={{uri: message.avatar}} />}
                             </Col>
                             <Col size={3.5}>
                               {message.pmType === 1 && <Text style={styles.nameFont}> {message.toUsername} </Text>}

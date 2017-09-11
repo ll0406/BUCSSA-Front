@@ -56,6 +56,10 @@ class MessagePage extends Component {
 
   //Socket needed functions
   onReceivedMessage = (message) => {
+    console.log("RECEIVE!!!!!!!!!")
+    console.log("RECEIVE!!!!!!!!!")
+    console.log("RECEIVE!!!!!!!!!")
+    console.log(message);
     this.storeMessage(message);
     console.log("Received this: ", message);
   }
@@ -150,6 +154,11 @@ class MessagePage extends Component {
   }
 
   _renderTime = (props) => {
+    console.log(typeof(props.currentMessage.createdAt));
+    let time = props.currentMessage.createdAt;
+    if (typeof(props.currentMessage.createdAt) == 'string') {
+      time = new Date(props.currentMessage.createdAt)
+    }
     return (
         <Text
           style={{
@@ -160,7 +169,7 @@ class MessagePage extends Component {
             paddingLeft: 10,
           }}
         >
-          {props.currentMessage.createdAt.toLocaleTimeString()}
+          {time.toLocaleTimeString()}
         </Text>
     );
   }
