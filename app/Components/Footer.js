@@ -12,10 +12,11 @@ import {Col, Row, Grid} from 'react-native-easy-grid';
 
 export default class Footer extends Component{
   render(){
-    const goToHome = () => Actions.home();
     const goToNews = () => Actions.newsPage();
     const goToProfile = () => Actions.profilePage();
     const goToInbox = () => Actions.inbox();
+
+    const {current} = this.props
 
     return(
       <View style={styles.footerView}>
@@ -24,34 +25,58 @@ export default class Footer extends Component{
             <TouchableOpacity
               onPress={() => Actions.newsPage()}
               >
-              <Image
+              {
+                current === 'newsPage' ?
+                <Image
+                style={styles.footerIcon}
+                source={require('../img/home-red.png')}
+                />
+              :
+                <Image
                 style={styles.footerIcon}
                 source={require('../img/home-white.png')}
                 />
+              }
             </TouchableOpacity>
-            <Text style={styles.footerFont}>主页</Text>
+            <Text style={current === 'newsPage' ? styles.selectedFont : styles.footerFont}>主页</Text>
           </Col>
           <Col style={{justifyContent: 'center', alignItems: 'center'}}>
             <TouchableOpacity
               onPress={() => Actions.inbox()}
               >
-              <Image
+              {
+                current === 'inbox' ?
+                <Image
+                style={styles.footerIcon}
+                source={require('../img/message-red.png')}
+                />
+              :
+                <Image
                 style={styles.footerIcon}
                 source={require('../img/message-white.png')}
                 />
+              }
             </TouchableOpacity>
-            <Text style={styles.footerFont}>消息</Text>
+            <Text style={current === 'inbox' ? styles.selectedFont : styles.footerFont}>消息</Text>
           </Col>
           <Col style={{justifyContent: 'center', alignItems: 'center'}}>
             <TouchableOpacity
               onPress={() => Actions.profilePage()}
               >
-              <Image
+              {
+                current === 'profilePage' ?
+                <Image
+                style={styles.footerIcon}
+                source={require('../img/me-red.png')}
+                />
+              :
+                <Image
                 style={styles.footerIcon}
                 source={require('../img/me-white.png')}
                 />
+              }
             </TouchableOpacity>
-            <Text style={styles.footerFont}>账号</Text>
+            <Text style={current === 'profilePage' ? styles.selectedFont : styles.footerFont}>账号</Text>
           </Col>
         </Grid>
       </View>
@@ -69,12 +94,17 @@ const styles = StyleSheet.create({
     top: Dimensions.get('window').height * (1234/1334),
   },
   footerIcon: {
-    height: Dimensions.get('window').height * (30/1334),
+    height: Dimensions.get('window').height * (35/1334),
     width: Dimensions.get('window').width * (90/750),
-    marginBottom: Dimensions.get('window').height * (15/1334),
+    marginBottom: Dimensions.get('window').height * (10/1334),
   },
   footerFont: {
     fontSize: 8,
     color: 'white',
+  },
+  selectedFont: {
+    fontSize: 8,
+    color: '#5f2a28',
   }
+
 })

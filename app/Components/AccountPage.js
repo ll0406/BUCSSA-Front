@@ -17,7 +17,7 @@ import {Col, Row, Grid} from 'react-native-easy-grid';
 import Svg,{
     Circle
 } from 'react-native-svg';
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
 
 import Footer from './Footer';
 
@@ -148,7 +148,7 @@ class AccountPage extends Component {
           <View style={styles.imageContainer}>
             <Image
               style={styles.profileImg}
-              source={{uri: picUri, cache: 'force-cache'}}
+              source={{uri: picUri}}
             />
           </View>
 
@@ -208,7 +208,9 @@ class AccountPage extends Component {
 
 
 
-        <Footer />
+        <Footer
+          current={Actions.currentScene}
+          />
       </View>
     )
   }

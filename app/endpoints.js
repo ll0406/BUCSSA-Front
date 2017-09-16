@@ -27,3 +27,16 @@ export const GET_OFFICIAL_THREAD = '/thread/getOfficialThreads.php';
 export const GET_FRIENDSLIST = '/user/friend/getFriends.php';
 export const ADD_FRIEND_REQUEST = '/user/friend/add.php';
 export const DELETE_FRIEND = '/user/friend/delete.php';
+
+//Classmates
+export const GET_CLASS = '/classmate/class/getClass.php';
+export const ADD_CLASS = '/classmate/class/addClassCollection.php';
+export const GET_CLASS_COLLECTION = '/classmate/class/getClassCollection.php';
+export const CREATE_GROUP = '/classmate/group/create.php';
+export const GET_GROUP = '/classmate/group/get.php';
+export const JOIN_GROUP = '/classmate/group/join.php';
+export const CREATE_POST = '/classmate/post/create.php';
+export const GET_COMMENT = '/classmate/post/getComment.php';
+export const GET_POST = '/classmate/post/getPost.php';
+export const MAKE_COMMENT = '/classmate/post/makeComment.php';
+export const GET_MEMBERS = '/classmate/group/member.php'

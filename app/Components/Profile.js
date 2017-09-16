@@ -195,7 +195,7 @@ class ProfilePage extends Component {
               <Right>
                 <TouchableOpacity onPress={()=>this.pickImage()}>
                   <Thumbnail style={{width: 100, height: 100, borderRadius: 50}}
-                  source={{uri: picUri, cache: 'force-cache'}} //force cache the image
+                  source={{uri: picUri}} //force cache the image
                   />
                 </TouchableOpacity>
 

@@ -85,7 +85,7 @@ class NewsPage extends Component {
 
   setCurrentReadOffset = (event) => {
     const yCoord = (event.nativeEvent.contentOffset.y);
-    if (yCoord < -150) {
+    if (yCoord < -(windowHeight * (170/1334)) ) {
       this.setState({
         readyToRefresh: true
       })
@@ -134,7 +134,7 @@ class NewsPage extends Component {
   handleRelease = (event) => {
     if (this.state.readyToRefresh) {
       const { dispatch, user } = this.props;
-      this.refs.NewsList.scrollToOffset({offset: -150});
+      this.refs.NewsList.scrollToOffset({offset: -(windowHeight * (170/1334))});
       this.setState({ refreshing: true }, () => dispatch(refreshNews(user.uid)))
       setTimeout(() => {
         this.refs.NewsList.scrollToOffset({offset: 0});
@@ -160,7 +160,7 @@ class NewsPage extends Component {
             height={150}
             loop={true}
             autoplay={true}
-            autoplayTimeout={4}
+            autoplayTimeout={3}
             paginationStyle={{
               bottom: 10, left: null, right: 10
             }}
@@ -170,9 +170,30 @@ class NewsPage extends Component {
               {
                 item.map((swiperObj, index) => {
                   return (
-                    <TouchableOpacity key={index}>
-                      <Image style={styles.newsPoster} source={{uri: swiperObj.imageUrl, cache: 'force-cache'}} />
-                    </TouchableOpacity>
+                    swiperObj.hasImage ?
+                    <View
+                      style={{
+                        width:Dimensions.get('window').width * (61/75),
+                        height:150,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                      key={index}
+                        >
+                      <Image style={styles.newsPoster} source={require('../img/tech.png')} />
+                    </View>
+                    :
+                    <View
+                    style={{
+                      width:Dimensions.get('window').width * (61/75),
+                      height:150,
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                    key={index}>
+                      <Text style={{fontSize: 40}}>{swiperObj.text}</Text>
+                    </View>
+
                   )
                 })
               }
@@ -208,14 +229,18 @@ class NewsPage extends Component {
     const swiperDummy = [
       {
         imageUrl:'https://media.giphy.com/media/5bQtihx7wT5QI/giphy.gif',
+        text: '欢迎！'
       },
       {
+        text:' 大家来！',
         imageUrl:'https://i2.wp.com/marunews.com/wp-content/uploads/2016/12/%E7%9F%B3%E5%8E%9F%E3%81%95%E3%81%A8%E3%81%BF_%E3%83%98%E3%82%A2%E3%82%A2%E3%83%AC%E3%83%B3%E3%82%B8.jpg',
       },
       {
+        text: '技术部！',
         imageUrl:'http://i.imgur.com/EmoheJJ.jpg',
       },
       {
+        hasImage: true,
         imageUrl:'http://nihongogo.com/wordpress/wp-content/uploads/2016/05/Satomi-Ishihara-Featured-as-Newest-Face-of-Tokyo-Metro-620x400.jpg',
       },
     ]
@@ -237,12 +262,12 @@ class NewsPage extends Component {
           refreshing ?
           <Image
           style={styles.refreshImg}
-          source={{uri: 'https://media.giphy.com/media/hVszEn2lsvdrq/giphy.gif'}}
+          source={require('../img/refreshing.gif')}
           />
           :
           <Image
           style={styles.refreshImg}
-          source={{uri:'https://68.media.tumblr.com/tumblr_m6rkikav5p1rwu15qo1_400.gif'}}
+          source={require('../img/pull.gif')}
           />
         }
         </View>
@@ -286,7 +311,9 @@ class NewsPage extends Component {
                  <Text style={styles.iconText}>找室友</Text>
               </Col>
               <Col style={{alignItems: 'center', justifyContent: 'center'}}>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => Actions.classmateHome()}
+                  >
                   <Image
                     style={styles.icon}
                     source={require('../img/book.png')}
@@ -297,7 +324,9 @@ class NewsPage extends Component {
             </Grid>
           </View>
         </View>
-        <Footer />
+        <Footer
+          current={Actions.currentScene}
+          />
         <Image style={styles.doggy} source={require('../img/doggy.png')} />
       </View>
 
@@ -334,8 +363,9 @@ const styles = StyleSheet.create({
     zIndex: 3,
   },
   refreshImg: {
-    height: 150,
-    width: Dimensions.get('window').width * (61/75),
+    height: windowHeight * (150/1334),
+    width: windowHeight * (150/1334),
+    marginTop: windowHeight * (30/1334)
   },
   newsBottomView: {
     backgroundColor: 'transparent',
@@ -387,7 +417,7 @@ const styles = StyleSheet.create({
   },
   newsPoster: {
         height: 150,
-        resizeMode: 'cover',
+        width: 150,
         position: 'relative',
   },
   swiperDot: {

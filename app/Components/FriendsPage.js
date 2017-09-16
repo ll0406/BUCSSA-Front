@@ -50,7 +50,7 @@ class FriendsPage extends Component {
           <Col size={14} style={{justifyContent: 'center'}}>
             <View style={styles.friendImageContainer}>
               <Image
-                source={{uri: item.avatar, cache: 'force-cache'}}
+                source={{uri: item.avatar}}
                 style={styles.friendImage}
                 />
             </View>

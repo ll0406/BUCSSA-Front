@@ -88,10 +88,19 @@ class Inbox extends Component {
                     />
               }
                 <View style={styles.msgImageContainer}>
-                  <Image
-                    source={{uri: item.avatar, cache: 'force-cache'}}
+                  {
+                    item.pmType === 2 ?
+                    <Image
+                      source={{uri: 'https://cdn3.iconfinder.com/data/icons/pix-glyph-set/50/520643-group-512.png'}}
+                      style={styles.msgImage}
+                      />
+                    :
+                    <Image
+                    source={{uri: item.avatar}}
                     style={styles.msgImage}
                     />
+
+                  }
                 </View>
               </Col>
               <Col size={51} style={{justifyContent: 'center'}}>
@@ -135,6 +144,10 @@ class Inbox extends Component {
     );
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    console.log("!!! INBOX WILL UPDATE !!!");
+  }
+
   render() {
     const { user, messageList, isFetchingList, dispatch} = this.props;
     const { uid, token } = user;
@@ -167,10 +180,6 @@ class Inbox extends Component {
 
           <View style={styles.listView}>
             <FlatList
-              onRefresh={() => {
-                dispatch(fetchMessageList(user.uid, user.token));
-              }}
-              refreshing={isFetchingList}
               data={messageList}
               renderItem={this._renderItem}
               keyExtractor={this._keyExtractor}
@@ -181,7 +190,9 @@ class Inbox extends Component {
               />
           </View>
 
-          <Footer />
+          <Footer
+            current={Actions.currentScene}
+          />
         </View>
       );
   }
