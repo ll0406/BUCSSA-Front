@@ -8,7 +8,6 @@ import {connect} from 'react-redux';
 import {addToPoential} from '../actions/roommateDeck';
 import {Col, Row, Grid} from 'react-native-easy-grid';
 import _ from 'lodash';
-var similarity = require( 'compute-cosine-similarity' );
 
 /*
 The DeckSwiper has two Property:
@@ -93,7 +92,7 @@ class RoommateDeck extends Component {
     score += arrayCount/this.pref.preferArea.length;
     arrayCount = 0;
 
-    score += similarity(this.pref.priceRange, person.priceRange);
+    score += 0;
 
     if(this.pref.smoke == person.smoke){
       score++;

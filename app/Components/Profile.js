@@ -9,7 +9,6 @@ import {
   StyleSheet,
   Text
 } from 'react-native';
-import DateTimePicker from 'react-native-modal-datetime-picker';
 import Modal from 'react-native-modalbox';
 import DropdownAlert from 'react-native-dropdownalert'
 import {Button, Switch,Form, Input,Header,Right,Icon,
