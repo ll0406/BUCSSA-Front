@@ -1,5 +1,5 @@
 //Endpoints
-export const BASE = 'http://bucssa.net/API/v1';
+export const BASE = 'https://app.bucssa.net/API/v1';
 
 //User
 export const LOGIN = '/user/account/login.php';

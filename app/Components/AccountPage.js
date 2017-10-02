@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * (220/750),
     position: 'absolute',
     bottom: Dimensions.get('window').height * (32/1334),
-    left: Dimensions.get('window').width * (300/750),
+    left: Dimensions.get('window').width * (330/750),
     backgroundColor: 'transparent',
   },
   profileName: {
